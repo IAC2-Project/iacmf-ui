@@ -2,6 +2,10 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.2.
 
+## Initialization
+
+Run `mvn clean compile` to generate the client application code (will be placed in folder `src/app/gen` based on the openapi doc: `src/assets/openapi-doc/api.json`).
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
