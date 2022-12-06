@@ -1,10 +1,15 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# Generated output
+/src/app/gen
+
+
 # Compiled output
 /dist
 /tmp
 /out-tsc
 /bazel-out
+/target
 
 # Node
 /node_modules
