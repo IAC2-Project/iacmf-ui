@@ -1,10 +1,6 @@
-# iacmf-ui
+# IacmfUi
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.2.
-
-## Initialization
-
-Run `mvn clean compile` to generate the client application code (will be placed in folder `src/app/gen` based on the openapi doc: `src/assets/openapi-doc/api.json`).
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.5.
 
 ## Development server
 

@@ -16,6 +16,26 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <phase>clean</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <delete
+                  dir="${project.basedir}/src/app/gen"
+                  includeemptydirs="true"/>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.openapitools</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
         <!-- RELEASE_VERSION -->
@@ -23,6 +43,7 @@
         <!-- /RELEASE_VERSION -->
         <executions>
           <execution>
+            <id>generate iacmf-api</id>
             <goals>
               <goal>generate</goal>
             </goals>
@@ -30,25 +51,91 @@
               <inputSpec>${project.basedir}/src/assets/openapi-doc/api.json</inputSpec>
               <output>${project.basedir}/src/app/gen/</output>
               <generatorName>typescript-angular</generatorName>
+              <configOptions>
+                <npmName>iacmf-api</npmName>
+                <ngVersion>14.0.5</ngVersion>
+              </configOptions>
             </configuration>
           </execution>
         </executions>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.0.0</version>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.1.0</version>
         <executions>
           <execution>
-            <id>add-source</id>
-            <phase>generate-sources</phase>
+            <id>npm uninstall (iacmf-api from iacmf-ui)</id>
             <goals>
-              <goal>add-source</goal>
+              <goal>exec</goal>
             </goals>
+            <phase>clean</phase>
             <configuration>
-              <sources>
-                <source>${project.basedir}/src/app/gen/</source>
-              </sources>
+              <executable>npm</executable>
+              <arguments>
+                <argument>uninstall</argument>
+                <argument>iacmf-api</argument>
+              </arguments>
+              <workingDirectory>${project.basedir}</workingDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm install (iacmf-api)</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <executable>npm</executable>
+              <arguments>
+                <argument>install</argument>
+              </arguments>
+              <workingDirectory>${project.basedir}/src/app/gen/</workingDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm run build (iacmf-api)</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <executable>npm</executable>
+              <arguments>
+                <argument>run</argument>
+                <argument>build</argument>
+              </arguments>
+              <workingDirectory>${project.basedir}/src/app/gen/</workingDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm pack (iacmf-api)</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <executable>npm</executable>
+              <arguments>
+                <argument>pack</argument>
+              </arguments>
+              <workingDirectory>${project.basedir}/src/app/gen/</workingDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm install --save(iacmf-api into iacmf-ui)</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <executable>npm</executable>
+              <arguments>
+                <argument>install</argument>
+                <argument>./src/app/gen/iacmf-api-1.0.0.tgz</argument>
+                <argument>--save</argument>
+              </arguments>
+              <workingDirectory>${project.basedir}</workingDirectory>
             </configuration>
           </execution>
         </executions>

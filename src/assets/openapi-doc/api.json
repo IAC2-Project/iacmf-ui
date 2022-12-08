@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "OpenAPI definition",
-    "version": "v0"
+    "version": "1.0.0"
   },
   "servers": [
     {
@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/api/compliance-issues": {
+    "/compliance-issues": {
       "get": {
         "tags": [
           "compliance-issue-entity-entity-controller"
@@ -40,38 +40,9 @@
             }
           }
         }
-      },
-      "post": {
-        "tags": [
-          "compliance-issue-entity-entity-controller"
-        ],
-        "description": "create-complianceissueentity",
-        "operationId": "postCollectionResource-complianceissueentity-post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ComplianceIssueEntityRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelComplianceIssueEntity"
-                }
-              }
-            }
-          }
-        }
       }
     },
-    "/api/compliance-issues/search/findByExecution": {
+    "/compliance-issues/search/findByExecution": {
       "get": {
         "tags": [
           "compliance-issue-entity-search-controller"
@@ -103,7 +74,7 @@
         }
       }
     },
-    "/api/compliance-issues/{id}": {
+    "/compliance-issues/{id}": {
       "get": {
         "tags": [
           "compliance-issue-entity-entity-controller"
@@ -135,128 +106,9 @@
             "description": "Not Found"
           }
         }
-      },
-      "put": {
-        "tags": [
-          "compliance-issue-entity-entity-controller"
-        ],
-        "description": "update-complianceissueentity",
-        "operationId": "putItemResource-complianceissueentity-put",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ComplianceIssueEntityRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelComplianceIssueEntity"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelComplianceIssueEntity"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "compliance-issue-entity-entity-controller"
-        ],
-        "description": "delete-complianceissueentity",
-        "operationId": "deleteItemResource-complianceissueentity-delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "compliance-issue-entity-entity-controller"
-        ],
-        "description": "patch-complianceissueentity",
-        "operationId": "patchItemResource-complianceissueentity-patch",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ComplianceIssueEntityRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelComplianceIssueEntity"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
       }
     },
-    "/api/compliance-issues/{id}/execution": {
+    "/compliance-issues/{id}/execution": {
       "get": {
         "tags": [
           "compliance-issue-entity-property-reference-controller"
@@ -293,148 +145,9 @@
             "description": "Not Found"
           }
         }
-      },
-      "put": {
-        "tags": [
-          "compliance-issue-entity-property-reference-controller"
-        ],
-        "description": "update-executionentity-by-complianceissueentity-Id",
-        "operationId": "createPropertyReference-complianceissueentity-put",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "application/x-spring-data-compact+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "text/uri-list": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelExecutionEntity"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelExecutionEntity"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "compliance-issue-entity-property-reference-controller"
-        ],
-        "description": "delete-executionentity-by-complianceissueentity-Id",
-        "operationId": "deletePropertyReference-complianceissueentity-delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "compliance-issue-entity-property-reference-controller"
-        ],
-        "description": "patch-executionentity-by-complianceissueentity-Id",
-        "operationId": "createPropertyReference-complianceissueentity-patch",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "application/x-spring-data-compact+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "text/uri-list": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelExecutionEntity"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
       }
     },
-    "/api/compliance-issues/{id}/execution/{propertyId}": {
+    "/compliance-issues/{id}/execution/{propertyId}": {
       "get": {
         "tags": [
           "compliance-issue-entity-property-reference-controller"
@@ -474,13 +187,54 @@
             "description": "Not Found"
           }
         }
-      },
-      "delete": {
+      }
+    },
+    "/compliance-issues/{id}/fixingReports": {
+      "get": {
         "tags": [
           "compliance-issue-entity-property-reference-controller"
         ],
-        "description": "delete-executionentity-by-complianceissueentity-Id",
-        "operationId": "deletePropertyReferenceId-complianceissueentity-delete",
+        "description": "get-issuefixingreportentity-by-complianceissueentity-Id",
+        "operationId": "followPropertyReference-complianceissueentity-get_2_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelIssueFixingReportEntity"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/compliance-issues/{id}/fixingReports/{propertyId}": {
+      "get": {
+        "tags": [
+          "compliance-issue-entity-property-reference-controller"
+        ],
+        "description": "get-issuefixingreportentity-by-complianceissueentity-Id",
+        "operationId": "followPropertyReference-complianceissueentity-get_2",
         "parameters": [
           {
             "name": "id",
@@ -500,8 +254,15 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelIssueFixingReportEntity"
+                }
+              }
+            }
           },
           "404": {
             "description": "Not Found"
@@ -509,13 +270,13 @@
         }
       }
     },
-    "/api/compliance-issues/{id}/properties": {
+    "/compliance-issues/{id}/properties": {
       "get": {
         "tags": [
           "compliance-issue-entity-property-reference-controller"
         ],
         "description": "get-issuepropertyentity-by-complianceissueentity-Id",
-        "operationId": "followPropertyReference-complianceissueentity-get_2_1",
+        "operationId": "followPropertyReference-complianceissueentity-get_3_1",
         "parameters": [
           {
             "name": "id",
@@ -546,154 +307,15 @@
             "description": "Not Found"
           }
         }
-      },
-      "put": {
-        "tags": [
-          "compliance-issue-entity-property-reference-controller"
-        ],
-        "description": "update-issuepropertyentity-by-complianceissueentity-Id",
-        "operationId": "createPropertyReference-complianceissueentity-put_1",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "application/x-spring-data-compact+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "text/uri-list": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionModelIssuePropertyEntity"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionModelIssuePropertyEntity"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "compliance-issue-entity-property-reference-controller"
-        ],
-        "description": "delete-issuepropertyentity-by-complianceissueentity-Id",
-        "operationId": "deletePropertyReference-complianceissueentity-delete_1",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "compliance-issue-entity-property-reference-controller"
-        ],
-        "description": "patch-issuepropertyentity-by-complianceissueentity-Id",
-        "operationId": "createPropertyReference-complianceissueentity-patch_1",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "application/x-spring-data-compact+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "text/uri-list": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionModelIssuePropertyEntity"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
       }
     },
-    "/api/compliance-issues/{id}/properties/{propertyId}": {
+    "/compliance-issues/{id}/properties/{propertyId}": {
       "get": {
         "tags": [
           "compliance-issue-entity-property-reference-controller"
         ],
         "description": "get-issuepropertyentity-by-complianceissueentity-Id",
-        "operationId": "followPropertyReference-complianceissueentity-get_2",
+        "operationId": "followPropertyReference-complianceissueentity-get_3",
         "parameters": [
           {
             "name": "id",
@@ -727,42 +349,9 @@
             "description": "Not Found"
           }
         }
-      },
-      "delete": {
-        "tags": [
-          "compliance-issue-entity-property-reference-controller"
-        ],
-        "description": "delete-issuepropertyentity-by-complianceissueentity-Id",
-        "operationId": "deletePropertyReferenceId-complianceissueentity-delete_1",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "propertyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
       }
     },
-    "/api/compliance-jobs": {
+    "/compliance-jobs": {
       "get": {
         "tags": [
           "compliance-job-entity-entity-controller"
@@ -822,7 +411,7 @@
         }
       }
     },
-    "/api/compliance-jobs/search/findByComplianceRule": {
+    "/compliance-jobs/search/findByComplianceRule": {
       "get": {
         "tags": [
           "compliance-job-entity-search-controller"
@@ -854,7 +443,7 @@
         }
       }
     },
-    "/api/compliance-jobs/{id}": {
+    "/compliance-jobs/{id}": {
       "get": {
         "tags": [
           "compliance-job-entity-entity-controller"
@@ -1007,7 +596,7 @@
         }
       }
     },
-    "/api/compliance-jobs/{id}/complianceRule": {
+    "/compliance-jobs/{id}/complianceRule": {
       "get": {
         "tags": [
           "compliance-job-entity-property-reference-controller"
@@ -1185,7 +774,7 @@
         }
       }
     },
-    "/api/compliance-jobs/{id}/complianceRule/{propertyId}": {
+    "/compliance-jobs/{id}/complianceRule/{propertyId}": {
       "get": {
         "tags": [
           "compliance-job-entity-property-reference-controller"
@@ -1260,7 +849,7 @@
         }
       }
     },
-    "/api/compliance-jobs/{id}/complianceRuleParameterAssignments": {
+    "/compliance-jobs/{id}/complianceRuleParameterAssignments": {
       "get": {
         "tags": [
           "compliance-job-entity-property-reference-controller"
@@ -1438,7 +1027,7 @@
         }
       }
     },
-    "/api/compliance-jobs/{id}/complianceRuleParameterAssignments/{propertyId}": {
+    "/compliance-jobs/{id}/complianceRuleParameterAssignments/{propertyId}": {
       "get": {
         "tags": [
           "compliance-job-entity-property-reference-controller"
@@ -1513,7 +1102,7 @@
         }
       }
     },
-    "/api/compliance-jobs/{id}/executions": {
+    "/compliance-jobs/{id}/executions": {
       "get": {
         "tags": [
           "compliance-job-entity-property-reference-controller"
@@ -1691,7 +1280,7 @@
         }
       }
     },
-    "/api/compliance-jobs/{id}/executions/{propertyId}": {
+    "/compliance-jobs/{id}/executions/{propertyId}": {
       "get": {
         "tags": [
           "compliance-job-entity-property-reference-controller"
@@ -1766,7 +1355,7 @@
         }
       }
     },
-    "/api/compliance-jobs/{id}/modelEnhancementStrategy": {
+    "/compliance-jobs/{id}/modelEnhancementStrategy": {
       "get": {
         "tags": [
           "compliance-job-entity-property-reference-controller"
@@ -1944,7 +1533,7 @@
         }
       }
     },
-    "/api/compliance-jobs/{id}/modelEnhancementStrategy/{propertyId}": {
+    "/compliance-jobs/{id}/modelEnhancementStrategy/{propertyId}": {
       "get": {
         "tags": [
           "compliance-job-entity-property-reference-controller"
@@ -2019,7 +1608,7 @@
         }
       }
     },
-    "/api/compliance-jobs/{id}/productionSystem": {
+    "/compliance-jobs/{id}/productionSystem": {
       "get": {
         "tags": [
           "compliance-job-entity-property-reference-controller"
@@ -2197,7 +1786,7 @@
         }
       }
     },
-    "/api/compliance-jobs/{id}/productionSystem/{propertyId}": {
+    "/compliance-jobs/{id}/productionSystem/{propertyId}": {
       "get": {
         "tags": [
           "compliance-job-entity-property-reference-controller"
@@ -2272,7 +1861,7 @@
         }
       }
     },
-    "/api/compliance-jobs/{id}/triggers": {
+    "/compliance-jobs/{id}/triggers": {
       "get": {
         "tags": [
           "compliance-job-entity-property-reference-controller"
@@ -2450,7 +2039,7 @@
         }
       }
     },
-    "/api/compliance-jobs/{id}/triggers/{propertyId}": {
+    "/compliance-jobs/{id}/triggers/{propertyId}": {
       "get": {
         "tags": [
           "compliance-job-entity-property-reference-controller"
@@ -2525,7 +2114,7 @@
         }
       }
     },
-    "/api/compliance-rule-parameter-assignments": {
+    "/compliance-rule-parameter-assignments": {
       "get": {
         "tags": [
           "compliance-rule-parameter-assignment-entity-entity-controller"
@@ -2585,7 +2174,7 @@
         }
       }
     },
-    "/api/compliance-rule-parameter-assignments/search/findByParameter": {
+    "/compliance-rule-parameter-assignments/search/findByParameter": {
       "get": {
         "tags": [
           "compliance-rule-parameter-assignment-entity-search-controller"
@@ -2617,7 +2206,7 @@
         }
       }
     },
-    "/api/compliance-rule-parameter-assignments/{id}": {
+    "/compliance-rule-parameter-assignments/{id}": {
       "get": {
         "tags": [
           "compliance-rule-parameter-assignment-entity-entity-controller"
@@ -2770,7 +2359,7 @@
         }
       }
     },
-    "/api/compliance-rule-parameter-assignments/{id}/complianceJob": {
+    "/compliance-rule-parameter-assignments/{id}/complianceJob": {
       "get": {
         "tags": [
           "compliance-rule-parameter-assignment-entity-property-reference-controller"
@@ -2948,7 +2537,7 @@
         }
       }
     },
-    "/api/compliance-rule-parameter-assignments/{id}/complianceJob/{propertyId}": {
+    "/compliance-rule-parameter-assignments/{id}/complianceJob/{propertyId}": {
       "get": {
         "tags": [
           "compliance-rule-parameter-assignment-entity-property-reference-controller"
@@ -3023,7 +2612,7 @@
         }
       }
     },
-    "/api/compliance-rule-parameter-assignments/{id}/parameter": {
+    "/compliance-rule-parameter-assignments/{id}/parameter": {
       "get": {
         "tags": [
           "compliance-rule-parameter-assignment-entity-property-reference-controller"
@@ -3201,7 +2790,7 @@
         }
       }
     },
-    "/api/compliance-rule-parameter-assignments/{id}/parameter/{propertyId}": {
+    "/compliance-rule-parameter-assignments/{id}/parameter/{propertyId}": {
       "get": {
         "tags": [
           "compliance-rule-parameter-assignment-entity-property-reference-controller"
@@ -3276,7 +2865,7 @@
         }
       }
     },
-    "/api/compliance-rule-parameters": {
+    "/compliance-rule-parameters": {
       "get": {
         "tags": [
           "compliance-rule-parameter-entity-entity-controller"
@@ -3336,7 +2925,7 @@
         }
       }
     },
-    "/api/compliance-rule-parameters/search/findByComplianceRule": {
+    "/compliance-rule-parameters/search/findByComplianceRule": {
       "get": {
         "tags": [
           "compliance-rule-parameter-entity-search-controller"
@@ -3368,7 +2957,7 @@
         }
       }
     },
-    "/api/compliance-rule-parameters/search/findByName": {
+    "/compliance-rule-parameters/search/findByName": {
       "get": {
         "tags": [
           "compliance-rule-parameter-entity-search-controller"
@@ -3400,7 +2989,7 @@
         }
       }
     },
-    "/api/compliance-rule-parameters/{id}": {
+    "/compliance-rule-parameters/{id}": {
       "get": {
         "tags": [
           "compliance-rule-parameter-entity-entity-controller"
@@ -3553,7 +3142,7 @@
         }
       }
     },
-    "/api/compliance-rule-parameters/{id}/complianceRule": {
+    "/compliance-rule-parameters/{id}/complianceRule": {
       "get": {
         "tags": [
           "compliance-rule-parameter-entity-property-reference-controller"
@@ -3731,7 +3320,7 @@
         }
       }
     },
-    "/api/compliance-rule-parameters/{id}/complianceRule/{propertyId}": {
+    "/compliance-rule-parameters/{id}/complianceRule/{propertyId}": {
       "get": {
         "tags": [
           "compliance-rule-parameter-entity-property-reference-controller"
@@ -3806,7 +3395,7 @@
         }
       }
     },
-    "/api/compliance-rules": {
+    "/compliance-rules": {
       "get": {
         "tags": [
           "compliance-rule-entity-entity-controller"
@@ -3866,7 +3455,7 @@
         }
       }
     },
-    "/api/compliance-rules/search/findByIsDeleted": {
+    "/compliance-rules/search/findByIsDeleted": {
       "get": {
         "tags": [
           "compliance-rule-entity-search-controller"
@@ -3898,7 +3487,7 @@
         }
       }
     },
-    "/api/compliance-rules/search/findByType": {
+    "/compliance-rules/search/findByType": {
       "get": {
         "tags": [
           "compliance-rule-entity-search-controller"
@@ -3930,7 +3519,7 @@
         }
       }
     },
-    "/api/compliance-rules/{id}": {
+    "/compliance-rules/{id}": {
       "get": {
         "tags": [
           "compliance-rule-entity-entity-controller"
@@ -4015,31 +3604,6 @@
           }
         }
       },
-      "delete": {
-        "tags": [
-          "compliance-rule-entity-entity-controller"
-        ],
-        "description": "delete-complianceruleentity",
-        "operationId": "deleteItemResource-complianceruleentity-delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
       "patch": {
         "tags": [
           "compliance-rule-entity-entity-controller"
@@ -4083,7 +3647,7 @@
         }
       }
     },
-    "/api/compliance-rules/{id}/jobs": {
+    "/compliance-rules/{id}/jobs": {
       "get": {
         "tags": [
           "compliance-rule-entity-property-reference-controller"
@@ -4183,31 +3747,6 @@
           }
         }
       },
-      "delete": {
-        "tags": [
-          "compliance-rule-entity-property-reference-controller"
-        ],
-        "description": "delete-compliancejobentity-by-complianceruleentity-Id",
-        "operationId": "deletePropertyReference-complianceruleentity-delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
       "patch": {
         "tags": [
           "compliance-rule-entity-property-reference-controller"
@@ -4261,7 +3800,7 @@
         }
       }
     },
-    "/api/compliance-rules/{id}/jobs/{propertyId}": {
+    "/compliance-rules/{id}/jobs/{propertyId}": {
       "get": {
         "tags": [
           "compliance-rule-entity-property-reference-controller"
@@ -4301,42 +3840,9 @@
             "description": "Not Found"
           }
         }
-      },
-      "delete": {
-        "tags": [
-          "compliance-rule-entity-property-reference-controller"
-        ],
-        "description": "delete-compliancejobentity-by-complianceruleentity-Id",
-        "operationId": "deletePropertyReferenceId-complianceruleentity-delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "propertyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
       }
     },
-    "/api/compliance-rules/{id}/parameters": {
+    "/compliance-rules/{id}/parameters": {
       "get": {
         "tags": [
           "compliance-rule-entity-property-reference-controller"
@@ -4436,31 +3942,6 @@
           }
         }
       },
-      "delete": {
-        "tags": [
-          "compliance-rule-entity-property-reference-controller"
-        ],
-        "description": "delete-complianceruleparameterentity-by-complianceruleentity-Id",
-        "operationId": "deletePropertyReference-complianceruleentity-delete_1",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
       "patch": {
         "tags": [
           "compliance-rule-entity-property-reference-controller"
@@ -4514,7 +3995,7 @@
         }
       }
     },
-    "/api/compliance-rules/{id}/parameters/{propertyId}": {
+    "/compliance-rules/{id}/parameters/{propertyId}": {
       "get": {
         "tags": [
           "compliance-rule-entity-property-reference-controller"
@@ -4554,42 +4035,9 @@
             "description": "Not Found"
           }
         }
-      },
-      "delete": {
-        "tags": [
-          "compliance-rule-entity-property-reference-controller"
-        ],
-        "description": "delete-complianceruleparameterentity-by-complianceruleentity-Id",
-        "operationId": "deletePropertyReferenceId-complianceruleentity-delete_1",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "propertyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
       }
     },
-    "/api/executions": {
+    "/executions": {
       "get": {
         "tags": [
           "execution-entity-entity-controller"
@@ -4618,38 +4066,9 @@
             }
           }
         }
-      },
-      "post": {
-        "tags": [
-          "execution-entity-entity-controller"
-        ],
-        "description": "create-executionentity",
-        "operationId": "postCollectionResource-executionentity-post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ExecutionEntityRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelExecutionEntity"
-                }
-              }
-            }
-          }
-        }
       }
     },
-    "/api/executions/search/findByComplianceJob": {
+    "/executions/search/findByComplianceJob": {
       "get": {
         "tags": [
           "execution-entity-search-controller"
@@ -4681,7 +4100,7 @@
         }
       }
     },
-    "/api/executions/search/findByCurrentStep": {
+    "/executions/search/findByCurrentStep": {
       "get": {
         "tags": [
           "execution-entity-search-controller"
@@ -4719,7 +4138,7 @@
         }
       }
     },
-    "/api/executions/search/findByStatus": {
+    "/executions/search/findByStatus": {
       "get": {
         "tags": [
           "execution-entity-search-controller"
@@ -4757,7 +4176,7 @@
         }
       }
     },
-    "/api/executions/{id}": {
+    "/executions/{id}": {
       "get": {
         "tags": [
           "execution-entity-entity-controller"
@@ -4789,128 +4208,9 @@
             "description": "Not Found"
           }
         }
-      },
-      "put": {
-        "tags": [
-          "execution-entity-entity-controller"
-        ],
-        "description": "update-executionentity",
-        "operationId": "putItemResource-executionentity-put",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ExecutionEntityRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelExecutionEntity"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelExecutionEntity"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "execution-entity-entity-controller"
-        ],
-        "description": "delete-executionentity",
-        "operationId": "deleteItemResource-executionentity-delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "execution-entity-entity-controller"
-        ],
-        "description": "patch-executionentity",
-        "operationId": "patchItemResource-executionentity-patch",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ExecutionEntityRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelExecutionEntity"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
       }
     },
-    "/api/executions/{id}/complianceIssueEntities": {
+    "/executions/{id}/complianceIssueEntities": {
       "get": {
         "tags": [
           "execution-entity-property-reference-controller"
@@ -4947,148 +4247,9 @@
             "description": "Not Found"
           }
         }
-      },
-      "put": {
-        "tags": [
-          "execution-entity-property-reference-controller"
-        ],
-        "description": "update-complianceissueentity-by-executionentity-Id",
-        "operationId": "createPropertyReference-executionentity-put",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "application/x-spring-data-compact+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "text/uri-list": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionModelComplianceIssueEntity"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionModelComplianceIssueEntity"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "execution-entity-property-reference-controller"
-        ],
-        "description": "delete-complianceissueentity-by-executionentity-Id",
-        "operationId": "deletePropertyReference-executionentity-delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "execution-entity-property-reference-controller"
-        ],
-        "description": "patch-complianceissueentity-by-executionentity-Id",
-        "operationId": "createPropertyReference-executionentity-patch",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "application/x-spring-data-compact+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "text/uri-list": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionModelComplianceIssueEntity"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
       }
     },
-    "/api/executions/{id}/complianceIssueEntities/{propertyId}": {
+    "/executions/{id}/complianceIssueEntities/{propertyId}": {
       "get": {
         "tags": [
           "execution-entity-property-reference-controller"
@@ -5128,42 +4289,9 @@
             "description": "Not Found"
           }
         }
-      },
-      "delete": {
-        "tags": [
-          "execution-entity-property-reference-controller"
-        ],
-        "description": "delete-complianceissueentity-by-executionentity-Id",
-        "operationId": "deletePropertyReferenceId-executionentity-delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "propertyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
       }
     },
-    "/api/executions/{id}/complianceJob": {
+    "/executions/{id}/complianceJob": {
       "get": {
         "tags": [
           "execution-entity-property-reference-controller"
@@ -5200,148 +4328,9 @@
             "description": "Not Found"
           }
         }
-      },
-      "put": {
-        "tags": [
-          "execution-entity-property-reference-controller"
-        ],
-        "description": "update-compliancejobentity-by-executionentity-Id",
-        "operationId": "createPropertyReference-executionentity-put_1",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "application/x-spring-data-compact+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "text/uri-list": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelComplianceJobEntity"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelComplianceJobEntity"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "execution-entity-property-reference-controller"
-        ],
-        "description": "delete-compliancejobentity-by-executionentity-Id",
-        "operationId": "deletePropertyReference-executionentity-delete_1",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "execution-entity-property-reference-controller"
-        ],
-        "description": "patch-compliancejobentity-by-executionentity-Id",
-        "operationId": "createPropertyReference-executionentity-patch_1",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "application/x-spring-data-compact+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "text/uri-list": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelComplianceJobEntity"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
       }
     },
-    "/api/executions/{id}/complianceJob/{propertyId}": {
+    "/executions/{id}/complianceJob/{propertyId}": {
       "get": {
         "tags": [
           "execution-entity-property-reference-controller"
@@ -5381,13 +4370,151 @@
             "description": "Not Found"
           }
         }
-      },
-      "delete": {
+      }
+    },
+    "/fixing-reports": {
+      "get": {
         "tags": [
-          "execution-entity-property-reference-controller"
+          "issue-fixing-report-entity-entity-controller"
         ],
-        "description": "delete-compliancejobentity-by-executionentity-Id",
-        "operationId": "deletePropertyReferenceId-executionentity-delete_1",
+        "description": "get-issuefixingreportentity",
+        "operationId": "getCollectionResource-issuefixingreportentity-get_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelEntityModelIssueFixingReportEntity"
+                }
+              },
+              "application/x-spring-data-compact+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelEntityModelIssueFixingReportEntity"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fixing-reports/search/findByComplianceIssue": {
+      "get": {
+        "tags": [
+          "issue-fixing-report-entity-search-controller"
+        ],
+        "operationId": "executeSearch-issuefixingreportentity-get",
+        "parameters": [
+          {
+            "name": "issue",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ComplianceIssueEntity"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelEntityModelIssueFixingReportEntity"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/fixing-reports/{id}": {
+      "get": {
+        "tags": [
+          "issue-fixing-report-entity-entity-controller"
+        ],
+        "description": "get-issuefixingreportentity",
+        "operationId": "getItemResource-issuefixingreportentity-get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelIssueFixingReportEntity"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/fixing-reports/{id}/complianceIssue": {
+      "get": {
+        "tags": [
+          "issue-fixing-report-entity-property-reference-controller"
+        ],
+        "description": "get-complianceissueentity-by-issuefixingreportentity-Id",
+        "operationId": "followPropertyReference-issuefixingreportentity-get_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelComplianceIssueEntity"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/fixing-reports/{id}/complianceIssue/{propertyId}": {
+      "get": {
+        "tags": [
+          "issue-fixing-report-entity-property-reference-controller"
+        ],
+        "description": "get-complianceissueentity-by-issuefixingreportentity-Id",
+        "operationId": "followPropertyReference-issuefixingreportentity-get",
         "parameters": [
           {
             "name": "id",
@@ -5407,8 +4534,15 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelComplianceIssueEntity"
+                }
+              }
+            }
           },
           "404": {
             "description": "Not Found"
@@ -5416,7 +4550,7 @@
         }
       }
     },
-    "/api/key-values": {
+    "/key-values": {
       "get": {
         "tags": [
           "kv-entity-entity-controller"
@@ -5476,7 +4610,7 @@
         }
       }
     },
-    "/api/key-values/search/findByKey": {
+    "/key-values/search/findByKey": {
       "get": {
         "tags": [
           "kv-entity-search-controller"
@@ -5508,7 +4642,7 @@
         }
       }
     },
-    "/api/key-values/{id}": {
+    "/key-values/{id}": {
       "get": {
         "tags": [
           "kv-entity-entity-controller"
@@ -5661,7 +4795,7 @@
         }
       }
     },
-    "/api/model-enhancement-strategies": {
+    "/model-enhancement-strategies": {
       "get": {
         "tags": [
           "model-enhancement-strategy-entity-entity-controller"
@@ -5721,7 +4855,7 @@
         }
       }
     },
-    "/api/model-enhancement-strategies/{id}": {
+    "/model-enhancement-strategies/{id}": {
       "get": {
         "tags": [
           "model-enhancement-strategy-entity-entity-controller"
@@ -5874,7 +5008,7 @@
         }
       }
     },
-    "/api/pluginConfigurationEntities": {
+    "/pluginConfigurationEntities": {
       "get": {
         "tags": [
           "plugin-configuration-entity-entity-controller"
@@ -5934,7 +5068,7 @@
         }
       }
     },
-    "/api/pluginConfigurationEntities/search/findByPluginIdentifier": {
+    "/pluginConfigurationEntities/search/findByPluginIdentifier": {
       "get": {
         "tags": [
           "plugin-configuration-entity-search-controller"
@@ -5966,7 +5100,7 @@
         }
       }
     },
-    "/api/pluginConfigurationEntities/{id}": {
+    "/pluginConfigurationEntities/{id}": {
       "get": {
         "tags": [
           "plugin-configuration-entity-entity-controller"
@@ -6119,7 +5253,7 @@
         }
       }
     },
-    "/api/production-systems": {
+    "/production-systems": {
       "get": {
         "tags": [
           "production-system-entity-entity-controller"
@@ -6179,7 +5313,7 @@
         }
       }
     },
-    "/api/production-systems/search/findByIsDeleted": {
+    "/production-systems/search/findByIsDeleted": {
       "get": {
         "tags": [
           "production-system-entity-search-controller"
@@ -6211,7 +5345,7 @@
         }
       }
     },
-    "/api/production-systems/{id}": {
+    "/production-systems/{id}": {
       "get": {
         "tags": [
           "production-system-entity-entity-controller"
@@ -6364,7 +5498,7 @@
         }
       }
     },
-    "/api/production-systems/{id}/complianceJobs": {
+    "/production-systems/{id}/complianceJobs": {
       "get": {
         "tags": [
           "production-system-entity-property-reference-controller"
@@ -6542,7 +5676,7 @@
         }
       }
     },
-    "/api/production-systems/{id}/complianceJobs/{propertyId}": {
+    "/production-systems/{id}/complianceJobs/{propertyId}": {
       "get": {
         "tags": [
           "production-system-entity-property-reference-controller"
@@ -6617,7 +5751,7 @@
         }
       }
     },
-    "/api/production-systems/{id}/modelEnhancementStrategy": {
+    "/production-systems/{id}/modelEnhancementStrategy": {
       "get": {
         "tags": [
           "production-system-entity-property-reference-controller"
@@ -6795,7 +5929,7 @@
         }
       }
     },
-    "/api/production-systems/{id}/modelEnhancementStrategy/{propertyId}": {
+    "/production-systems/{id}/modelEnhancementStrategy/{propertyId}": {
       "get": {
         "tags": [
           "production-system-entity-property-reference-controller"
@@ -6870,7 +6004,7 @@
         }
       }
     },
-    "/api/production-systems/{id}/properties": {
+    "/production-systems/{id}/properties": {
       "get": {
         "tags": [
           "production-system-entity-property-reference-controller"
@@ -7048,7 +6182,7 @@
         }
       }
     },
-    "/api/production-systems/{id}/properties/{propertyId}": {
+    "/production-systems/{id}/properties/{propertyId}": {
       "get": {
         "tags": [
           "production-system-entity-property-reference-controller"
@@ -7123,7 +6257,7 @@
         }
       }
     },
-    "/api/profile": {
+    "/profile": {
       "get": {
         "tags": [
           "profile-controller"
@@ -7143,7 +6277,7 @@
         }
       }
     },
-    "/api/profile/compliance-issues": {
+    "/profile/compliance-issues": {
       "get": {
         "tags": [
           "profile-controller"
@@ -7173,7 +6307,7 @@
         }
       }
     },
-    "/api/profile/compliance-jobs": {
+    "/profile/compliance-jobs": {
       "get": {
         "tags": [
           "profile-controller"
@@ -7203,7 +6337,7 @@
         }
       }
     },
-    "/api/profile/compliance-rule-parameter-assignments": {
+    "/profile/compliance-rule-parameter-assignments": {
       "get": {
         "tags": [
           "profile-controller"
@@ -7233,7 +6367,7 @@
         }
       }
     },
-    "/api/profile/compliance-rule-parameters": {
+    "/profile/compliance-rule-parameters": {
       "get": {
         "tags": [
           "profile-controller"
@@ -7263,7 +6397,7 @@
         }
       }
     },
-    "/api/profile/compliance-rules": {
+    "/profile/compliance-rules": {
       "get": {
         "tags": [
           "profile-controller"
@@ -7293,7 +6427,7 @@
         }
       }
     },
-    "/api/profile/executions": {
+    "/profile/executions": {
       "get": {
         "tags": [
           "profile-controller"
@@ -7323,7 +6457,7 @@
         }
       }
     },
-    "/api/profile/key-values": {
+    "/profile/fixing-reports": {
       "get": {
         "tags": [
           "profile-controller"
@@ -7353,7 +6487,7 @@
         }
       }
     },
-    "/api/profile/model-enhancement-strategies": {
+    "/profile/key-values": {
       "get": {
         "tags": [
           "profile-controller"
@@ -7383,7 +6517,7 @@
         }
       }
     },
-    "/api/profile/pluginConfigurationEntities": {
+    "/profile/model-enhancement-strategies": {
       "get": {
         "tags": [
           "profile-controller"
@@ -7413,7 +6547,7 @@
         }
       }
     },
-    "/api/profile/production-systems": {
+    "/profile/pluginConfigurationEntities": {
       "get": {
         "tags": [
           "profile-controller"
@@ -7443,7 +6577,7 @@
         }
       }
     },
-    "/api/profile/triggers": {
+    "/profile/production-systems": {
       "get": {
         "tags": [
           "profile-controller"
@@ -7473,7 +6607,37 @@
         }
       }
     },
-    "/api/triggers": {
+    "/profile/triggers": {
+      "get": {
+        "tags": [
+          "profile-controller"
+        ],
+        "operationId": "descriptor_1_1_12",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/alps+json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/schema+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/triggers": {
       "get": {
         "tags": [
           "trigger-entity-entity-controller"
@@ -7533,7 +6697,7 @@
         }
       }
     },
-    "/api/triggers/search/findAllTriggersOfJob": {
+    "/triggers/search/findAllTriggersOfJob": {
       "get": {
         "tags": [
           "trigger-entity-search-controller"
@@ -7566,7 +6730,7 @@
         }
       }
     },
-    "/api/triggers/search/findByIsDeleted": {
+    "/triggers/search/findByIsDeleted": {
       "get": {
         "tags": [
           "trigger-entity-search-controller"
@@ -7598,7 +6762,7 @@
         }
       }
     },
-    "/api/triggers/{id}": {
+    "/triggers/{id}": {
       "get": {
         "tags": [
           "trigger-entity-entity-controller"
@@ -7683,31 +6847,6 @@
           }
         }
       },
-      "delete": {
-        "tags": [
-          "trigger-entity-entity-controller"
-        ],
-        "description": "delete-triggerentity",
-        "operationId": "deleteItemResource-triggerentity-delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
       "patch": {
         "tags": [
           "trigger-entity-entity-controller"
@@ -7751,7 +6890,7 @@
         }
       }
     },
-    "/api/triggers/{id}/complianceJobs": {
+    "/triggers/{id}/complianceJobs": {
       "get": {
         "tags": [
           "trigger-entity-property-reference-controller"
@@ -7851,31 +6990,6 @@
           }
         }
       },
-      "delete": {
-        "tags": [
-          "trigger-entity-property-reference-controller"
-        ],
-        "description": "delete-compliancejobentity-by-triggerentity-Id",
-        "operationId": "deletePropertyReference-triggerentity-delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
       "patch": {
         "tags": [
           "trigger-entity-property-reference-controller"
@@ -7929,7 +7043,7 @@
         }
       }
     },
-    "/api/triggers/{id}/complianceJobs/{propertyId}": {
+    "/triggers/{id}/complianceJobs/{propertyId}": {
       "get": {
         "tags": [
           "trigger-entity-property-reference-controller"
@@ -7964,39 +7078,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "trigger-entity-property-reference-controller"
-        ],
-        "description": "delete-compliancejobentity-by-triggerentity-Id",
-        "operationId": "deletePropertyReferenceId-triggerentity-delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "propertyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
           },
           "404": {
             "description": "Not Found"
@@ -8122,6 +7203,25 @@
       "RepresentationModelObject": {
         "type": "object",
         "properties": {
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelComplianceIssueEntity": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "complianceIssueEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelComplianceIssueEntity"
+                }
+              }
+            }
+          },
           "_links": {
             "$ref": "#/components/schemas/Links"
           }
@@ -8290,17 +7390,17 @@
           }
         }
       },
-      "EntityModelTriggerEntity": {
+      "EntityModelComplianceIssueEntity": {
         "required": [
-          "isDeleted"
+          "type"
         ],
         "type": "object",
         "properties": {
           "description": {
             "type": "string"
           },
-          "isDeleted": {
-            "type": "boolean"
+          "type": {
+            "type": "string"
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -8502,81 +7602,7 @@
           }
         }
       },
-      "CollectionModelEntityModelTriggerEntity": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "triggerEntities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelTriggerEntity"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelComplianceJobEntity": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "complianceJobEntities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ComplianceJobEntityResponse"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelObject": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "objects": {
-                "type": "array",
-                "items": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "EntityModelKVEntity": {
-        "required": [
-          "key"
-        ],
-        "type": "object",
-        "properties": {
-          "key": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelEntityModelKVEntity": {
+      "CollectionModelIssuePropertyEntity": {
         "type": "object",
         "properties": {
           "_embedded": {
@@ -8585,7 +7611,7 @@
               "kVEntities": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/EntityModelKVEntity"
+                  "$ref": "#/components/schemas/IssuePropertyEntityResponse"
                 }
               }
             }
@@ -8637,16 +7663,16 @@
           }
         }
       },
-      "CollectionModelEntityModelExecutionEntity": {
+      "CollectionModelIssueFixingReportEntity": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "executionEntities": {
+              "issueFixingReportEntities": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/EntityModelExecutionEntity"
+                  "$ref": "#/components/schemas/IssueFixingReportEntityResponse"
                 }
               }
             }
@@ -8656,37 +7682,16 @@
           }
         }
       },
-      "EntityModelComplianceJobEntity": {
-        "required": [
-          "modelCheckingPluginId",
-          "modelFixingPluginId"
-        ],
-        "type": "object",
-        "properties": {
-          "description": {
-            "type": "string"
-          },
-          "modelCheckingPluginId": {
-            "type": "string"
-          },
-          "modelFixingPluginId": {
-            "type": "string"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelComplianceIssueEntity": {
+      "CollectionModelEntityModelProductionSystemEntity": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "complianceIssueEntities": {
+              "productionSystemEntities": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/ComplianceIssueEntityResponse"
+                  "$ref": "#/components/schemas/EntityModelProductionSystemEntity"
                 }
               }
             }
@@ -8721,25 +7726,6 @@
           }
         }
       },
-      "CollectionModelEntityModelProductionSystemEntity": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "productionSystemEntities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelProductionSystemEntity"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
       "EntityModelModelEnhancementStrategyEntity": {
         "type": "object",
         "properties": {
@@ -8747,6 +7733,25 @@
             "type": "array",
             "items": {
               "type": "string"
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelObject": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "objects": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
             }
           },
           "_links": {
@@ -8773,24 +7778,16 @@
           }
         }
       },
-      "EntityModelComplianceRuleParameterAssignmentEntity": {
-        "type": "object",
-        "properties": {
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelEntityModelComplianceRuleParameterAssignmentEntity": {
+      "CollectionModelComplianceJobEntity": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "complianceRuleParameterAssignmentEntities": {
+              "complianceJobEntities": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/EntityModelComplianceRuleParameterAssignmentEntity"
+                  "$ref": "#/components/schemas/ComplianceJobEntityResponse"
                 }
               }
             }
@@ -8800,76 +7797,71 @@
           }
         }
       },
-      "EntityModelComplianceRuleParameterEntity": {
-        "required": [
-          "name",
-          "type"
-        ],
+      "CollectionModelEntityModelModelEnhancementStrategyEntity": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "INT",
-              "DECIMAL",
-              "STRING",
-              "BOOLEAN"
-            ]
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "modelEnhancementStrategyEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelModelEnhancementStrategyEntity"
+                }
+              }
+            }
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
           }
         }
       },
-      "EntityModelComplianceIssueEntity": {
+      "CollectionModelEntityModelTriggerEntity": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "triggerEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelTriggerEntity"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelTriggerEntity": {
         "required": [
-          "type"
+          "isDeleted"
         ],
         "type": "object",
         "properties": {
           "description": {
             "type": "string"
           },
-          "type": {
-            "type": "string"
+          "isDeleted": {
+            "type": "boolean"
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
           }
         }
       },
-      "CollectionModelEntityModelComplianceIssueEntity": {
+      "CollectionModelEntityModelComplianceRuleEntity": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "complianceIssueEntities": {
+              "complianceRuleEntities": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/EntityModelComplianceIssueEntity"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelIssuePropertyEntity": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "kVEntities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/IssuePropertyEntityResponse"
+                  "$ref": "#/components/schemas/EntityModelComplianceRuleEntity"
                 }
               }
             }
@@ -8898,25 +7890,6 @@
           },
           "isDeleted": {
             "type": "boolean"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelEntityModelComplianceRuleEntity": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "complianceRuleEntities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelComplianceRuleEntity"
-                }
-              }
-            }
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -8952,6 +7925,46 @@
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/EntityModelComplianceJobEntity"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelComplianceJobEntity": {
+        "required": [
+          "modelCheckingPluginId",
+          "modelFixingPluginId"
+        ],
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "modelCheckingPluginId": {
+            "type": "string"
+          },
+          "modelFixingPluginId": {
+            "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelComplianceRuleParameterAssignmentEntity": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "complianceRuleParameterAssignmentEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ComplianceRuleParameterAssignmentEntityResponse"
                 }
               }
             }
@@ -8999,7 +8012,7 @@
           }
         }
       },
-      "CollectionModelComplianceRuleParameterAssignmentEntity": {
+      "CollectionModelEntityModelComplianceRuleParameterAssignmentEntity": {
         "type": "object",
         "properties": {
           "_embedded": {
@@ -9008,7 +8021,7 @@
               "complianceRuleParameterAssignmentEntities": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/ComplianceRuleParameterAssignmentEntityResponse"
+                  "$ref": "#/components/schemas/EntityModelComplianceRuleParameterAssignmentEntity"
                 }
               }
             }
@@ -9018,16 +8031,48 @@
           }
         }
       },
-      "CollectionModelEntityModelComplianceRuleParameterEntity": {
+      "EntityModelComplianceRuleParameterAssignmentEntity": {
+        "type": "object",
+        "properties": {
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelComplianceRuleParameterEntity": {
+        "required": [
+          "name",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "INT",
+              "DECIMAL",
+              "STRING",
+              "BOOLEAN"
+            ]
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelExecutionEntity": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "complianceRuleParameterEntities": {
+              "executionEntities": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/EntityModelComplianceRuleParameterEntity"
+                  "$ref": "#/components/schemas/EntityModelExecutionEntity"
                 }
               }
             }
@@ -9037,16 +8082,107 @@
           }
         }
       },
-      "CollectionModelEntityModelModelEnhancementStrategyEntity": {
+      "CollectionModelComplianceIssueEntity": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "modelEnhancementStrategyEntities": {
+              "complianceIssueEntities": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/EntityModelModelEnhancementStrategyEntity"
+                  "$ref": "#/components/schemas/ComplianceIssueEntityResponse"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelIssueFixingReportEntity": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "issueFixingReportEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelIssueFixingReportEntity"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelIssueFixingReportEntity": {
+        "required": [
+          "isSuccessful"
+        ],
+        "type": "object",
+        "properties": {
+          "isSuccessful": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelKVEntity": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "kVEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelKVEntity"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelKVEntity": {
+        "required": [
+          "key"
+        ],
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelPluginConfigurationEntity": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "pluginConfigurationEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelPluginConfigurationEntity"
                 }
               }
             }
@@ -9078,16 +8214,16 @@
           }
         }
       },
-      "CollectionModelEntityModelPluginConfigurationEntity": {
+      "CollectionModelEntityModelComplianceRuleParameterEntity": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "pluginConfigurationEntities": {
+              "complianceRuleParameterEntities": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/EntityModelPluginConfigurationEntity"
+                  "$ref": "#/components/schemas/EntityModelComplianceRuleParameterEntity"
                 }
               }
             }
@@ -9097,36 +8233,155 @@
           }
         }
       },
-      "ComplianceIssueEntityRequestBody": {
+      "ComplianceIssueEntityResponse": {
         "required": [
           "type"
         ],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "execution": {
-            "type": "string"
-          },
-          "fixingReports": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "properties": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "description": {
             "type": "string"
           },
           "type": {
             "type": "string"
+          }
+        }
+      },
+      "ComplianceJobEntityResponse": {
+        "required": [
+          "modelCheckingPluginId",
+          "modelFixingPluginId"
+        ],
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "modelCheckingPluginId": {
+            "type": "string"
+          },
+          "modelFixingPluginId": {
+            "type": "string"
+          }
+        }
+      },
+      "ComplianceRuleParameterAssignmentEntityResponse": {
+        "type": "object",
+        "properties": {}
+      },
+      "ComplianceRuleParameterEntityResponse": {
+        "required": [
+          "name",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "INT",
+              "DECIMAL",
+              "STRING",
+              "BOOLEAN"
+            ]
+          }
+        }
+      },
+      "ExecutionEntityResponse": {
+        "required": [
+          "currentStep",
+          "startTime",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "currentStep": {
+            "type": "string",
+            "enum": [
+              "START",
+              "CHECKING",
+              "FIXING",
+              "END"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "CREATED",
+              "STARTED",
+              "SUCCESS",
+              "EXCEPTION"
+            ]
+          },
+          "violationsDetected": {
+            "type": "boolean"
+          }
+        }
+      },
+      "IssueFixingReportEntityResponse": {
+        "required": [
+          "isSuccessful"
+        ],
+        "type": "object",
+        "properties": {
+          "isSuccessful": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "IssuePropertyEntityResponse": {
+        "required": [
+          "key"
+        ],
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "ProductionSystemPropertyResponse": {
+        "required": [
+          "key"
+        ],
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "TriggerEntityResponse": {
+        "required": [
+          "isDeleted"
+        ],
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "isDeleted": {
+            "type": "boolean"
           }
         }
       },
@@ -9260,58 +8515,6 @@
           }
         }
       },
-      "ExecutionEntityRequestBody": {
-        "required": [
-          "currentStep",
-          "startTime",
-          "status"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "startTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "endTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "currentStep": {
-            "type": "string",
-            "enum": [
-              "START",
-              "CHECKING",
-              "FIXING",
-              "END"
-            ]
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "CREATED",
-              "STARTED",
-              "SUCCESS",
-              "EXCEPTION"
-            ]
-          },
-          "violationsDetected": {
-            "type": "boolean"
-          },
-          "complianceJob": {
-            "type": "string"
-          },
-          "complianceIssueEntities": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "ModelEnhancementStrategyEntityRequestBody": {
         "type": "object",
         "properties": {
@@ -9389,144 +8592,6 @@
             "items": {
               "type": "string"
             }
-          }
-        }
-      },
-      "ComplianceIssueEntityResponse": {
-        "required": [
-          "type"
-        ],
-        "type": "object",
-        "properties": {
-          "description": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          }
-        }
-      },
-      "ComplianceJobEntityResponse": {
-        "required": [
-          "modelCheckingPluginId",
-          "modelFixingPluginId"
-        ],
-        "type": "object",
-        "properties": {
-          "description": {
-            "type": "string"
-          },
-          "modelCheckingPluginId": {
-            "type": "string"
-          },
-          "modelFixingPluginId": {
-            "type": "string"
-          }
-        }
-      },
-      "ComplianceRuleParameterAssignmentEntityResponse": {
-        "type": "object",
-        "properties": {}
-      },
-      "ComplianceRuleParameterEntityResponse": {
-        "required": [
-          "name",
-          "type"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "INT",
-              "DECIMAL",
-              "STRING",
-              "BOOLEAN"
-            ]
-          }
-        }
-      },
-      "ExecutionEntityResponse": {
-        "required": [
-          "currentStep",
-          "startTime",
-          "status"
-        ],
-        "type": "object",
-        "properties": {
-          "startTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "endTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "currentStep": {
-            "type": "string",
-            "enum": [
-              "START",
-              "CHECKING",
-              "FIXING",
-              "END"
-            ]
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "CREATED",
-              "STARTED",
-              "SUCCESS",
-              "EXCEPTION"
-            ]
-          },
-          "violationsDetected": {
-            "type": "boolean"
-          }
-        }
-      },
-      "IssuePropertyEntityResponse": {
-        "required": [
-          "key"
-        ],
-        "type": "object",
-        "properties": {
-          "key": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string"
-          }
-        }
-      },
-      "ProductionSystemPropertyResponse": {
-        "required": [
-          "key"
-        ],
-        "type": "object",
-        "properties": {
-          "key": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string"
-          }
-        }
-      },
-      "TriggerEntityResponse": {
-        "required": [
-          "isDeleted"
-        ],
-        "type": "object",
-        "properties": {
-          "description": {
-            "type": "string"
-          },
-          "isDeleted": {
-            "type": "boolean"
           }
         }
       },
