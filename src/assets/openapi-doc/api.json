@@ -280,7 +280,7 @@
         "tags": [
           "compliance-issue"
         ],
-        "description": "get-issuepropertyentity-by-complianceissueentity-Id",
+        "description": "get-kventity-by-complianceissueentity-Id",
         "operationId": "followPropertyReference-complianceissueentity-get_3_1",
         "parameters": [
           {
@@ -298,7 +298,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelIssuePropertyEntity"
+                  "$ref": "#/components/schemas/CollectionModelKVEntity"
                 }
               },
               "text/uri-list": {
@@ -319,7 +319,7 @@
         "tags": [
           "compliance-issue"
         ],
-        "description": "get-issuepropertyentity-by-complianceissueentity-Id",
+        "description": "get-kventity-by-complianceissueentity-Id",
         "operationId": "followPropertyReference-complianceissueentity-get_3",
         "parameters": [
           {
@@ -345,7 +345,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelIssuePropertyEntity"
+                  "$ref": "#/components/schemas/CollectionModelKVEntity"
                 }
               }
             }
@@ -4121,6 +4121,8 @@
                 "START",
                 "CHECKING",
                 "FIXING",
+                "VALIDATION",
+                "REPORTING",
                 "END"
               ]
             }
@@ -4796,6 +4798,765 @@
           },
           "204": {
             "description": "No Content"
+          }
+        }
+      }
+    },
+    "/key-values/{id}/complianceIssue": {
+      "get": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "get-complianceissueentity-by-kventity-Id",
+        "operationId": "followPropertyReference-kventity-get_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelComplianceIssueEntity"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "update-complianceissueentity-by-kventity-Id",
+        "operationId": "createPropertyReference-kventity-put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelComplianceIssueEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelComplianceIssueEntity"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "delete-complianceissueentity-by-kventity-Id",
+        "operationId": "deletePropertyReference-kventity-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "patch-complianceissueentity-by-kventity-Id",
+        "operationId": "createPropertyReference-kventity-patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelComplianceIssueEntity"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/key-values/{id}/complianceIssue/{propertyId}": {
+      "get": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "get-complianceissueentity-by-kventity-Id",
+        "operationId": "followPropertyReference-kventity-get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "propertyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelComplianceIssueEntity"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "delete-complianceissueentity-by-kventity-Id",
+        "operationId": "deletePropertyReferenceId-kventity-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "propertyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/key-values/{id}/pluginConfiguration": {
+      "get": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "get-pluginconfigurationentity-by-kventity-Id",
+        "operationId": "followPropertyReference-kventity-get_2_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelPluginConfigurationEntity"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "update-pluginconfigurationentity-by-kventity-Id",
+        "operationId": "createPropertyReference-kventity-put_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelPluginConfigurationEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelPluginConfigurationEntity"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "delete-pluginconfigurationentity-by-kventity-Id",
+        "operationId": "deletePropertyReference-kventity-delete_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "patch-pluginconfigurationentity-by-kventity-Id",
+        "operationId": "createPropertyReference-kventity-patch_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelPluginConfigurationEntity"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/key-values/{id}/pluginConfiguration/{propertyId}": {
+      "get": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "get-pluginconfigurationentity-by-kventity-Id",
+        "operationId": "followPropertyReference-kventity-get_2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "propertyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelPluginConfigurationEntity"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "delete-pluginconfigurationentity-by-kventity-Id",
+        "operationId": "deletePropertyReferenceId-kventity-delete_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "propertyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/key-values/{id}/productionSystem": {
+      "get": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "get-productionsystementity-by-kventity-Id",
+        "operationId": "followPropertyReference-kventity-get_3_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelProductionSystemEntity"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "update-productionsystementity-by-kventity-Id",
+        "operationId": "createPropertyReference-kventity-put_2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelProductionSystemEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelProductionSystemEntity"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "delete-productionsystementity-by-kventity-Id",
+        "operationId": "deletePropertyReference-kventity-delete_2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "patch-productionsystementity-by-kventity-Id",
+        "operationId": "createPropertyReference-kventity-patch_2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelProductionSystemEntity"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/key-values/{id}/productionSystem/{propertyId}": {
+      "get": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "get-productionsystementity-by-kventity-Id",
+        "operationId": "followPropertyReference-kventity-get_3",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "propertyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelProductionSystemEntity"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "key-value"
+        ],
+        "description": "delete-productionsystementity-by-kventity-Id",
+        "operationId": "deletePropertyReferenceId-kventity-delete_2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "propertyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -6014,7 +6775,7 @@
         "tags": [
           "production-system"
         ],
-        "description": "get-productionsystemproperty-by-productionsystementity-Id",
+        "description": "get-kventity-by-productionsystementity-Id",
         "operationId": "followPropertyReference-productionsystementity-get_3_1",
         "parameters": [
           {
@@ -6032,7 +6793,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelProductionSystemProperty"
+                  "$ref": "#/components/schemas/CollectionModelKVEntity"
                 }
               },
               "text/uri-list": {
@@ -6051,7 +6812,7 @@
         "tags": [
           "production-system"
         ],
-        "description": "update-productionsystemproperty-by-productionsystementity-Id",
+        "description": "update-kventity-by-productionsystementity-Id",
         "operationId": "createPropertyReference-productionsystementity-put_2",
         "parameters": [
           {
@@ -6089,7 +6850,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelProductionSystemProperty"
+                  "$ref": "#/components/schemas/CollectionModelKVEntity"
                 }
               }
             }
@@ -6099,7 +6860,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelProductionSystemProperty"
+                  "$ref": "#/components/schemas/CollectionModelKVEntity"
                 }
               }
             }
@@ -6113,7 +6874,7 @@
         "tags": [
           "production-system"
         ],
-        "description": "delete-productionsystemproperty-by-productionsystementity-Id",
+        "description": "delete-kventity-by-productionsystementity-Id",
         "operationId": "deletePropertyReference-productionsystementity-delete_2",
         "parameters": [
           {
@@ -6138,7 +6899,7 @@
         "tags": [
           "production-system"
         ],
-        "description": "patch-productionsystemproperty-by-productionsystementity-Id",
+        "description": "patch-kventity-by-productionsystementity-Id",
         "operationId": "createPropertyReference-productionsystementity-patch_2",
         "parameters": [
           {
@@ -6176,7 +6937,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelProductionSystemProperty"
+                  "$ref": "#/components/schemas/CollectionModelKVEntity"
                 }
               }
             }
@@ -6192,7 +6953,7 @@
         "tags": [
           "production-system"
         ],
-        "description": "get-productionsystemproperty-by-productionsystementity-Id",
+        "description": "get-kventity-by-productionsystementity-Id",
         "operationId": "followPropertyReference-productionsystementity-get_3",
         "parameters": [
           {
@@ -6218,7 +6979,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelProductionSystemProperty"
+                  "$ref": "#/components/schemas/CollectionModelKVEntity"
                 }
               }
             }
@@ -6232,7 +6993,7 @@
         "tags": [
           "production-system"
         ],
-        "description": "delete-productionsystemproperty-by-productionsystementity-Id",
+        "description": "delete-kventity-by-productionsystementity-Id",
         "operationId": "deletePropertyReferenceId-productionsystementity-delete_2",
         "parameters": [
           {
@@ -7213,38 +7974,16 @@
           }
         }
       },
-      "EntityModelPluginConfigurationEntity": {
-        "required": [
-          "key",
-          "pluginIdentifier",
-          "value"
-        ],
-        "type": "object",
-        "properties": {
-          "pluginIdentifier": {
-            "type": "string"
-          },
-          "key": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelEntityModelPluginConfigurationEntity": {
+      "CollectionModelEntityModelExecutionEntity": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "pluginConfigurationEntities": {
+              "executionEntities": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/EntityModelPluginConfigurationEntity"
+                  "$ref": "#/components/schemas/EntityModelExecutionEntity"
                 }
               }
             }
@@ -7276,7 +8015,7 @@
           "properties": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/IssuePropertyEntity"
+              "$ref": "#/components/schemas/KVEntity"
             }
           },
           "description": {
@@ -7403,13 +8142,6 @@
               "BOOLEAN"
             ]
           },
-          "doubleValue": {
-            "type": "number",
-            "format": "double"
-          },
-          "booleanValue": {
-            "type": "boolean"
-          },
           "integerValue": {
             "type": "integer",
             "format": "int32"
@@ -7419,6 +8151,13 @@
             "items": {
               "type": "string"
             }
+          },
+          "doubleValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "booleanValue": {
+            "type": "boolean"
           }
         }
       },
@@ -7451,13 +8190,43 @@
           }
         }
       },
-      "EntityModelIssueFixingReportEntity": {
+      "EntityModelExecutionEntity": {
         "required": [
-          "isSuccessful"
+          "currentStep",
+          "startTime",
+          "status"
         ],
         "type": "object",
         "properties": {
-          "isSuccessful": {
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "currentStep": {
+            "type": "string",
+            "enum": [
+              "START",
+              "CHECKING",
+              "FIXING",
+              "VALIDATION",
+              "REPORTING",
+              "END"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "CREATED",
+              "STARTED",
+              "SUCCESS",
+              "EXCEPTION"
+            ]
+          },
+          "violationsDetected": {
             "type": "boolean"
           },
           "description": {
@@ -7494,6 +8263,8 @@
               "START",
               "CHECKING",
               "FIXING",
+              "VALIDATION",
+              "REPORTING",
               "END"
             ]
           },
@@ -7508,6 +8279,9 @@
           },
           "violationsDetected": {
             "type": "boolean"
+          },
+          "description": {
+            "type": "string"
           },
           "complianceJob": {
             "$ref": "#/components/schemas/ComplianceJobEntity"
@@ -7541,7 +8315,7 @@
           }
         }
       },
-      "IssuePropertyEntity": {
+      "KVEntity": {
         "required": [
           "key"
         ],
@@ -7556,6 +8330,12 @@
           },
           "value": {
             "type": "string"
+          },
+          "pluginConfiguration": {
+            "$ref": "#/components/schemas/PluginConfigurationEntity"
+          },
+          "productionSystem": {
+            "$ref": "#/components/schemas/ProductionSystemEntity"
           },
           "complianceIssue": {
             "$ref": "#/components/schemas/ComplianceIssueEntity"
@@ -7574,6 +8354,29 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "PluginConfigurationEntity": {
+        "required": [
+          "key",
+          "pluginIdentifier",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pluginIdentifier": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
           }
         }
       },
@@ -7601,7 +8404,7 @@
           "properties": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ProductionSystemProperty"
+              "$ref": "#/components/schemas/KVEntity"
             }
           },
           "complianceJobs": {
@@ -7615,27 +8418,6 @@
           },
           "modelEnhancementStrategy": {
             "$ref": "#/components/schemas/ModelEnhancementStrategyEntity"
-          }
-        }
-      },
-      "ProductionSystemProperty": {
-        "required": [
-          "key"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "key": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string"
-          },
-          "productionSystem": {
-            "$ref": "#/components/schemas/ProductionSystemEntity"
           }
         }
       },
@@ -7666,16 +8448,56 @@
           }
         }
       },
-      "CollectionModelEntityModelIssueFixingReportEntity": {
+      "EntityModelComplianceJobEntity": {
+        "required": [
+          "modelCheckingPluginId",
+          "modelFixingPluginId"
+        ],
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "modelCheckingPluginId": {
+            "type": "string"
+          },
+          "modelFixingPluginId": {
+            "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelComplianceIssueEntity": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "issueFixingReportEntities": {
+              "complianceIssueEntities": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/EntityModelIssueFixingReportEntity"
+                  "$ref": "#/components/schemas/ComplianceIssueEntityResponse"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelComplianceIssueEntity": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "complianceIssueEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelComplianceIssueEntity"
                 }
               }
             }
@@ -7702,24 +8524,7 @@
           }
         }
       },
-      "EntityModelKVEntity": {
-        "required": [
-          "key"
-        ],
-        "type": "object",
-        "properties": {
-          "key": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelEntityModelKVEntity": {
+      "CollectionModelKVEntity": {
         "type": "object",
         "properties": {
           "_embedded": {
@@ -7728,7 +8533,26 @@
               "kVEntities": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/EntityModelKVEntity"
+                  "$ref": "#/components/schemas/KVEntityResponse"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelIssueFixingReportEntity": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "issueFixingReportEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/IssueFixingReportEntityResponse"
                 }
               }
             }
@@ -7782,16 +8606,16 @@
           }
         }
       },
-      "CollectionModelComplianceRuleParameterEntity": {
+      "CollectionModelComplianceJobEntity": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "complianceRuleParameterEntities": {
+              "complianceJobEntities": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/ComplianceRuleParameterEntityResponse"
+                  "$ref": "#/components/schemas/ComplianceJobEntityResponse"
                 }
               }
             }
@@ -7820,16 +8644,60 @@
           }
         }
       },
-      "CollectionModelComplianceJobEntity": {
+      "CollectionModelComplianceRuleParameterEntity": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "complianceJobEntities": {
+              "complianceRuleParameterEntities": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/ComplianceJobEntityResponse"
+                  "$ref": "#/components/schemas/ComplianceRuleParameterEntityResponse"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelProductionSystemEntity": {
+        "required": [
+          "iacTechnologyName",
+          "isDeleted",
+          "modelCreationPluginId"
+        ],
+        "type": "object",
+        "properties": {
+          "isDeleted": {
+            "type": "boolean"
+          },
+          "iacTechnologyName": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "modelCreationPluginId": {
+            "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelProductionSystemEntity": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "productionSystemEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelProductionSystemEntity"
                 }
               }
             }
@@ -7853,250 +8721,24 @@
           }
         }
       },
-      "CollectionModelEntityModelModelEnhancementStrategyEntity": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "modelEnhancementStrategyEntities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelModelEnhancementStrategyEntity"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "EntityModelExecutionEntity": {
+      "EntityModelKVEntity": {
         "required": [
-          "currentStep",
-          "startTime",
-          "status"
+          "key"
         ],
         "type": "object",
         "properties": {
-          "startTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "endTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "currentStep": {
-            "type": "string",
-            "enum": [
-              "START",
-              "CHECKING",
-              "FIXING",
-              "END"
-            ]
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "CREATED",
-              "STARTED",
-              "SUCCESS",
-              "EXCEPTION"
-            ]
-          },
-          "violationsDetected": {
-            "type": "boolean"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelEntityModelExecutionEntity": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "executionEntities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelExecutionEntity"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelComplianceIssueEntity": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "complianceIssueEntities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ComplianceIssueEntityResponse"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "EntityModelComplianceJobEntity": {
-        "required": [
-          "modelCheckingPluginId",
-          "modelFixingPluginId"
-        ],
-        "type": "object",
-        "properties": {
-          "description": {
+          "key": {
             "type": "string"
           },
-          "modelCheckingPluginId": {
-            "type": "string"
-          },
-          "modelFixingPluginId": {
-            "type": "string"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "EntityModelComplianceRuleParameterAssignmentEntity": {
-        "type": "object",
-        "properties": {
           "value": {
             "type": "string"
           },
-          "name": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "INT",
-              "DECIMAL",
-              "STRING",
-              "STRING_LIST",
-              "BOOLEAN"
-            ]
-          },
-          "doubleValue": {
-            "type": "number",
-            "format": "double"
-          },
-          "booleanValue": {
-            "type": "boolean"
-          },
-          "integerValue": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "stringListValue": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "_links": {
             "$ref": "#/components/schemas/Links"
           }
         }
       },
-      "CollectionModelEntityModelComplianceRuleParameterAssignmentEntity": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "complianceRuleParameterAssignmentEntities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelComplianceRuleParameterAssignmentEntity"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "EntityModelComplianceRuleParameterEntity": {
-        "required": [
-          "name",
-          "type"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "INT",
-              "DECIMAL",
-              "STRING",
-              "STRING_LIST",
-              "BOOLEAN"
-            ]
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelEntityModelComplianceIssueEntity": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "complianceIssueEntities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelComplianceIssueEntity"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelIssueFixingReportEntity": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "issueFixingReportEntities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/IssueFixingReportEntityResponse"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelIssuePropertyEntity": {
+      "CollectionModelEntityModelKVEntity": {
         "type": "object",
         "properties": {
           "_embedded": {
@@ -8105,7 +8747,141 @@
               "kVEntities": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/IssuePropertyEntityResponse"
+                  "$ref": "#/components/schemas/EntityModelKVEntity"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelPluginConfigurationEntity": {
+        "required": [
+          "key",
+          "pluginIdentifier",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "pluginIdentifier": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelIssueFixingReportEntity": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "issueFixingReportEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelIssueFixingReportEntity"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelIssueFixingReportEntity": {
+        "required": [
+          "isSuccessful"
+        ],
+        "type": "object",
+        "properties": {
+          "isSuccessful": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelComplianceJobEntity": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "complianceJobEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelComplianceJobEntity"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelComplianceRuleParameterAssignmentEntity": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "complianceRuleParameterAssignmentEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ComplianceRuleParameterAssignmentEntityResponse"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelExecutionEntity": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "executionEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ExecutionEntityResponse"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelTriggerEntity": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "triggerEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TriggerEntityResponse"
                 }
               }
             }
@@ -8154,139 +8930,25 @@
           }
         }
       },
-      "CollectionModelEntityModelComplianceJobEntity": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "complianceJobEntities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelComplianceJobEntity"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelExecutionEntity": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "executionEntities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ExecutionEntityResponse"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelTriggerEntity": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "triggerEntities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/TriggerEntityResponse"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "EntityModelProductionSystemEntity": {
+      "EntityModelComplianceRuleParameterEntity": {
         "required": [
-          "iacTechnologyName",
-          "isDeleted",
-          "modelCreationPluginId"
+          "name",
+          "type"
         ],
         "type": "object",
         "properties": {
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "iacTechnologyName": {
+          "name": {
             "type": "string"
           },
-          "description": {
-            "type": "string"
-          },
-          "modelCreationPluginId": {
-            "type": "string"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelComplianceRuleParameterAssignmentEntity": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "complianceRuleParameterAssignmentEntities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ComplianceRuleParameterAssignmentEntityResponse"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelEntityModelProductionSystemEntity": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "productionSystemEntities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelProductionSystemEntity"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelProductionSystemProperty": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "kVEntities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ProductionSystemPropertyResponse"
-                }
-              }
-            }
+          "type": {
+            "type": "string",
+            "enum": [
+              "INT",
+              "DECIMAL",
+              "STRING",
+              "STRING_LIST",
+              "BOOLEAN"
+            ]
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -8303,6 +8965,104 @@
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/EntityModelComplianceRuleParameterEntity"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelPluginConfigurationEntity": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "pluginConfigurationEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelPluginConfigurationEntity"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelModelEnhancementStrategyEntity": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "modelEnhancementStrategyEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelModelEnhancementStrategyEntity"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelComplianceRuleParameterAssignmentEntity": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "INT",
+              "DECIMAL",
+              "STRING",
+              "STRING_LIST",
+              "BOOLEAN"
+            ]
+          },
+          "integerValue": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "stringListValue": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "doubleValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "booleanValue": {
+            "type": "boolean"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelComplianceRuleParameterAssignmentEntity": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "complianceRuleParameterAssignmentEntities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelComplianceRuleParameterAssignmentEntity"
                 }
               }
             }
@@ -8363,13 +9123,6 @@
               "BOOLEAN"
             ]
           },
-          "doubleValue": {
-            "type": "number",
-            "format": "double"
-          },
-          "booleanValue": {
-            "type": "boolean"
-          },
           "integerValue": {
             "type": "integer",
             "format": "int32"
@@ -8379,6 +9132,13 @@
             "items": {
               "type": "string"
             }
+          },
+          "doubleValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "booleanValue": {
+            "type": "boolean"
           }
         }
       },
@@ -8426,6 +9186,8 @@
               "START",
               "CHECKING",
               "FIXING",
+              "VALIDATION",
+              "REPORTING",
               "END"
             ]
           },
@@ -8440,6 +9202,9 @@
           },
           "violationsDetected": {
             "type": "boolean"
+          },
+          "description": {
+            "type": "string"
           }
         }
       },
@@ -8457,21 +9222,7 @@
           }
         }
       },
-      "IssuePropertyEntityResponse": {
-        "required": [
-          "key"
-        ],
-        "type": "object",
-        "properties": {
-          "key": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string"
-          }
-        }
-      },
-      "ProductionSystemPropertyResponse": {
+      "KVEntityResponse": {
         "required": [
           "key"
         ],
@@ -8618,13 +9369,6 @@
               "BOOLEAN"
             ]
           },
-          "doubleValue": {
-            "type": "number",
-            "format": "double"
-          },
-          "booleanValue": {
-            "type": "boolean"
-          },
           "integerValue": {
             "type": "integer",
             "format": "int32"
@@ -8634,6 +9378,13 @@
             "items": {
               "type": "string"
             }
+          },
+          "doubleValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "booleanValue": {
+            "type": "boolean"
           }
         }
       },
@@ -8666,6 +9417,33 @@
           }
         }
       },
+      "KVEntityRequestBody": {
+        "required": [
+          "key"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "pluginConfiguration": {
+            "type": "string"
+          },
+          "productionSystem": {
+            "type": "string"
+          },
+          "complianceIssue": {
+            "type": "string"
+          }
+        }
+      },
       "ModelEnhancementStrategyEntityRequestBody": {
         "type": "object",
         "properties": {
@@ -8678,6 +9456,29 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "PluginConfigurationEntityRequestBody": {
+        "required": [
+          "key",
+          "pluginIdentifier",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pluginIdentifier": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
           }
         }
       },
@@ -8746,47 +9547,6 @@
             "items": {
               "type": "string"
             }
-          }
-        }
-      },
-      "KVEntityRequestBody": {
-        "required": [
-          "key"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "key": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string"
-          }
-        }
-      },
-      "PluginConfigurationEntityRequestBody": {
-        "required": [
-          "key",
-          "pluginIdentifier",
-          "value"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "pluginIdentifier": {
-            "type": "string"
-          },
-          "key": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string"
           }
         }
       },
