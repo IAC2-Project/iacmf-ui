@@ -3,7 +3,7 @@ import { catchError, map } from 'rxjs/operators';
 
 import { Subscription } from 'rxjs';
 import { ErrorHandler } from '../utils/ErrorHandler';
-import { TriggerEntityEntityControllerService, CollectionModelEntityModelTriggerEntity,  EntityModelTriggerEntity} from 'iacmf-api';
+import { CollectionModelEntityModelTriggerEntity, TriggerEntity, TriggerService} from 'iacmf-api';
 
 @Component({
   selector: 'app-triggers',
@@ -12,20 +12,20 @@ import { TriggerEntityEntityControllerService, CollectionModelEntityModelTrigger
 })
 export class TriggersComponent {
 
-  triggers: any[] | undefined = [];
+  triggers: TriggerEntity[] | undefined = [];
   subscriptions: Subscription[] = [];
 
-  constructor(private service: TriggerEntityEntityControllerService) {
+  constructor(private service: TriggerService) {
     console.info("I am here");
+    // @ts-ignore
     this.subscriptions.push(this.service.getCollectionResourceTriggerentityGet1("body", false)
       .pipe(
+        // @ts-ignore
         catchError(error => ErrorHandler.handleError(error))
       )
       .subscribe((collection: CollectionModelEntityModelTriggerEntity) => {
         console.info(collection);
         this.triggers = collection._embedded?.triggerEntities;
-        console.info(this.triggers?.length);
-        this.triggers?.forEach(t => console.info(t));
       }));
   }
 

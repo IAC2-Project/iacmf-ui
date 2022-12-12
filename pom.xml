@@ -54,6 +54,7 @@
               <configOptions>
                 <npmName>iacmf-api</npmName>
                 <ngVersion>14.0.5</ngVersion>
+                <disallowAdditionalPropertiesIfNotPresent>false</disallowAdditionalPropertiesIfNotPresent>
               </configOptions>
             </configuration>
           </execution>
