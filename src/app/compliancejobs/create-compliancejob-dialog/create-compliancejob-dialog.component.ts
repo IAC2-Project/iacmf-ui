@@ -11,13 +11,14 @@ export class CreateCompliancejobDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
+
+  constructor(private _formBuilder: FormBuilder) {}
+
   firstFormGroup = this._formBuilder.group({
     firstCtrl: ['', Validators.required],
   });
   secondFormGroup = this._formBuilder.group({
     secondCtrl: ['', Validators.required],
   });
-
-  constructor(private _formBuilder: FormBuilder) {}
-
 }

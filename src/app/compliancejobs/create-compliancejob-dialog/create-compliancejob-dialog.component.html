@@ -1,30 +1,33 @@
 <h1 mat-dialog-title>Create Compliance Job</h1>
 <div mat-dialog-content>
+  <!--<mat-form-field>
+    <mat-label>Production System</mat-label>
+    <select matNativeControl required>
+      <option value="1">ProductionSystem1</option>
+      <option value="2">ProductionSystem2</option>
+      <option value="3">ProductionSystem3</option>
+      <option value="4">ProductionSystem4</option>
+    </select>
+  </mat-form-field>-->
+
   <mat-stepper  #stepper>
-    <mat-step [stepControl]="firstFormGroup">
-      <form [formGroup]="firstFormGroup">
-        <ng-template matStepLabel>Fill out your name</ng-template>
-        <mat-form-field appearance="fill">
-          <mat-label>Name</mat-label>
-          <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
-        </mat-form-field>
-        <div>
-          <button mat-button matStepperNext>Next</button>
-        </div>
-      </form>
+    <mat-step label="Refinement">
+
     </mat-step>
-    <mat-step [stepControl]="secondFormGroup" label="Fill out your address">
-      <form [formGroup]="secondFormGroup">
-        <mat-form-field appearance="fill">
-          <mat-label>Address</mat-label>
-          <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY"
-                 required>
-        </mat-form-field>
-        <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
-        </div>
-      </form>
+    <mat-step  label="Compliance Rules">
+
+    </mat-step>
+    <mat-step  label="Compliance Issue">
+
+    </mat-step>
+    <mat-step  label="Validation">
+
+    </mat-step>
+    <mat-step  label="Reporting">
+
+    </mat-step>
+    <mat-step  label="Execution">
+
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Done</ng-template>
