@@ -1,6 +1,13 @@
 <h1>IACMF</h1>
-<nav>
-  <a routerLink="/production-systems">Production Systems</a>
-  <a routerLink="/triggers">Triggers</a>
-</nav>
-<router-outlet></router-outlet>
+
+<mat-tab-group>
+  <mat-tab label="Production Systems">
+    <app-production-systems></app-production-systems>
+  </mat-tab>
+  <mat-tab label="Triggers">
+    <a routerLink="/triggers">Triggers</a>
+  </mat-tab>
+  <mat-tab label="Compliance Jobs">
+    <app-compliancejobs></app-compliancejobs>
+  </mat-tab>
+</mat-tab-group>

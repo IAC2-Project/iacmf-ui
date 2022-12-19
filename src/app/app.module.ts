@@ -14,24 +14,45 @@ import { MatButtonModule } from '@angular/material/button';
 import { LayoutModule } from '@angular/cdk/layout';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiModule } from 'iacmf-api';
+import { MatTabsModule } from "@angular/material/tabs";
+import { MatExpansionModule} from "@angular/material/expansion";
+import { MatTableModule } from "@angular/material/table";
+import { MatDialogModule } from "@angular/material/dialog";
+import { CreateProductionSystemDialogComponent } from './production-systems/create-production-system-dialog/create-production-system-dialog.component';
+import { CompliancejobsComponent } from './compliancejobs/compliancejobs.component';
+import { CreateCompliancejobDialogComponent } from './compliancejobs/create-compliancejob-dialog/create-compliancejob-dialog.component';
+import { MatStepperModule } from "@angular/material/stepper";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import {FormGroup, ReactiveFormsModule} from "@angular/forms";
+
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductionSystemsComponent,
-    TriggersComponent
+    TriggersComponent,
+    CreateProductionSystemDialogComponent,
+    CompliancejobsComponent,
+    CreateCompliancejobDialogComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatExpansionModule,
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatTabsModule,
+    MatTableModule,
+    MatStepperModule,
     LayoutModule,
     ApiModule,
+    MatDialogModule,
     HttpClientModule
   ],
   providers: [
