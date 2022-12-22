@@ -1,10 +1,14 @@
 <mat-form-field class="example-chip-list" appearance="fill" style="width: 100%">
   <mat-label>Select Refinement Plugins</mat-label>
-  <mat-chip-list #chipList aria-label="Refinment Plugin Selection">
+  <mat-chip-list #chipList aria-label="Refinment Plugin Selection" style="height: 100%">
     <mat-chip
       *ngFor="let refinementPlugin of addedRefinementPlugins"
       (removed)="remove(refinementPlugin)">
+
       {{refinementPlugin.id}}
+      <button mat-button color="basic" (click)="openConfigureRefinementPluginDialog(refinementPlugin,'0ms', '0ms')">
+        <mat-icon>settings</mat-icon>
+      </button>
       <button matChipRemove>
         <mat-icon>cancel</mat-icon>
       </button>

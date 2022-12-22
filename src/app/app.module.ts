@@ -32,6 +32,7 @@ import {ComplianceIssuesComponent} from "./compliance-issues/compliance-issues.c
 import {ValidationPluginsComponent} from "./validation-plugins/validation-plugins.component";
 import {ReportingPluginsComponent} from "./reporting-plugins/reporting-plugins.component";
 import {ComplianceRulesComponent} from "./compliance-rules/compliance-rules.component";
+import { ConfigureRefinementPluginComponent } from './refinement-plugins/configure-refinement-plugin/configure-refinement-plugin.component';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import {ComplianceRulesComponent} from "./compliance-rules/compliance-rules.comp
     ComplianceIssuesComponent,
     ValidationPluginsComponent,
     ReportingPluginsComponent,
-    ComplianceRulesComponent
+    ComplianceRulesComponent,
+    ConfigureRefinementPluginComponent
   ],
   imports: [
     BrowserModule,

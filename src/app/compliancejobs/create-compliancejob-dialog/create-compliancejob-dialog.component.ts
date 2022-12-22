@@ -11,8 +11,6 @@ export class CreateCompliancejobDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
-
   constructor(private _formBuilder: FormBuilder) {}
 
   firstFormGroup = this._formBuilder.group({

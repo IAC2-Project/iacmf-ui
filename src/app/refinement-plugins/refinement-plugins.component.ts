@@ -7,6 +7,9 @@ import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {map, startWith} from 'rxjs/operators';
 import {async} from "rxjs";
 import {KVEntity} from "../gen";
+import {CreateCompliancejobDialogComponent} from "../compliancejobs/create-compliancejob-dialog/create-compliancejob-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
+import {ConfigureRefinementPluginComponent} from "./configure-refinement-plugin/configure-refinement-plugin.component";
 
 export interface RefinementPluginDummy {
   id: string;
@@ -68,7 +71,7 @@ export class RefinementPluginsComponent implements OnInit {
 
   @ViewChild('refinementInput') refinemntInput: ElementRef<HTMLInputElement> | undefined;
 
-  constructor() {
+  constructor(public dialog: MatDialog) {
     this.filteredRefinedPlugins = this.refinementCtrl.valueChanges.pipe(
       startWith(null),
       map((refinementPlugin: string | null) => (refinementPlugin ? this._filter(refinementPlugin) : this.allRefinmentPlugins2.slice()))
@@ -116,4 +119,13 @@ export class RefinementPluginsComponent implements OnInit {
     return this.allRefinmentPlugins2.filter(refinementPlugin => refinementPlugin.id.toLowerCase().includes(filterValue));
   }
 
+  openConfigureRefinementPluginDialog(refinementPlugin: RefinementPluginDummy, enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(ConfigureRefinementPluginComponent, {
+      width: '80%',
+      height: '80%',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: refinementPlugin,
+    });
+  }
 }
