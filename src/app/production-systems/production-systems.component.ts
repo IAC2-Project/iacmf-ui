@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
-import {ProductionSystemEntity} from "../gen";
-import {ComplianceJobEntity, KVEntity} from "../gen";
+import {ComplianceJobEntity, KVEntity, ProductionSystemEntity} from "../gen";
 import {CreateProductionSystemDialogComponent} from "./create-production-system-dialog/create-production-system-dialog.component";
 
 // EXAMPLE DATA FOR THE UI MOCK

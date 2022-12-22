@@ -1,0 +1,26 @@
+<mat-form-field class="example-chip-list" appearance="fill" style="width: 100%">
+  <mat-label>Select reporting Plugins</mat-label>
+  <mat-chip-list #chipList aria-label="Refinment Plugin Selection">
+    <mat-chip
+      *ngFor="let reportingPlugin of addedReportingPlugins"
+      (removed)="remove(reportingPlugin)">
+      {{reportingPlugin.id}}
+      <button matChipRemove>
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip>
+    <input
+      placeholder="New Refinment Plugin..."
+      #reportingInput
+      [formControl]="reportingCtrl"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="add($event)">
+  </mat-chip-list>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    <mat-option *ngFor="let reportingPlugin of filteredReportingPlugins | async" [value]="reportingPlugin.id">
+      {{reportingPlugin.id}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

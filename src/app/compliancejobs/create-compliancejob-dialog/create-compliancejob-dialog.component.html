@@ -1,30 +1,24 @@
 <h1 mat-dialog-title>Create Compliance Job</h1>
 <div mat-dialog-content>
-  <!--<mat-form-field>
-    <mat-label>Production System</mat-label>
-    <select matNativeControl required>
-      <option value="1">ProductionSystem1</option>
-      <option value="2">ProductionSystem2</option>
-      <option value="3">ProductionSystem3</option>
-      <option value="4">ProductionSystem4</option>
-    </select>
-  </mat-form-field>-->
 
   <mat-stepper  #stepper>
+    <mat-step label="Production System">
+      <app-production-systems></app-production-systems>
+    </mat-step>
     <mat-step label="Refinement">
-
+      <app-refinement-plugins></app-refinement-plugins>
     </mat-step>
     <mat-step  label="Compliance Rules">
-
+      <app-compliance-rules></app-compliance-rules>
     </mat-step>
     <mat-step  label="Compliance Issue">
-
+      <app-compliance-issues></app-compliance-issues>
     </mat-step>
     <mat-step  label="Validation">
-
+      <app-validation-plugins></app-validation-plugins>
     </mat-step>
     <mat-step  label="Reporting">
-
+      <app-reporting-plugins></app-reporting-plugins>
     </mat-step>
     <mat-step  label="Execution">
 

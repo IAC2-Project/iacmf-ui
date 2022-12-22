@@ -1,0 +1,26 @@
+<mat-form-field class="example-chip-list" appearance="fill" style="width: 100%">
+  <mat-label>Select complianceRules Plugins</mat-label>
+  <mat-chip-list #chipList aria-label="Refinment Plugin Selection">
+    <mat-chip
+      *ngFor="let complianceRulesPlugin of addedcomplianceRulesPlugins"
+      (removed)="remove(complianceRulesPlugin)">
+      {{complianceRulesPlugin.id}}
+      <button matChipRemove>
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip>
+    <input
+      placeholder="New Refinment Plugin..."
+      #complianceRulesInput
+      [formControl]="complianceRulesCtrl"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="add($event)">
+  </mat-chip-list>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    <mat-option *ngFor="let complianceRulesPlugin of filteredcomplianceRulesPlugins | async" [value]="complianceRulesPlugin.id">
+      {{complianceRulesPlugin.id}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

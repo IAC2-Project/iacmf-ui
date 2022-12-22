@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CreateProductionSystemDialogComponent } from './create-production-system-dialog.component';
+import {CreateProductionSystemDialogComponent} from './create-production-system-dialog.component';
 
 describe('CreateProductionSystemDialogComponent', () => {
   let component: CreateProductionSystemDialogComponent;

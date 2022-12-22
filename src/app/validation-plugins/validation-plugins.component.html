@@ -1,0 +1,26 @@
+<mat-form-field class="example-chip-list" appearance="fill" style="width: 100%">
+  <mat-label>Select validation Plugins</mat-label>
+  <mat-chip-list #chipList aria-label="Validation Plugin Selection">
+    <mat-chip
+      *ngFor="let validationPlugin of addedValidationPlugins"
+      (removed)="remove(validationPlugin)">
+      {{validationPlugin.id}}
+      <button matChipRemove>
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip>
+    <input
+      placeholder="New Validation Plugin..."
+      #validationInput
+      [formControl]="validationCtrl"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="add($event)">
+  </mat-chip-list>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    <mat-option *ngFor="let validationPlugin of filteredValidationPlugins | async" [value]="validationPlugin.id">
+      {{validationPlugin.id}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

@@ -1,29 +1,37 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-import { ProductionSystemsComponent } from './production-systems/production-systems.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TriggersComponent } from './triggers/triggers.component';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatCardModule } from '@angular/material/card';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { LayoutModule } from '@angular/cdk/layout';
-import { HttpClientModule } from '@angular/common/http';
-import { ApiModule } from 'iacmf-api';
-import { MatTabsModule } from "@angular/material/tabs";
-import { MatExpansionModule} from "@angular/material/expansion";
-import { MatTableModule } from "@angular/material/table";
-import { MatDialogModule } from "@angular/material/dialog";
-import { CreateProductionSystemDialogComponent } from './production-systems/create-production-system-dialog/create-production-system-dialog.component';
-import { CompliancejobsComponent } from './compliancejobs/compliancejobs.component';
-import { CreateCompliancejobDialogComponent } from './compliancejobs/create-compliancejob-dialog/create-compliancejob-dialog.component';
-import { MatStepperModule } from "@angular/material/stepper";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import {FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {AppComponent} from './app.component';
+import {AppRoutingModule} from './app-routing.module';
+import {ProductionSystemsComponent} from './production-systems/production-systems.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {TriggersComponent} from './triggers/triggers.component';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatCardModule} from '@angular/material/card';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {LayoutModule} from '@angular/cdk/layout';
+import {HttpClientModule} from '@angular/common/http';
+import {ApiModule} from 'iacmf-api';
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatTableModule} from "@angular/material/table";
+import {MatDialogModule} from "@angular/material/dialog";
+import {CreateProductionSystemDialogComponent} from './production-systems/create-production-system-dialog/create-production-system-dialog.component';
+import {CompliancejobsComponent} from './compliancejobs/compliancejobs.component';
+import {CreateCompliancejobDialogComponent} from './compliancejobs/create-compliancejob-dialog/create-compliancejob-dialog.component';
+import {MatStepperModule} from "@angular/material/stepper";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {RefinementPluginsComponent} from './refinement-plugins/refinement-plugins.component';
+import { MatChipsModule } from "@angular/material/chips";
+import {MatOptionModule} from "@angular/material/core";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {ComplianceIssuesComponent} from "./compliance-issues/compliance-issues.component";
+import {ValidationPluginsComponent} from "./validation-plugins/validation-plugins.component";
+import {ReportingPluginsComponent} from "./reporting-plugins/reporting-plugins.component";
+import {ComplianceRulesComponent} from "./compliance-rules/compliance-rules.component";
 
 
 @NgModule({
@@ -33,7 +41,12 @@ import {FormGroup, ReactiveFormsModule} from "@angular/forms";
     TriggersComponent,
     CreateProductionSystemDialogComponent,
     CompliancejobsComponent,
-    CreateCompliancejobDialogComponent
+    CreateCompliancejobDialogComponent,
+    RefinementPluginsComponent,
+    ComplianceIssuesComponent,
+    ValidationPluginsComponent,
+    ReportingPluginsComponent,
+    ComplianceRulesComponent
   ],
   imports: [
     BrowserModule,
@@ -45,10 +58,14 @@ import {FormGroup, ReactiveFormsModule} from "@angular/forms";
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
+    MatAutocompleteModule,
+    MatChipsModule,
     MatFormFieldModule,
+    FormsModule,
     ReactiveFormsModule,
     MatTabsModule,
     MatTableModule,
+    MatOptionModule,
     MatStepperModule,
     LayoutModule,
     ApiModule,

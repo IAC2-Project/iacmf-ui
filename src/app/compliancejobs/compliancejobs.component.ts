@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
-import {CreateProductionSystemDialogComponent} from "../production-systems/create-production-system-dialog/create-production-system-dialog.component";
 import {
   ComplianceJobEntity,
-  ComplianceRuleEntity,
-  ComplianceRuleParameterAssignmentEntity, ComplianceRuleParameterEntity, ExecutionEntity,
-  KVEntity, ModelEnhancementStrategyEntity,
-  ProductionSystemEntity,
+  ComplianceRuleParameterAssignmentEntity,
+  ComplianceRuleParameterEntity,
+  ExecutionEntity,
+  KVEntity,
   TriggerEntity
 } from "../gen";
 import {CreateCompliancejobDialogComponent} from "./create-compliancejob-dialog/create-compliancejob-dialog.component";
@@ -67,6 +66,7 @@ export class CompliancejobsComponent implements OnInit {
   openNewJobDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
     this.dialog.open(CreateCompliancejobDialogComponent, {
       width: '80%',
+      height: '80%',
       enterAnimationDuration,
       exitAnimationDuration,
     });
