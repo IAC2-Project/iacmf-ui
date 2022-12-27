@@ -8,7 +8,8 @@
     </mat-select>
   </mat-form-field>
   <button mat-button (click)="addReportingPlugin(selected)">ADD</button>
-  <mat-card *ngFor="let reportingPlugin of addedReportingPlugins">
+  <div *ngFor="let reportingPlugin of addedReportingPlugins">
+  <mat-card>
     <mat-card-header>
       <mat-card-title>{{reportingPlugin.id}}</mat-card-title>
     </mat-card-header>
@@ -24,4 +25,6 @@
       <button mat-button (click)="removeReportingPlugin(reportingPlugin)">DELETE</button>
     </mat-card-actions>
   </mat-card>
+  <br>
+  </div>
 </div>

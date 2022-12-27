@@ -52,11 +52,40 @@ export class ComplianceIssuesComponent implements OnInit {
         isSuccessful: true,
         description: "whatever"}],
       type: "someType",
+    },
+    {
+      id: 3,
+      execution: {
+        id: 3,
+        startTime: "whyNotARealDateType?",
+        endTime: "whyNotARealDateType?",
+        currentStep: "START",
+        status: "STARTED",
+        violationsDetected: true,
+        description: "someDesc",
+      },
+      fixingReports: [{id: 4,
+        isSuccessful: true,
+        description: "whatever"}],
+      type: "someType",
+    },
+    {
+      id: 4,
+      execution: {
+        id: 3,
+        startTime: "whyNotARealDateType?",
+        endTime: "whyNotARealDateType?",
+        currentStep: "START",
+        status: "STARTED",
+        violationsDetected: true,
+        description: "someDesc",
+      },
+      fixingReports: [{id: 4,
+        isSuccessful: true,
+        description: "whatever"}],
+      type: "someType",
     }
   ]
-
-  // TODO there shouldn't be an input at the end right ?
-  @ViewChild('complianceIssueInput') complianceIssueInput: ElementRef<HTMLInputElement> | undefined;
 
   constructor(public dialog: MatDialog) {
 

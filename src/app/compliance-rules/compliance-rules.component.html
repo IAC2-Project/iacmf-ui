@@ -8,7 +8,8 @@
     </mat-select>
   </mat-form-field>
   <button mat-button (click)="addComplianceRule(selected)">ADD</button>
-  <mat-card *ngFor="let complianceRule of addedcomplianceRulesPlugins">
+  <div *ngFor="let complianceRule of addedcomplianceRulesPlugins">
+  <mat-card>
     <mat-card-header>
       <mat-card-title>{{complianceRule.id}}</mat-card-title>
     </mat-card-header>
@@ -24,6 +25,8 @@
       <button mat-button (click)="removeComplianceRule(complianceRule)">DELETE</button>
     </mat-card-actions>
   </mat-card>
+  <br>
+  </div>
 </div>
 
 

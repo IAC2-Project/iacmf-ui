@@ -1,5 +1,5 @@
-<div>
-  <mat-card *ngFor="let complianceIssue of allComplianceIssues">
+<div *ngFor="let complianceIssue of allComplianceIssues; let i = index">
+  <mat-card>
     <mat-card-header>
       <mat-card-title>{{complianceIssue.id}}</mat-card-title>
     </mat-card-header>
@@ -14,4 +14,5 @@
       <button mat-button (click)="openComplianceIssueDialog(complianceIssue,'0ms', '0ms')">Configure Fixing</button>
     </mat-card-actions>
   </mat-card>
+  <br>
 </div>

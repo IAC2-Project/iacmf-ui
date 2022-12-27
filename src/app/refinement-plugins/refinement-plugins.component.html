@@ -8,7 +8,8 @@
     </mat-select>
   </mat-form-field>
   <button mat-button (click)="addRefinementPlugin(selected)">ADD</button>
-  <mat-card *ngFor="let refinementPlugin of addedRefinementPlugins">
+  <div *ngFor="let refinementPlugin of addedRefinementPlugins">
+  <mat-card>
     <mat-card-header>
       <mat-card-title>{{refinementPlugin.id}}</mat-card-title>
     </mat-card-header>
@@ -24,4 +25,6 @@
       <button mat-button (click)="deleteMatCard(refinementPlugin)">DELETE</button>
     </mat-card-actions>
   </mat-card>
+  <br>
+  </div>
 </div>

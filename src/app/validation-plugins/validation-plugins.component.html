@@ -8,7 +8,8 @@
     </mat-select>
   </mat-form-field>
   <button mat-button (click)="addValidationPlugin(selected)">ADD</button>
-  <mat-card *ngFor="let validationPlugin of addedValidationPlugins">
+  <div *ngFor="let validationPlugin of addedValidationPlugins">
+  <mat-card>
     <mat-card-header>
       <mat-card-title>{{validationPlugin.id}}</mat-card-title>
     </mat-card-header>
@@ -24,4 +25,6 @@
       <button mat-button (click)="removeValidationPlugin(validationPlugin)">DELETE</button>
     </mat-card-actions>
   </mat-card>
+  <br>
+  </div>
 </div>

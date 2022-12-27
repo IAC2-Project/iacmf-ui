@@ -38,6 +38,10 @@ import {ConfigureComlianceIssueComponent} from "./compliance-issues/configure-co
 import {MatSelectModule} from "@angular/material/select";
 import { ConfigureValidationPluginComponent } from './validation-plugins/configure-validation-plugin/configure-validation-plugin.component';
 import { ConfigureReportingPluginComponent } from './reporting-plugins/configure-reporting-plugin/configure-reporting-plugin.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatSliderModule} from "@angular/material/slider";
+import {MatDividerModule} from "@angular/material/divider";
+import { SelectProductionSytemComponent } from './production-systems/select-production-sytem/select-production-sytem.component';
 
 
 @NgModule({
@@ -57,7 +61,8 @@ import { ConfigureReportingPluginComponent } from './reporting-plugins/configure
     ConfigureComlianceRuleComponent,
     ConfigureComlianceIssueComponent,
     ConfigureValidationPluginComponent,
-    ConfigureReportingPluginComponent
+    ConfigureReportingPluginComponent,
+    SelectProductionSytemComponent
   ],
   imports: [
     BrowserModule,
@@ -79,6 +84,9 @@ import { ConfigureReportingPluginComponent } from './reporting-plugins/configure
     MatTableModule,
     MatOptionModule,
     MatStepperModule,
+    MatToolbarModule,
+    MatSliderModule,
+    MatDividerModule,
     LayoutModule,
     ApiModule,
     MatDialogModule,

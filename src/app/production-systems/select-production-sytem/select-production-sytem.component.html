@@ -1,0 +1,25 @@
+<div>
+  <mat-form-field appearance="fill">
+    <mat-label>Select a Production System: </mat-label>
+    <mat-select [(value)]="selected">
+      <mat-option *ngFor="let productionSystem of productionSystemEntities" value="{{productionSystem}}">
+        {{productionSystem.id}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div *ngFor="let productionSystem of [selected]">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>ProductionSystemId: {{productionSystem.id}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>IaC Technology: {{productionSystem.iacTechnologyName}}</p>
+      </mat-card-content>
+    </mat-card>
+    <br>
+  </div>
+</div>
+
+
+
+
