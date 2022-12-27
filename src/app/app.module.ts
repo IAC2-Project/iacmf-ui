@@ -33,6 +33,11 @@ import {ValidationPluginsComponent} from "./validation-plugins/validation-plugin
 import {ReportingPluginsComponent} from "./reporting-plugins/reporting-plugins.component";
 import {ComplianceRulesComponent} from "./compliance-rules/compliance-rules.component";
 import { ConfigureRefinementPluginComponent } from './refinement-plugins/configure-refinement-plugin/configure-refinement-plugin.component';
+import {ConfigureComlianceRuleComponent} from "./compliance-rules/configure-compliance-rule/configure-compliance-rule.component";
+import {ConfigureComlianceIssueComponent} from "./compliance-issues/configure-compliance-issue/configure-compliance-issue.component";
+import {MatSelectModule} from "@angular/material/select";
+import { ConfigureValidationPluginComponent } from './validation-plugins/configure-validation-plugin/configure-validation-plugin.component';
+import { ConfigureReportingPluginComponent } from './reporting-plugins/configure-reporting-plugin/configure-reporting-plugin.component';
 
 
 @NgModule({
@@ -48,7 +53,11 @@ import { ConfigureRefinementPluginComponent } from './refinement-plugins/configu
     ValidationPluginsComponent,
     ReportingPluginsComponent,
     ComplianceRulesComponent,
-    ConfigureRefinementPluginComponent
+    ConfigureRefinementPluginComponent,
+    ConfigureComlianceRuleComponent,
+    ConfigureComlianceIssueComponent,
+    ConfigureValidationPluginComponent,
+    ConfigureReportingPluginComponent
   ],
   imports: [
     BrowserModule,
@@ -63,6 +72,7 @@ import { ConfigureRefinementPluginComponent } from './refinement-plugins/configu
     MatAutocompleteModule,
     MatChipsModule,
     MatFormFieldModule,
+    MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
     MatTabsModule,

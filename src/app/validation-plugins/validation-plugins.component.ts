@@ -7,6 +7,10 @@ import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {map, startWith} from 'rxjs/operators';
 import {async} from "rxjs";
 import {KVEntity} from "../gen";
+import {ConfigureComlianceRuleComponent} from "../compliance-rules/configure-compliance-rule/configure-compliance-rule.component";
+import {complianceRulesPluginDummy} from "../compliance-rules/compliance-rules.component";
+import {ConfigureValidationPluginComponent} from "./configure-validation-plugin/configure-validation-plugin.component";
+import {MatDialog} from "@angular/material/dialog";
 
 export interface ValidationPluginDummy {
   id: string;
@@ -24,9 +28,6 @@ export class ValidationPluginsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  validationCtrl = new FormControl('');
-  filteredValidationPlugins: Observable<ValidationPluginDummy[]>;
   addedValidationPlugins: ValidationPluginDummy[] = [];
   // TODO this must be replaced by a proper representation of validationplugins and their inputs
 
@@ -66,30 +67,23 @@ export class ValidationPluginsComponent implements OnInit {
       ]
     }];
 
-  @ViewChild('validationInput') validationInput: ElementRef<HTMLInputElement> | undefined;
+  selected = this.allValidationPlugins[0].id;
 
-  constructor() {
-    this.filteredValidationPlugins = this.validationCtrl.valueChanges.pipe(
-      startWith(null),
-      map((validationPlugin: string | null) => (validationPlugin ? this._filter(validationPlugin) : this.allValidationPlugins.slice()))
-    );
+  constructor(public dialog: MatDialog) {
+
   }
 
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
+  private _filter(value: string): ValidationPluginDummy[] {
+    const filterValue = value.toLowerCase();
 
-    // Add our fruit
-    if (value) {
-      this.addedValidationPlugins.push(this._filter(value)[0]);
-    }
-
-    // Clear the input value
-    event.chipInput!.clear();
-
-    this.validationCtrl.setValue(null);
+    return this.allValidationPlugins.filter(validationPlugin => validationPlugin.id.toLowerCase().includes(filterValue));
   }
 
-  remove(validationPluginDummy: ValidationPluginDummy): void {
+  addValidationPlugin(validationPluginDummy: string) {
+    this.addedValidationPlugins.push(this._filter(validationPluginDummy)[0]);
+  }
+
+  removeValidationPlugin(validationPluginDummy: ValidationPluginDummy) {
     const index = this.addedValidationPlugins.indexOf(validationPluginDummy);
 
     if (index >= 0) {
@@ -97,23 +91,14 @@ export class ValidationPluginsComponent implements OnInit {
     }
   }
 
-  selected(event: MatAutocompleteSelectedEvent): void {
-    const value = event.option.viewValue;
-    const plugin = this.allValidationPlugins.filter(validationPlugin => validationPlugin.id.includes(value)).pop()
-    if (plugin != undefined) {
-      this.addedValidationPlugins.push(plugin);
-    }
-
-    if (this.validationInput != undefined) {
-      this.validationInput.nativeElement.value = '';
-    }
-    this.validationCtrl.setValue(null);
-  }
-
-  private _filter(value: string): ValidationPluginDummy[] {
-    const filterValue = value.toLowerCase();
-
-    return this.allValidationPlugins.filter(validationPlugin => validationPlugin.id.toLowerCase().includes(filterValue));
+  openConfigureValidationPlugin(complianceRuleEntity: ValidationPluginDummy, enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(ConfigureValidationPluginComponent, {
+      width: '80%',
+      height: '80%',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: complianceRuleEntity,
+    });
   }
 
 }

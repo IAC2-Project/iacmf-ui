@@ -7,6 +7,9 @@ import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {map, startWith} from 'rxjs/operators';
 import {async} from "rxjs";
 import {KVEntity} from "../gen";
+import {ConfigureValidationPluginComponent} from "../validation-plugins/configure-validation-plugin/configure-validation-plugin.component";
+import {ConfigureReportingPluginComponent} from "./configure-reporting-plugin/configure-reporting-plugin.component";
+import {MatDialog} from "@angular/material/dialog";
 
 export interface reportingPluginDummy {
   id: string;
@@ -24,9 +27,6 @@ export class ReportingPluginsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  reportingCtrl = new FormControl('');
-  filteredReportingPlugins: Observable<reportingPluginDummy[]>;
   addedReportingPlugins: reportingPluginDummy[] = [];
   // TODO this must be replaced by a proper representation of reportingplugins and their inputs
 
@@ -66,48 +66,10 @@ export class ReportingPluginsComponent implements OnInit {
       ]
     }];
 
-  @ViewChild('reportingInput') reportingInput: ElementRef<HTMLInputElement> | undefined;
+  selected = this.reportingPluginDummies[0].id;
 
-  constructor() {
-    this.filteredReportingPlugins = this.reportingCtrl.valueChanges.pipe(
-      startWith(null),
-      map((reportingPlugin: string | null) => (reportingPlugin ? this._filter(reportingPlugin) : this.reportingPluginDummies.slice()))
-    );
-  }
+  constructor(public dialog: MatDialog) {
 
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    // Add our fruit
-    if (value) {
-      this.addedReportingPlugins.push(this._filter(value)[0]);
-    }
-
-    // Clear the input value
-    event.chipInput!.clear();
-
-    this.reportingCtrl.setValue(null);
-  }
-
-  remove(reportingPluginDummy: reportingPluginDummy): void {
-    const index = this.addedReportingPlugins.indexOf(reportingPluginDummy);
-
-    if (index >= 0) {
-      this.addedReportingPlugins.splice(index, 1);
-    }
-  }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    const value = event.option.viewValue;
-    const plugin = this.reportingPluginDummies.filter(reportingPlugin => reportingPlugin.id.includes(value)).pop()
-    if (plugin != undefined) {
-      this.addedReportingPlugins.push(plugin);
-    }
-
-    if (this.reportingInput != undefined) {
-      this.reportingInput.nativeElement.value = '';
-    }
-    this.reportingCtrl.setValue(null);
   }
 
   private _filter(value: string): reportingPluginDummy[] {
@@ -116,4 +78,25 @@ export class ReportingPluginsComponent implements OnInit {
     return this.reportingPluginDummies.filter(reportingPlugin => reportingPlugin.id.toLowerCase().includes(filterValue));
   }
 
+  addReportingPlugin(reportingPlugin: string) {
+    this.addedReportingPlugins.push(this._filter(reportingPlugin)[0]);
+  }
+
+  removeReportingPlugin(reportingPlugin: reportingPluginDummy) {
+    const index = this.addedReportingPlugins.indexOf(reportingPlugin);
+
+    if (index >= 0) {
+      this.addedReportingPlugins.splice(index, 1);
+    }
+  }
+
+  openConfigureReportingPlugin(reportingPlugin: reportingPluginDummy, enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(ConfigureReportingPluginComponent, {
+      width: '80%',
+      height: '80%',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: reportingPlugin,
+    });
+  }
 }

@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Compliance Issue Details</h1>
+<div mat-dialog-content>
+  <div>
+    <h2>{{data.id}}</h2>
+    <form>
+      <div *ngIf="data != undefined && data.execution != undefined">
+        {{data.execution.id}}:<br>
+        Started: {{data.execution.startTime}}<br>
+        State: {{data.execution.status}}
+        <br>
+      </div>
+    </form>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close cdkFocusInitial>Ok</button>
+</div>

@@ -1,26 +1,27 @@
-<mat-form-field class="example-chip-list" appearance="fill" style="width: 100%">
-  <mat-label>Select reporting Plugins</mat-label>
-  <mat-chip-list #chipList aria-label="Refinment Plugin Selection">
-    <mat-chip
-      *ngFor="let reportingPlugin of addedReportingPlugins"
-      (removed)="remove(reportingPlugin)">
-      {{reportingPlugin.id}}
-      <button matChipRemove>
-        <mat-icon>cancel</mat-icon>
-      </button>
-    </mat-chip>
-    <input
-      placeholder="New Refinment Plugin..."
-      #reportingInput
-      [formControl]="reportingCtrl"
-      [matAutocomplete]="auto"
-      [matChipInputFor]="chipList"
-      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-      (matChipInputTokenEnd)="add($event)">
-  </mat-chip-list>
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-    <mat-option *ngFor="let reportingPlugin of filteredReportingPlugins | async" [value]="reportingPlugin.id">
-      {{reportingPlugin.id}}
-    </mat-option>
-  </mat-autocomplete>
-</mat-form-field>
+<div>
+  <mat-form-field appearance="fill">
+    <mat-label>Select an option</mat-label>
+    <mat-select [(value)]="selected">
+      <mat-option *ngFor="let reportingPlugin of reportingPluginDummies" value="{{reportingPlugin.id}}">
+        {{reportingPlugin.id}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-button (click)="addReportingPlugin(selected)">ADD</button>
+  <mat-card *ngFor="let reportingPlugin of addedReportingPlugins">
+    <mat-card-header>
+      <mat-card-title>{{reportingPlugin.id}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
+        bred for hunting.
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button (click)="openConfigureReportingPlugin(reportingPlugin,'0ms', '0ms')">CONFIGURE</button>
+      <button mat-button (click)="removeReportingPlugin(reportingPlugin)">DELETE</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

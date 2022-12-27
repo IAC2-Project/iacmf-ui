@@ -7,6 +7,10 @@ import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {map, startWith} from 'rxjs/operators';
 import {async} from "rxjs";
 import {KVEntity} from "../gen";
+import {ConfigureRefinementPluginComponent} from "../refinement-plugins/configure-refinement-plugin/configure-refinement-plugin.component";
+import {ComplianceRuleEntity} from "iacmf-api";
+import {MatDialog} from "@angular/material/dialog";
+import {ConfigureComlianceRuleComponent} from "./configure-compliance-rule/configure-compliance-rule.component";
 
 export interface complianceRulesPluginDummy {
   id: string;
@@ -24,15 +28,11 @@ export class ComplianceRulesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  complianceRulesCtrl = new FormControl('');
-  filteredcomplianceRulesPlugins: Observable<complianceRulesPluginDummy[]>;
   addedcomplianceRulesPlugins: complianceRulesPluginDummy[] = [];
+
   // TODO this must be replaced by a proper representation of complianceRulesplugins and their inputs
-
-
   complianceRulesPluginDummies: complianceRulesPluginDummy[] = [{
-    id : "RefinmentPlugin1",
+    id : "ComplianceRUle1",
     parameters: [
       {
       key: "someKey",
@@ -49,7 +49,7 @@ export class ComplianceRulesComponent implements OnInit {
     ]
   },
     {
-      id : "RefinmentPlugin1",
+      id : "ComplianceRUle1",
       parameters: [
         {
           key: "someKey",
@@ -66,54 +66,38 @@ export class ComplianceRulesComponent implements OnInit {
       ]
     }];
 
-  @ViewChild('complianceRulesInput') complianceRulesInput: ElementRef<HTMLInputElement> | undefined;
+  selected = this.complianceRulesPluginDummies[0].id;
 
-  constructor() {
-    this.filteredcomplianceRulesPlugins = this.complianceRulesCtrl.valueChanges.pipe(
-      startWith(null),
-      map((complianceRulesPlugin: string | null) => (complianceRulesPlugin ? this._filter(complianceRulesPlugin) : this.complianceRulesPluginDummies.slice()))
-    );
+  constructor(public dialog: MatDialog) {
+
   }
 
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    // Add our fruit
-    if (value) {
-      this.addedcomplianceRulesPlugins.push(this._filter(value)[0]);
-    }
-
-    // Clear the input value
-    event.chipInput!.clear();
-
-    this.complianceRulesCtrl.setValue(null);
+  addComplianceRule(complianceRuleDummy: string) {
+    this.addedcomplianceRulesPlugins.push(this._filter(complianceRuleDummy)[0]);
   }
 
-  remove(complianceRulesPluginDummy: complianceRulesPluginDummy): void {
-    const index = this.addedcomplianceRulesPlugins.indexOf(complianceRulesPluginDummy);
+  removeComplianceRule(complianceRuleDummy: complianceRulesPluginDummy) {
+    const index = this.addedcomplianceRulesPlugins.indexOf(complianceRuleDummy);
 
     if (index >= 0) {
       this.addedcomplianceRulesPlugins.splice(index, 1);
     }
   }
 
-  selected(event: MatAutocompleteSelectedEvent): void {
-    const value = event.option.viewValue;
-    const plugin = this.complianceRulesPluginDummies.filter(complianceRulesPlugin => complianceRulesPlugin.id.includes(value)).pop()
-    if (plugin != undefined) {
-      this.addedcomplianceRulesPlugins.push(plugin);
-    }
-
-    if (this.complianceRulesInput != undefined) {
-      this.complianceRulesInput.nativeElement.value = '';
-    }
-    this.complianceRulesCtrl.setValue(null);
-  }
-
   private _filter(value: string): complianceRulesPluginDummy[] {
     const filterValue = value.toLowerCase();
 
     return this.complianceRulesPluginDummies.filter(complianceRulesPlugin => complianceRulesPlugin.id.toLowerCase().includes(filterValue));
+  }
+
+  openConfigureComplianceRuleDialog(complianceRuleEntity: complianceRulesPluginDummy, enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(ConfigureComlianceRuleComponent, {
+      width: '80%',
+      height: '80%',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: complianceRuleEntity,
+    });
   }
 
 }
