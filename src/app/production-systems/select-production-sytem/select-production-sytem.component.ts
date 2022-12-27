@@ -27,11 +27,15 @@ export class SelectProductionSytemComponent implements OnInit {
     }
   ]
 
-  selected = this.productionSystemEntities[0];
+  selected = this.productionSystemEntities[0].id;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  _filter(id: number | undefined) {
+    return this.productionSystemEntities.filter(ps => ps.id == id);
   }
 
 }

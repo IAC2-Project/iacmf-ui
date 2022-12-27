@@ -1,13 +1,13 @@
 <div>
   <mat-form-field appearance="fill">
     <mat-label>Select a Production System: </mat-label>
-    <mat-select [(value)]="selected">
-      <mat-option *ngFor="let productionSystem of productionSystemEntities" value="{{productionSystem}}">
+    <mat-select [(value)]="this.selected">
+      <mat-option *ngFor="let productionSystem of productionSystemEntities" value="{{productionSystem.id}}">
         {{productionSystem.id}}
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <div *ngFor="let productionSystem of [selected]">
+  <div *ngFor="let productionSystem of this._filter(this.selected)">
     <mat-card>
       <mat-card-header>
         <mat-card-title>ProductionSystemId: {{productionSystem.id}}</mat-card-title>
