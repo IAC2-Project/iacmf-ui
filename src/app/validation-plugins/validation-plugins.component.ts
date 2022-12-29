@@ -8,7 +8,6 @@ import {map, startWith} from 'rxjs/operators';
 import {async} from "rxjs";
 import {KVEntity} from "../gen";
 import {ConfigureComlianceRuleComponent} from "../compliance-rules/configure-compliance-rule/configure-compliance-rule.component";
-import {complianceRulesPluginDummy} from "../compliance-rules/compliance-rules.component";
 import {ConfigureValidationPluginComponent} from "./configure-validation-plugin/configure-validation-plugin.component";
 import {MatDialog} from "@angular/material/dialog";
 

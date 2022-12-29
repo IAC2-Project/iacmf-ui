@@ -8,18 +8,12 @@ const ELEMENT_DATA: ProductionSystemEntity[] = [
   {
     id: 1,
     isDeleted: false,
-    iacTechnologyName: "OpenTOSCA", description: "someProdSystem", properties: new Array<KVEntity>(),
-    complianceJobs: new Array<ComplianceJobEntity>(),
-    modelCreationPluginId: "pluginName",
-    modelEnhancementStrategy: {id: 1, pluginIdList: ["id1", "id2"]}
+    iacTechnologyName: "OpenTOSCA", description: "someProdSystem", properties: new Array<KVEntity>()
   },
   {
     id: 2,
     isDeleted: false,
-    iacTechnologyName: "OpenTOSCA", description: "someProdSystem", properties: new Array<KVEntity>(),
-    complianceJobs: new Array<ComplianceJobEntity>(),
-    modelCreationPluginId: "pluginName",
-    modelEnhancementStrategy: {id: 1, pluginIdList: ["id1", "id2"]}
+    iacTechnologyName: "OpenTOSCA", description: "someProdSystem", properties: new Array<KVEntity>()
   }
 ]
 

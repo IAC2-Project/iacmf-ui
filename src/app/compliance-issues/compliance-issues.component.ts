@@ -20,72 +20,7 @@ export class ComplianceIssuesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  allComplianceIssues: ComplianceIssueEntity[] = [
-    {
-      id: 1,
-      execution: {
-        id: 1,
-        startTime: "whyNotARealDateType?",
-        endTime: "whyNotARealDateType?",
-        currentStep: "START",
-        status: "STARTED",
-        violationsDetected: true,
-        description: "someDesc",
-      },
-      fixingReports: [{id: 1,
-        isSuccessful: true,
-        description: "whatever"}],
-      type: "someType",
-    },
-    {
-      id: 2,
-      execution: {
-        id: 3,
-        startTime: "whyNotARealDateType?",
-        endTime: "whyNotARealDateType?",
-        currentStep: "START",
-        status: "STARTED",
-        violationsDetected: true,
-        description: "someDesc",
-      },
-      fixingReports: [{id: 4,
-        isSuccessful: true,
-        description: "whatever"}],
-      type: "someType",
-    },
-    {
-      id: 3,
-      execution: {
-        id: 3,
-        startTime: "whyNotARealDateType?",
-        endTime: "whyNotARealDateType?",
-        currentStep: "START",
-        status: "STARTED",
-        violationsDetected: true,
-        description: "someDesc",
-      },
-      fixingReports: [{id: 4,
-        isSuccessful: true,
-        description: "whatever"}],
-      type: "someType",
-    },
-    {
-      id: 4,
-      execution: {
-        id: 3,
-        startTime: "whyNotARealDateType?",
-        endTime: "whyNotARealDateType?",
-        currentStep: "START",
-        status: "STARTED",
-        violationsDetected: true,
-        description: "someDesc",
-      },
-      fixingReports: [{id: 4,
-        isSuccessful: true,
-        description: "whatever"}],
-      type: "someType",
-    }
-  ]
+  allComplianceIssues: ComplianceIssueEntity[] = this.getDummyComplianceIssuesData();
 
   constructor(public dialog: MatDialog) {
 
@@ -99,5 +34,74 @@ export class ComplianceIssuesComponent implements OnInit {
       exitAnimationDuration,
       data: complianceIssueEntity,
     });
+  }
+
+  getDummyComplianceIssuesData() : ComplianceIssueEntity[] {
+    return [
+      {
+        id: 1,
+        execution: {
+          id: 1,
+          startTime: "whyNotARealDateType?",
+          endTime: "whyNotARealDateType?",
+          currentStep: "START",
+          status: "CREATED",
+          violationsDetected: true,
+          description: "someDesc",
+        },
+        fixingReports: [{id: 1,
+          isSuccessful: true,
+          description: "whatever"}],
+        type: "someType",
+      },
+      {
+        id: 2,
+        execution: {
+          id: 3,
+          startTime: "whyNotARealDateType?",
+          endTime: "whyNotARealDateType?",
+          currentStep: "START",
+          status: "CREATED",
+          violationsDetected: true,
+          description: "someDesc",
+        },
+        fixingReports: [{id: 4,
+          isSuccessful: true,
+          description: "whatever"}],
+        type: "someType",
+      },
+      {
+        id: 3,
+        execution: {
+          id: 3,
+          startTime: "whyNotARealDateType?",
+          endTime: "whyNotARealDateType?",
+          currentStep: "START",
+          status: "CREATED",
+          violationsDetected: true,
+          description: "someDesc",
+        },
+        fixingReports: [{id: 4,
+          isSuccessful: true,
+          description: "whatever"}],
+        type: "someType",
+      },
+      {
+        id: 4,
+        execution: {
+          id: 3,
+          startTime: "whyNotARealDateType?",
+          endTime: "whyNotARealDateType?",
+          currentStep: "START",
+          status: "CREATED",
+          violationsDetected: true,
+          description: "someDesc",
+        },
+        fixingReports: [{id: 4,
+          isSuccessful: true,
+          description: "whatever"}],
+        type: "someType",
+      }
+    ];
   }
 }

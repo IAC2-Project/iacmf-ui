@@ -15,35 +15,14 @@ const ELEMENT_DATA: ComplianceJobEntity[] = [
   {
     id: 1,
     description: "someJob",
-    modelCheckingPluginId: "someCheckingId",
-    modelFixingPluginId: "someFixingId",
-    complianceRule: {
-      id: 1,
-      type: "someType",
-      location: "someLocation",
-      description: "someDesc",
-      isDeleted: false,
-      parameters: new Array<ComplianceRuleParameterEntity>(),
-      jobs: new Array<ComplianceJobEntity>()
-    },
     triggers: new Array<TriggerEntity>(),
-    complianceRuleParameterAssignments: new Array<ComplianceRuleParameterAssignmentEntity>(),
     executions: new Array<ExecutionEntity>(),
-    modelEnhancementStrategy: {
-      id: 1,
-      pluginIdList: new Array<string>()},
     productionSystem: {
       id: 1,
       isDeleted: false,
       iacTechnologyName: "someIac",
       description: "someDesc",
       properties: new Array<KVEntity>(),
-      complianceJobs: new Array<ComplianceJobEntity>(),
-      modelCreationPluginId: "someId",
-      modelEnhancementStrategy: {
-        id: 1,
-        pluginIdList: new Array<string>()
-      }
     }
   }
 ]

@@ -8,24 +8,7 @@ import {ComplianceJobEntity, KVEntity, ProductionSystemEntity} from "../../gen";
 })
 export class SelectProductionSytemComponent implements OnInit {
 
-   productionSystemEntities: ProductionSystemEntity[] = [
-    {
-      id: 1,
-      isDeleted: false,
-      iacTechnologyName: "OpenTOSCA", description: "someProdSystem", properties: new Array<KVEntity>(),
-      complianceJobs: new Array<ComplianceJobEntity>(),
-      modelCreationPluginId: "pluginName",
-      modelEnhancementStrategy: {id: 1, pluginIdList: ["id1", "id2"]}
-    },
-    {
-      id: 2,
-      isDeleted: false,
-      iacTechnologyName: "OpenTOSCA", description: "someProdSystem", properties: new Array<KVEntity>(),
-      complianceJobs: new Array<ComplianceJobEntity>(),
-      modelCreationPluginId: "pluginName",
-      modelEnhancementStrategy: {id: 1, pluginIdList: ["id1", "id2"]}
-    }
-  ]
+   productionSystemEntities: ProductionSystemEntity[] = this.getDummyProductionSystemsData();
 
   selected = this.productionSystemEntities[0].id;
 
@@ -38,4 +21,18 @@ export class SelectProductionSytemComponent implements OnInit {
     return this.productionSystemEntities.filter(ps => ps.id == id);
   }
 
+  getDummyProductionSystemsData() : ProductionSystemEntity[] {
+    return [
+      {
+        id: 1,
+        isDeleted: false,
+        iacTechnologyName: "OpenTOSCA", description: "someProdSystem", properties: new Array<KVEntity>(),
+      },
+      {
+        id: 2,
+        isDeleted: false,
+        iacTechnologyName: "OpenTOSCA", description: "someProdSystem", properties: new Array<KVEntity>(),
+      }
+    ];
+  }
 }

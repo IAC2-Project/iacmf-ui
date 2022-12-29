@@ -34,7 +34,7 @@ export class ComplianceRulesComponent implements OnInit {
 
   }
 
-  addComplianceRule(complianceRule: number) {
+  addComplianceRule(complianceRule: number | undefined) {
     this.addedcomplianceRulesPlugins.push(this._filter(complianceRule)[0]);
   }
 
@@ -46,7 +46,7 @@ export class ComplianceRulesComponent implements OnInit {
     }
   }
 
-  private _filter(value: number): ComplianceRuleEntity[] {
+  private _filter(value: number | undefined): ComplianceRuleEntity[] {
     return this.complianceRules.filter(complianceRule => complianceRule.id != undefined).filter(complianceRule => complianceRule.id == value);
   }
 
