@@ -10,11 +10,9 @@ import {KVEntity} from "../gen";
 import {ConfigureValidationPluginComponent} from "../validation-plugins/configure-validation-plugin/configure-validation-plugin.component";
 import {ConfigureReportingPluginComponent} from "./configure-reporting-plugin/configure-reporting-plugin.component";
 import {MatDialog} from "@angular/material/dialog";
+import {PluginPojo} from "iacmf-api";
 
-export interface reportingPluginDummy {
-  id: string;
-  parameters: KVEntity[];
-}
+
 
 @Component({
   selector: 'app-reporting-plugins',
@@ -27,62 +25,49 @@ export class ReportingPluginsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addedReportingPlugins: reportingPluginDummy[] = [];
+  addedReportingPlugins: PluginPojo[] = [];
   // TODO this must be replaced by a proper representation of reportingplugins and their inputs
 
 
-  reportingPluginDummies: reportingPluginDummy[] = [{
-    id : "RefinmentPlugin1",
-    parameters: [
-      {
-      key: "someKey",
-      value: "someValue"
-      },
-      {
-        key: "someKey",
-        value: "someValue"
-      },
-      {
-        key: "someKey",
-        value: "someValue"
-      }
+  reportingPluginDummies: PluginPojo[] = [{
+    identifier: "ReportingPlugin1",
+    pluginType: "REPORTING",
+    requiredConfigurationEntryNames: [
+      "someKey",
+      "someValue",
+      "someKey2"
     ]
   },
     {
-      id : "RefinmentPlugin1",
-      parameters: [
-        {
-          key: "someKey",
-          value: "someValue"
-        },
-        {
-          key: "someKey",
-          value: "someValue"
-        },
-        {
-          key: "someKey",
-          value: "someValue"
-        }
+      identifier: "ReportingPlugin2",
+      pluginType: "REPORTING",
+      requiredConfigurationEntryNames: [
+        "someKey",
+        "someValue",
+        "someKey2"
       ]
     }];
 
-  selected = this.reportingPluginDummies[0].id;
+  selected = this.reportingPluginDummies[0].identifier;
 
   constructor(public dialog: MatDialog) {
 
   }
 
-  private _filter(value: string): reportingPluginDummy[] {
+  private _filter(value: string | undefined): PluginPojo[] {
+    if (value == undefined) {
+      return []
+    }
     const filterValue = value.toLowerCase();
 
-    return this.reportingPluginDummies.filter(reportingPlugin => reportingPlugin.id.toLowerCase().includes(filterValue));
+    return this.reportingPluginDummies.filter(reportingPlugin => reportingPlugin.identifier != undefined && reportingPlugin.identifier.toLowerCase().includes(filterValue));
   }
 
-  addReportingPlugin(reportingPlugin: string) {
+  addReportingPlugin(reportingPlugin: string | undefined) {
     this.addedReportingPlugins.push(this._filter(reportingPlugin)[0]);
   }
 
-  removeReportingPlugin(reportingPlugin: reportingPluginDummy) {
+  removeReportingPlugin(reportingPlugin: PluginPojo) {
     const index = this.addedReportingPlugins.indexOf(reportingPlugin);
 
     if (index >= 0) {
@@ -90,7 +75,7 @@ export class ReportingPluginsComponent implements OnInit {
     }
   }
 
-  openConfigureReportingPlugin(reportingPlugin: reportingPluginDummy, enterAnimationDuration: string, exitAnimationDuration: string): void {
+  openConfigureReportingPlugin(reportingPlugin: PluginPojo, enterAnimationDuration: string, exitAnimationDuration: string): void {
     this.dialog.open(ConfigureReportingPluginComponent, {
       width: '80%',
       height: '80%',

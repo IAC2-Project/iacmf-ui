@@ -1,13 +1,14 @@
 <h1 mat-dialog-title>Configure Compliance Rule</h1>
 <div mat-dialog-content>
   <div>
-    <h2>{{data.id}}</h2>
-    <h3>Parameters</h3>
+    <h4>Compliance Rule {{data.id}}</h4>
+    <h5>Description:</h5>
+    <p>{{data.description}}</p>
+    <h5>Parameters:</h5>
     <form>
       <div *ngFor="let parameter of data.parameters">
         <mat-form-field  appearance="fill">
-          {{parameter.name}}:<br>
-          <input matInput placeholder="{{parameter.name}}" value="{{parameter.type}}">
+          <div>{{parameter.name}}:<input matInput placeholder="{{parameter.name}}" value="{{parameter.type}}"></div>
         </mat-form-field>
         <br>
       </div>

@@ -42,6 +42,7 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSliderModule} from "@angular/material/slider";
 import {MatDividerModule} from "@angular/material/divider";
 import { SelectProductionSytemComponent } from './production-systems/select-production-sytem/select-production-sytem.component';
+import { ConfigureFixingPluginComponent } from './compliance-issues/configure-fixing-plugin/configure-fixing-plugin.component';
 
 
 @NgModule({
@@ -62,7 +63,8 @@ import { SelectProductionSytemComponent } from './production-systems/select-prod
     ConfigureComlianceIssueComponent,
     ConfigureValidationPluginComponent,
     ConfigureReportingPluginComponent,
-    SelectProductionSytemComponent
+    SelectProductionSytemComponent,
+    ConfigureFixingPluginComponent
   ],
   imports: [
     BrowserModule,

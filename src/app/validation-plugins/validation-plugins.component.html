@@ -2,8 +2,8 @@
   <mat-form-field appearance="fill">
     <mat-label>Select an option</mat-label>
     <mat-select [(value)]="selected">
-      <mat-option *ngFor="let validationPlugin of allValidationPlugins" value="{{validationPlugin.id}}">
-        {{validationPlugin.id}}
+      <mat-option *ngFor="let validationPlugin of allValidationPlugins" value="{{validationPlugin.identifier}}">
+        {{validationPlugin.identifier}}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -11,7 +11,7 @@
   <div *ngFor="let validationPlugin of addedValidationPlugins">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>{{validationPlugin.id}}</mat-card-title>
+      <mat-card-title>{{validationPlugin.identifier}}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <p>

@@ -10,11 +10,7 @@ import {KVEntity} from "../gen";
 import {ConfigureComlianceRuleComponent} from "../compliance-rules/configure-compliance-rule/configure-compliance-rule.component";
 import {ConfigureValidationPluginComponent} from "./configure-validation-plugin/configure-validation-plugin.component";
 import {MatDialog} from "@angular/material/dialog";
-
-export interface ValidationPluginDummy {
-  id: string;
-  parameters: KVEntity[];
-}
+import {PluginPojo} from "iacmf-api";
 
 @Component({
   selector: 'app-validation-plugins',
@@ -27,70 +23,57 @@ export class ValidationPluginsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addedValidationPlugins: ValidationPluginDummy[] = [];
+  addedValidationPlugins: PluginPojo[] = [];
   // TODO this must be replaced by a proper representation of validationplugins and their inputs
 
 
-  allValidationPlugins: ValidationPluginDummy[] = [{
-    id : "ValidationPlugin1",
-    parameters: [
-      {
-      key: "someKey",
-      value: "someValue"
-      },
-      {
-        key: "someKey",
-        value: "someValue"
-      },
-      {
-        key: "someKey",
-        value: "someValue"
-      }
+  allValidationPlugins: PluginPojo[] = [{
+    identifier: "ValidationPlugin1",
+    pluginType: "VALIDATION",
+    requiredConfigurationEntryNames: [
+      "someKey",
+      "someValue",
+      "someKey2"
     ]
   },
     {
-      id : "ValidationPlugin2",
-      parameters: [
-        {
-          key: "someKey",
-          value: "someValue"
-        },
-        {
-          key: "someKey",
-          value: "someValue"
-        },
-        {
-          key: "someKey",
-          value: "someValue"
-        }
+      identifier: "ValidationPlugin2",
+      pluginType: "VALIDATION",
+      requiredConfigurationEntryNames: [
+        "someKey",
+        "someValue",
+        "someKey2"
       ]
     }];
 
-  selected = this.allValidationPlugins[0].id;
+  selected = this.allValidationPlugins[0].identifier;
 
   constructor(public dialog: MatDialog) {
 
   }
 
-  private _filter(value: string): ValidationPluginDummy[] {
+  private _filter(value: string | undefined): PluginPojo[] {
+    if (value == undefined) {
+      return [];
+    }
     const filterValue = value.toLowerCase();
 
-    return this.allValidationPlugins.filter(validationPlugin => validationPlugin.id.toLowerCase().includes(filterValue));
+    return this.allValidationPlugins.filter(validationPlugin => validationPlugin.identifier != undefined && validationPlugin.identifier.toLowerCase().includes(filterValue));
   }
 
-  addValidationPlugin(validationPluginDummy: string) {
-    this.addedValidationPlugins.push(this._filter(validationPluginDummy)[0]);
+  addValidationPlugin(validationPlugin: string | undefined) {
+    this.addedValidationPlugins.push(this._filter(validationPlugin)[0]);
   }
 
-  removeValidationPlugin(validationPluginDummy: ValidationPluginDummy) {
-    const index = this.addedValidationPlugins.indexOf(validationPluginDummy);
+  removeValidationPlugin(validationPlugin: PluginPojo) {
+    const index = this.addedValidationPlugins.indexOf(validationPlugin);
 
     if (index >= 0) {
       this.addedValidationPlugins.splice(index, 1);
     }
   }
 
-  openConfigureValidationPlugin(complianceRuleEntity: ValidationPluginDummy, enterAnimationDuration: string, exitAnimationDuration: string): void {
+  openConfigureValidationPlugin(complianceRuleEntity: PluginPojo, enterAnimationDuration: string, exitAnimationDuration: string): void {
     this.dialog.open(ConfigureValidationPluginComponent, {
       width: '80%',
       height: '80%',

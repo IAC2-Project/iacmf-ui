@@ -1,7 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {ValidationPluginDummy} from "../../validation-plugins/validation-plugins.component";
-import {reportingPluginDummy} from "../reporting-plugins.component";
+import {PluginPojo} from "iacmf-api";
 
 @Component({
   selector: 'app-configure-reporting-plugin',
@@ -10,7 +9,7 @@ import {reportingPluginDummy} from "../reporting-plugins.component";
 })
 export class ConfigureReportingPluginComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: reportingPluginDummy) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: PluginPojo) { }
 
   ngOnInit(): void {
   }

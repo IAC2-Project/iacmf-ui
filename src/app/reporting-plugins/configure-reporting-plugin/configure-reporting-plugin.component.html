@@ -1,13 +1,13 @@
 <h1 mat-dialog-title>Create Compliance Job</h1>
 <div mat-dialog-content>
   <div>
-    <h2>{{data.id}}</h2>
+    <h2>{{data.identifier}}</h2>
     <h3>Parameters</h3>
     <form>
-      <div *ngFor="let parameter of data.parameters">
+      <div *ngFor="let parameter of data.requiredConfigurationEntryNames">
         <mat-form-field  appearance="fill">
-          {{parameter.key}}:<br>
-          <input matInput placeholder="{{parameter.key}}" value="{{parameter.value}}">
+          {{parameter}}:<br>
+          <input matInput placeholder="{{parameter}}" value="{{parameter}}">
         </mat-form-field>
         <br>
       </div>

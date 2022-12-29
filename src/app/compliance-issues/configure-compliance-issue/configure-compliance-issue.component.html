@@ -1,15 +1,47 @@
-<h1 mat-dialog-title>Compliance Issue Details</h1>
+<h1 mat-dialog-title>Compliance Issue {{data.id}} Details</h1>
 <div mat-dialog-content>
   <div>
-    <h2>{{data.id}}</h2>
     <form>
       <div *ngIf="data != undefined && data.execution != undefined">
-        {{data.execution.id}}:<br>
+        Type: {{data.type}}:<br>
         Started: {{data.execution.startTime}}<br>
         State: {{data.execution.status}}
         <br>
       </div>
     </form>
+  </div>
+  <div>
+    <h4>Select Fixing Plugins</h4>
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Select a plugin</mat-label>
+        <mat-select [(value)]="selected">
+          <mat-option *ngFor="let fixingPlugin of fixingPlugins" [value]="fixingPlugin.identifier">
+            {{fixingPlugin.identifier}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-button (click)="addFixingPlugin(selected)">ADD</button>
+      <div *ngFor="let fixingPlugin of addedFixingPlugins">
+        <mat-card *ngIf="fixingPlugin.identifier != undefined">
+          <mat-card-header>
+            <mat-card-title>Fixing Plugin {{fixingPlugin.identifier}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+              A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
+              bred for hunting.
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button (click)="openConfigureFixingPluginDialog(fixingPlugin,'0ms', '0ms')">CONFIGURE</button>
+            <button mat-button (click)="removeFixingPlugin(fixingPlugin)">DELETE</button>
+          </mat-card-actions>
+        </mat-card>
+        <br>
+      </div>
+    </div>
   </div>
 </div>
 <div mat-dialog-actions>

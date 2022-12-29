@@ -1,7 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {RefinementPluginDummy} from "../../refinement-plugins/refinement-plugins.component";
-import {ValidationPluginDummy} from "../validation-plugins.component";
+import {PluginPojo} from "iacmf-api";
+
+
 
 @Component({
   selector: 'app-configure-validation-plugin',
@@ -10,7 +11,7 @@ import {ValidationPluginDummy} from "../validation-plugins.component";
 })
 export class ConfigureValidationPluginComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: ValidationPluginDummy) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: PluginPojo) { }
 
   ngOnInit(): void {
   }

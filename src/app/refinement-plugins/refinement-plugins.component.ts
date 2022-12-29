@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
-import { FormControl } from '@angular/forms';
+import {FormControl} from '@angular/forms';
 import {Observable} from "rxjs";
 import {MatChipInputEvent} from "@angular/material/chips";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
@@ -9,12 +9,7 @@ import {async} from "rxjs";
 import {CreateCompliancejobDialogComponent} from "../compliancejobs/create-compliancejob-dialog/create-compliancejob-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfigureRefinementPluginComponent} from "./configure-refinement-plugin/configure-refinement-plugin.component";
-import {KVEntity} from "iacmf-api";
-
-export interface RefinementPluginDummy {
-  id: string;
-  parameters: KVEntity[];
-}
+import {KVEntity, PluginPojo} from "iacmf-api";
 
 @Component({
   selector: 'app-refinement-plugins',
@@ -27,59 +22,47 @@ export class RefinementPluginsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addedRefinementPlugins: RefinementPluginDummy[] = [];
+  addedRefinementPlugins: PluginPojo[] = [];
   // TODO this must be replaced by a proper representation of refinementplugins and their inputs
 
 
-  allRefinmentPlugins2: RefinementPluginDummy[] = [{
-    id : "RefinmentPlugin1",
-    parameters: [
-      {
-      key: "someKey",
-      value: "someValue"
-      },
-      {
-        key: "someKey2",
-        value: "someValue"
-      },
-      {
-        key: "someKey3",
-        value: "someValue"
-      }
+  allRefinmentPlugins2: PluginPojo[] = [{
+    identifier: "RefinmentPlugin1",
+    pluginType: "MODEL_REFINEMENT",
+    requiredConfigurationEntryNames: [
+      "someKey",
+      "someValue",
+      "someKey2"
     ]
   },
     {
-      id : "RefinmentPlugin2",
-      parameters: [
-        {
-          key: "someKey",
-          value: "someValue"
-        },
-        {
-          key: "someKey5",
-          value: "someValue"
-        },
-        {
-          key: "someKey4",
-          value: "someValue"
-        }
+      identifier: "RefinmentPlugin2",
+      pluginType: "MODEL_REFINEMENT",
+      requiredConfigurationEntryNames: [
+        "someKey",
+        "someValue",
+        "someKey2"
       ]
     }];
-  selected = this.allRefinmentPlugins2[0].id;
+  selected = this.allRefinmentPlugins2[0].identifier;
 
   constructor(public dialog: MatDialog) {
 
   }
 
 
-
-  private _filter(value: string): RefinementPluginDummy[] {
+  private _filter(value: string | undefined): PluginPojo[] {
+    if (value == undefined) {
+      return [];
+    }
     const filterValue = value.toLowerCase();
 
-    return this.allRefinmentPlugins2.filter(refinementPlugin => refinementPlugin.id.toLowerCase().includes(filterValue));
+    return this.allRefinmentPlugins2.filter(refinementPlugin =>
+      refinementPlugin.identifier != undefined && refinementPlugin.identifier.toLowerCase().includes(filterValue)
+    );
   }
 
-  openConfigureRefinementPluginDialog(refinementPlugin: RefinementPluginDummy, enterAnimationDuration: string, exitAnimationDuration: string): void {
+  openConfigureRefinementPluginDialog(refinementPlugin: PluginPojo, enterAnimationDuration: string, exitAnimationDuration: string): void {
     this.dialog.open(ConfigureRefinementPluginComponent, {
       width: '80%',
       height: '80%',
@@ -89,11 +72,11 @@ export class RefinementPluginsComponent implements OnInit {
     });
   }
 
-  addRefinementPlugin(refinementPluginDummy: string) {
+  addRefinementPlugin(refinementPluginDummy: string | undefined) {
     this.addedRefinementPlugins.push(this._filter(refinementPluginDummy)[0]);
   }
 
-  deleteMatCard(refinementPluginDummy: RefinementPluginDummy) {
+  removeRefinementPlugin(refinementPluginDummy: PluginPojo) {
     const index = this.addedRefinementPlugins.indexOf(refinementPluginDummy);
 
     if (index >= 0) {

@@ -2,8 +2,8 @@
   <mat-form-field appearance="fill">
     <mat-label>Select an option</mat-label>
     <mat-select [(value)]="selected">
-      <mat-option *ngFor="let refinementPlugin of allRefinmentPlugins2" value="{{refinementPlugin.id}}">
-        {{refinementPlugin.id}}
+      <mat-option *ngFor="let refinementPlugin of allRefinmentPlugins2" value="{{refinementPlugin.identifier}}">
+        {{refinementPlugin.identifier}}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -11,7 +11,7 @@
   <div *ngFor="let refinementPlugin of addedRefinementPlugins">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>{{refinementPlugin.id}}</mat-card-title>
+      <mat-card-title>{{refinementPlugin.identifier}}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <p>
@@ -22,7 +22,7 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-button (click)="openConfigureRefinementPluginDialog(refinementPlugin,'0ms', '0ms')">CONFIGURE</button>
-      <button mat-button (click)="deleteMatCard(refinementPlugin)">DELETE</button>
+      <button mat-button (click)="removeRefinementPlugin(refinementPlugin)">DELETE</button>
     </mat-card-actions>
   </mat-card>
   <br>

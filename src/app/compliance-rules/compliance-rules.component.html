@@ -2,8 +2,8 @@
   <mat-form-field appearance="fill">
     <mat-label>Select an option</mat-label>
     <mat-select [(value)]="selected">
-      <mat-option *ngFor="let complianceRule of complianceRules">
-        {{complianceRule.id}}
+      <mat-option *ngFor="let complianceRule of complianceRules" [value]="complianceRule.id">
+        Rule {{complianceRule.id}}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -11,7 +11,7 @@
   <div *ngFor="let complianceRule of addedcomplianceRulesPlugins">
   <mat-card *ngIf="complianceRule.id != undefined">
     <mat-card-header>
-      <mat-card-title>{{complianceRule.id}}</mat-card-title>
+      <mat-card-title>Compliance Rule {{complianceRule.id}}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <p>
