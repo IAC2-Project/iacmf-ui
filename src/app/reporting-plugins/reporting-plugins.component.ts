@@ -6,7 +6,6 @@ import {MatChipInputEvent} from "@angular/material/chips";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {map, startWith} from 'rxjs/operators';
 import {async} from "rxjs";
-import {KVEntity} from "../gen";
 import {ConfigureValidationPluginComponent} from "../validation-plugins/configure-validation-plugin/configure-validation-plugin.component";
 import {ConfigureReportingPluginComponent} from "./configure-reporting-plugin/configure-reporting-plugin.component";
 import {MatDialog} from "@angular/material/dialog";

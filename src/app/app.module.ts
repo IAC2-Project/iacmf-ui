@@ -43,6 +43,7 @@ import {MatSliderModule} from "@angular/material/slider";
 import {MatDividerModule} from "@angular/material/divider";
 import { SelectProductionSytemComponent } from './production-systems/select-production-sytem/select-production-sytem.component';
 import { ConfigureFixingPluginComponent } from './compliance-issues/configure-fixing-plugin/configure-fixing-plugin.component';
+import {MatInputModule} from "@angular/material/input";
 
 
 @NgModule({
@@ -75,6 +76,7 @@ import { ConfigureFixingPluginComponent } from './compliance-issues/configure-fi
     MatCardModule,
     MatMenuModule,
     MatIconModule,
+    MatInputModule,
     MatButtonModule,
     MatAutocompleteModule,
     MatChipsModule,

@@ -6,7 +6,6 @@ import {MatChipInputEvent} from "@angular/material/chips";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {map, startWith} from 'rxjs/operators';
 import {async} from "rxjs";
-import {KVEntity} from "../gen";
 import {ConfigureRefinementPluginComponent} from "../refinement-plugins/configure-refinement-plugin/configure-refinement-plugin.component";
 import {ComplianceRuleEntity} from "iacmf-api";
 import {MatDialog} from "@angular/material/dialog";

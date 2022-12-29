@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ComplianceJobEntity, KVEntity, ProductionSystemEntity} from "../../gen";
+import {ComplianceJobEntity, KVEntity, ProductionSystemEntity} from "iacmf-api";
 
 @Component({
   selector: 'app-select-production-sytem',

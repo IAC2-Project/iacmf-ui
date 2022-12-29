@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {PluginPojo} from "../../gen";
+import {PluginPojo} from "iacmf-api";
 
 @Component({
   selector: 'app-configure-refinement-plugin',

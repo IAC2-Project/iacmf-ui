@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
-import {ComplianceJobEntity, KVEntity, ProductionSystemEntity} from "../gen";
+import {KVEntity, ProductionSystemEntity} from "iacmf-api";
 import {CreateProductionSystemDialogComponent} from "./create-production-system-dialog/create-production-system-dialog.component";
+import {MatTable} from "@angular/material/table";
 
 // EXAMPLE DATA FOR THE UI MOCK
 const ELEMENT_DATA: ProductionSystemEntity[] = [
@@ -25,18 +26,28 @@ const ELEMENT_DATA: ProductionSystemEntity[] = [
 export class ProductionSystemsComponent implements OnInit {
 
 
-  ngOnInit(): void {
-  }
   displayedColumns = ['id', 'isDeleted', 'iacTechnologyName'];
   dataSource = ELEMENT_DATA;
+  @ViewChild(MatTable) table: MatTable<ProductionSystemEntity> | undefined;
 
-  constructor(public dialog: MatDialog) {}
+  ngOnInit(): void {
+  }
+
+  constructor(public dialog: MatDialog) {
+  }
 
   openNewSystemDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(CreateProductionSystemDialogComponent, {
-      width: '250px',
+    const dialogRef = this.dialog.open(CreateProductionSystemDialogComponent, {
       enterAnimationDuration,
-      exitAnimationDuration,
+      exitAnimationDuration
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.dataSource.push(result.data)
+      if (this.table != undefined) {
+        this.table.renderRows();
+      }
+
     });
   }
 
