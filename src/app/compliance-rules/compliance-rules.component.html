@@ -2,7 +2,7 @@
   <mat-form-field appearance="fill">
     <mat-label>Select an option</mat-label>
     <mat-select [(value)]="selected">
-      <mat-option *ngFor="let complianceRule of complianceRulesPluginDummies" value="{{complianceRule.id}}">
+      <mat-option *ngFor="let complianceRule of complianceRules" value="{{complianceRule.id}}">
         {{complianceRule.id}}
       </mat-option>
     </mat-select>

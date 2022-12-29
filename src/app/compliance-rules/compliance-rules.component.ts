@@ -12,11 +12,6 @@ import {ComplianceRuleEntity} from "iacmf-api";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfigureComlianceRuleComponent} from "./configure-compliance-rule/configure-compliance-rule.component";
 
-export interface complianceRulesPluginDummy {
-  id: string;
-  parameters: KVEntity[];
-}
-
 @Component({
   selector: 'app-compliance-rules',
   templateUrl: './compliance-rules.component.html',
@@ -28,69 +23,34 @@ export class ComplianceRulesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addedcomplianceRulesPlugins: complianceRulesPluginDummy[] = [];
+  addedcomplianceRulesPlugins: ComplianceRuleEntity[] = [];
 
-  // TODO this must be replaced by a proper representation of complianceRulesplugins and their inputs
-  complianceRulesPluginDummies: complianceRulesPluginDummy[] = [{
-    id : "ComplianceRUle1",
-    parameters: [
-      {
-      key: "someKey",
-      value: "someValue"
-      },
-      {
-        key: "someKey",
-        value: "someValue"
-      },
-      {
-        key: "someKey",
-        value: "someValue"
-      }
-    ]
-  },
-    {
-      id : "ComplianceRUle1",
-      parameters: [
-        {
-          key: "someKey",
-          value: "someValue"
-        },
-        {
-          key: "someKey",
-          value: "someValue"
-        },
-        {
-          key: "someKey",
-          value: "someValue"
-        }
-      ]
-    }];
+  // TODO here we need to load the actual data from the API
+  complianceRules: ComplianceRuleEntity[] = this.getDummyComplianceRulesData();
 
-  selected = this.complianceRulesPluginDummies[0].id;
+  selected = this.complianceRules[0].id;
 
   constructor(public dialog: MatDialog) {
 
   }
 
-  addComplianceRule(complianceRuleDummy: string) {
-    this.addedcomplianceRulesPlugins.push(this._filter(complianceRuleDummy)[0]);
+  addComplianceRule(complianceRule: number) {
+    this.addedcomplianceRulesPlugins.push(this._filter(complianceRule)[0]);
   }
 
-  removeComplianceRule(complianceRuleDummy: complianceRulesPluginDummy) {
-    const index = this.addedcomplianceRulesPlugins.indexOf(complianceRuleDummy);
+  removeComplianceRule(complianceRule: ComplianceRuleEntity) {
+    const index = this.addedcomplianceRulesPlugins.indexOf(complianceRule);
 
     if (index >= 0) {
       this.addedcomplianceRulesPlugins.splice(index, 1);
     }
   }
 
-  private _filter(value: string): complianceRulesPluginDummy[] {
-    const filterValue = value.toLowerCase();
-
-    return this.complianceRulesPluginDummies.filter(complianceRulesPlugin => complianceRulesPlugin.id.toLowerCase().includes(filterValue));
+  private _filter(value: number): ComplianceRuleEntity[] {
+    return this.complianceRules.filter(complianceRule => complianceRule.id != undefined).filter(complianceRule => complianceRule.id == value);
   }
 
-  openConfigureComplianceRuleDialog(complianceRuleEntity: complianceRulesPluginDummy, enterAnimationDuration: string, exitAnimationDuration: string): void {
+  openConfigureComplianceRuleDialog(complianceRuleEntity: ComplianceRuleEntity, enterAnimationDuration: string, exitAnimationDuration: string): void {
     this.dialog.open(ConfigureComlianceRuleComponent, {
       width: '80%',
       height: '80%',
@@ -98,6 +58,49 @@ export class ComplianceRulesComponent implements OnInit {
       exitAnimationDuration,
       data: complianceRuleEntity,
     });
+  }
+
+  getDummyComplianceRulesData() : ComplianceRuleEntity[] {
+    return [{
+      id : 1,
+      type : "someType",
+      location : "somewhere",
+      isDeleted : false,
+      parameters: [
+        {
+          name: "someKey",
+          type: "INT"
+        },
+        {
+          name: "someKey",
+          type: "DECIMAL"
+        },
+        {
+          name: "someKey",
+          type: "STRING"
+        }
+      ]
+    },
+      {
+        id : 2,
+        type : "someType",
+        location : "somewhere",
+        isDeleted : false,
+        parameters: [
+          {
+            name: "someKey",
+            type: "STRING_LIST"
+          },
+          {
+            name: "someKey",
+            type: "BOOLEAN"
+          },
+          {
+            name: "someKey",
+            type: "INT"
+          }
+        ]
+      }];
   }
 
 }

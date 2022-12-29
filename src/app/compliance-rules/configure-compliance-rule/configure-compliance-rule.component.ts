@@ -1,7 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {ComplianceRuleEntity} from "../../gen";
-import {complianceRulesPluginDummy} from "../compliance-rules.component";
+import {ComplianceRuleEntity} from "iacmf-api";
 
 @Component({
   selector: 'app-compliance-rule-plugin',
@@ -10,7 +9,7 @@ import {complianceRulesPluginDummy} from "../compliance-rules.component";
 })
 export class ConfigureComlianceRuleComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: complianceRulesPluginDummy) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: ComplianceRuleEntity) { }
 
   ngOnInit(): void {
   }
