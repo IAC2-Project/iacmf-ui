@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {KVEntity, ProductionSystemEntity} from "iacmf-api";
+import {KVEntity, PluginPojo, PluginService, PluginUsageService, ProductionSystemEntity} from "iacmf-api";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {MatFormFieldModule} from "@angular/material/form-field";
 
@@ -14,14 +14,17 @@ export class CreateProductionSystemDialogComponent implements OnInit {
   description = "";
   properties = new Array<KVEntity>;
   newPropName = "";
+  allCreationPlugins = new Array<PluginPojo>();
+  selectedCreationPluginIdentifier: string | undefined;
 
   constructor(public dialogRef: MatDialogRef<CreateProductionSystemDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: ProductionSystemEntity[]) {
+              @Inject(MAT_DIALOG_DATA) public data: ProductionSystemEntity[],
+              public pluginService: PluginService) {
+    this.pluginService.getAllPlugins("MODEL_CREATION").forEach(result => result.forEach(pojo => this.allCreationPlugins.push(pojo)));
   }
 
   ngOnInit(): void {
   }
-
 
   createNewProperty() {
     this.properties.push({
@@ -34,7 +37,11 @@ export class CreateProductionSystemDialogComponent implements OnInit {
         iacTechnologyName: this.iacTechnologyName,
         isDeleted: false,
         description: this.description,
-        properties: this.properties
+        properties: this.properties,
+        modelCreationPluginUsage: {
+          pluginIdentifier: this.selectedCreationPluginIdentifier
+        }
       }});
   }
+
 }

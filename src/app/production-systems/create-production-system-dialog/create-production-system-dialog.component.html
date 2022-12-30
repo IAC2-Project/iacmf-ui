@@ -10,9 +10,19 @@
     </textarea>
 
   <br>
+
+  <h4>Select Model Creation Plugin:</h4>
+  <mat-select [(value)]="this.selectedCreationPluginIdentifier">
+    <mat-option *ngFor="let creationPlugin of allCreationPlugins" value="{{creationPlugin.identifier}}">
+      {{creationPlugin.identifier}}
+    </mat-option>
+  </mat-select>
+
   <h4>Add new Property definition:</h4>
   <input matInput type="text" [(ngModel)]="newPropName"/>
-  <button mat-button (click)="createNewProperty()" disabled="{{newPropName == undefined || newPropName.length == 0}}">Add Property</button>
+  <button mat-button (click)="createNewProperty()" disabled="{{newPropName == undefined || newPropName.length == 0}}">
+    Add Property
+  </button>
   <br>
   <h4>Properties:</h4>
   <div *ngFor="let property of properties">
