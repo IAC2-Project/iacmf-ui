@@ -3,13 +3,13 @@
 
   <mat-stepper  #stepper>
     <mat-step label="Production System">
-      <app-select-production-sytem></app-select-production-sytem>
+      <app-select-production-sytem (selectedProductionSystem)="productionSystemSelected($event)"></app-select-production-sytem>
     </mat-step>
     <mat-step label="Refinement">
       <app-refinement-plugins></app-refinement-plugins>
     </mat-step>
     <mat-step  label="Compliance Rules">
-      <app-compliance-rules></app-compliance-rules>
+      <app-compliance-rules [allowCreate]="false" [allowSelection]="true" [showAllRules]="false"></app-compliance-rules>
     </mat-step>
     <mat-step  label="Compliance Issue Fixing">
       <app-compliance-issues></app-compliance-issues>
@@ -35,5 +35,5 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>No</button>
-  <button mat-button mat-dialog-close cdkFocusInitial>Ok</button>
+  <button mat-button mat-dialog-close cdkFocusInitial (click)="storeComplianceJob()">Ok</button>
 </div>

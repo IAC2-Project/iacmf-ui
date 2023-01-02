@@ -1,0 +1,31 @@
+<h1 mat-dialog-title>Create Compliance Rule</h1>
+<div mat-dialog-content>
+  <div>
+
+    <h4>Location:</h4>
+    <input matInput type="text" [(ngModel)]="location"/>
+
+    <br>
+    <h4>Description:</h4>
+    <textarea matInput type="text" [(ngModel)]="description">
+    </textarea>
+
+    <br>
+
+    <h4>Add new Property definition:</h4>
+    <input matInput type="text" [(ngModel)]="newPropName"/>
+    <button mat-button (click)="createNewProperty()" disabled="{{newPropName == undefined || newPropName.length == 0}}">
+      Add Property
+    </button>
+    <br>
+    <h4>Properties:</h4>
+    <div *ngFor="let property of properties">
+      {{property.key}}:
+      <input matInput type="text" [(ngModel)]="property.value"/>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>No</button>
+  <button mat-button  cdkFocusInitial (click)="closeDialog()">Ok</button>
+</div>

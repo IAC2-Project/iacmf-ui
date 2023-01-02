@@ -6,7 +6,7 @@ import {MatChipInputEvent} from "@angular/material/chips";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {map, startWith} from 'rxjs/operators';
 import {async} from "rxjs";
-import {ConfigureComlianceRuleComponent} from "../compliance-rules/configure-compliance-rule/configure-compliance-rule.component";
+import {ConfigureComplianceRuleComponent} from "../compliance-rules/configure-compliance-rule/configure-compliance-rule.component";
 import {ConfigureValidationPluginComponent} from "./configure-validation-plugin/configure-validation-plugin.component";
 import {MatDialog} from "@angular/material/dialog";
 import {PluginPojo} from "iacmf-api";

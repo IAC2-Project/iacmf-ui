@@ -10,6 +10,7 @@ import {
 import {CreateProductionSystemDialogComponent} from "./create-production-system-dialog/create-production-system-dialog.component";
 import {MatTable} from "@angular/material/table";
 import {Observable} from "rxjs";
+import {Utils} from "../utils/utils";
 
 // EXAMPLE DATA FOR THE UI MOCK
 const ELEMENT_DATA: ProductionSystemEntity[] = []
@@ -29,7 +30,7 @@ export class ProductionSystemsComponent implements OnInit {
   ngOnInit(): void {
     this.productionSystemService.getCollectionResourceProductionsystementityGet1().subscribe(result => {
         result._embedded?.productionSystemEntities?.forEach(data => {
-          this.dataSource.push(this.toProductionSystemEntity(data))
+          this.dataSource.push(ProductionSystemsComponent.toProductionSystemEntity(data))
           if (this.table != undefined) {
             this.table.renderRows();
           }
@@ -61,10 +62,10 @@ export class ProductionSystemsComponent implements OnInit {
               iacTechnologyName: result.data.iacTechnologyName,
               isDeleted: result.data.isDeleted,
               properties: result.data.properties?.map((key: any) => String(key)),
-              modelCreationPluginUsage: this.getSelfLink(resp)
+              modelCreationPluginUsage: Utils.getLinkPluginUsage(resp)
             }
             this.productionSystemService.postCollectionResourceProductionsystementityPost(req).subscribe(resp => {
-              this.dataSource.push(this.toProductionSystemEntity(resp))
+              this.dataSource.push(ProductionSystemsComponent.toProductionSystemEntity(resp))
               if (this.table != undefined) {
                 this.table.renderRows();
               }
@@ -76,31 +77,9 @@ export class ProductionSystemsComponent implements OnInit {
     });
   }
 
-  getSelfLink(entityModelPluginUsage : EntityModelPluginUsageEntity) {
-    if (entityModelPluginUsage._links != undefined) {
-      if (entityModelPluginUsage._links["self"] != undefined) {
-        if(entityModelPluginUsage._links["self"].href != undefined) {
-          return entityModelPluginUsage._links["self"].href;
-        }
-      }
-    }
-    return "";
-  }
-
-  _getSelfLink(entityModelProductionSystemEntity : EntityModelProductionSystemEntity) {
-    if (entityModelProductionSystemEntity._links != undefined) {
-      if (entityModelProductionSystemEntity._links["self"] != undefined) {
-        if(entityModelProductionSystemEntity._links["self"].href != undefined) {
-          return entityModelProductionSystemEntity._links["self"].href;
-        }
-      }
-    }
-    return "";
-  }
-
-  toProductionSystemEntity(entityModelProductionSystemEntity : EntityModelProductionSystemEntity) {
+  public static toProductionSystemEntity(entityModelProductionSystemEntity : EntityModelProductionSystemEntity) {
     return {
-      id: Number(this._getSelfLink(entityModelProductionSystemEntity).slice(-1)[0]),
+      id: Number(Utils.getLinkProductionSystem(entityModelProductionSystemEntity).slice(-1)[0]),
       isDeleted: entityModelProductionSystemEntity.isDeleted,
       description: entityModelProductionSystemEntity.description,
       iacTechnologyName: entityModelProductionSystemEntity.iacTechnologyName,

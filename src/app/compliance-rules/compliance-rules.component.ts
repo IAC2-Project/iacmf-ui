@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import { FormControl } from '@angular/forms';
 import {Observable} from "rxjs";
@@ -7,9 +7,11 @@ import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {map, startWith} from 'rxjs/operators';
 import {async} from "rxjs";
 import {ConfigureRefinementPluginComponent} from "../refinement-plugins/configure-refinement-plugin/configure-refinement-plugin.component";
-import {ComplianceRuleEntity} from "iacmf-api";
+import {ComplianceRuleEntity, ComplianceRulesService, EntityModelComplianceRuleEntity} from "iacmf-api";
 import {MatDialog} from "@angular/material/dialog";
-import {ConfigureComlianceRuleComponent} from "./configure-compliance-rule/configure-compliance-rule.component";
+import {ConfigureComplianceRuleComponent} from "./configure-compliance-rule/configure-compliance-rule.component";
+import {Utils} from "../utils/utils";
+import {CreateComplianceRuleComponent} from "./create-compliance-rule/create-compliance-rule.component";
 
 @Component({
   selector: 'app-compliance-rules',
@@ -22,26 +24,48 @@ export class ComplianceRulesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addedcomplianceRulesPlugins: ComplianceRuleEntity[] = [];
+  addedComplianceRules: ComplianceRuleEntity[] = [];
 
   // TODO here we need to load the actual data from the API
-  complianceRules: ComplianceRuleEntity[] = this.getDummyComplianceRulesData();
+  complianceRules: ComplianceRuleEntity[] = [];
 
-  selected = this.complianceRules[0].id;
+  selected = undefined;
 
-  constructor(public dialog: MatDialog) {
+  @Input("allowCreate") allowCreate: boolean = false;
+  @Input("allowSelection") allowSelection: boolean = false;
+  @Input("showAllRules") showAllRules: boolean = false;
 
+  constructor(public dialog: MatDialog, public complianceRulesService : ComplianceRulesService) {
+    this.complianceRulesService.getCollectionResourceComplianceruleentityGet1().subscribe(resp =>
+    resp._embedded?.complianceRuleEntities?.forEach(compRule => {
+      this.complianceRules.push(ComplianceRulesComponent.toComplianceRuleEntity(compRule))
+    }))
+  }
+
+  public static toComplianceRuleEntity(complianceRule : EntityModelComplianceRuleEntity) {
+    return {
+      id: Number(Utils.getLinkComplianceRule(complianceRule).split("/").slice(-1)[0]),
+      type: complianceRule.type,
+      location: complianceRule.location,
+      description: complianceRule.description,
+      isDeleted: complianceRule.isDeleted,
+    }
   }
 
   addComplianceRule(complianceRule: number | undefined) {
-    this.addedcomplianceRulesPlugins.push(this._filter(complianceRule)[0]);
+    this.addedComplianceRules.push(this._filter(complianceRule)[0]);
+  }
+
+  deleteComplianceRule(complianceRule: ComplianceRuleEntity) {
+    /// TODO THIS SHOULD DELETE THE RULE IN THE DATABASE
+
   }
 
   removeComplianceRule(complianceRule: ComplianceRuleEntity) {
-    const index = this.addedcomplianceRulesPlugins.indexOf(complianceRule);
+    const index = this.addedComplianceRules.indexOf(complianceRule);
 
     if (index >= 0) {
-      this.addedcomplianceRulesPlugins.splice(index, 1);
+      this.addedComplianceRules.splice(index, 1);
     }
   }
 
@@ -50,7 +74,7 @@ export class ComplianceRulesComponent implements OnInit {
   }
 
   openConfigureComplianceRuleDialog(complianceRuleEntity: ComplianceRuleEntity, enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(ConfigureComlianceRuleComponent, {
+    this.dialog.open(ConfigureComplianceRuleComponent, {
       width: '80%',
       height: '80%',
       enterAnimationDuration,
@@ -59,47 +83,20 @@ export class ComplianceRulesComponent implements OnInit {
     });
   }
 
-  getDummyComplianceRulesData() : ComplianceRuleEntity[] {
-    return [{
-      id : 1,
-      type : "someType",
-      location : "somewhere",
-      isDeleted : false,
-      parameters: [
-        {
-          name: "someKey",
-          type: "INT"
-        },
-        {
-          name: "someKey",
-          type: "DECIMAL"
-        },
-        {
-          name: "someKey",
-          type: "STRING"
-        }
-      ]
-    },
-      {
-        id : 2,
-        type : "someType",
-        location : "somewhere",
-        isDeleted : false,
-        parameters: [
-          {
-            name: "someKey",
-            type: "STRING_LIST"
-          },
-          {
-            name: "someKey",
-            type: "BOOLEAN"
-          },
-          {
-            name: "someKey",
-            type: "INT"
-          }
-        ]
-      }];
+  openCreateComplianceRuleDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    const dialogRef = this.dialog.open(CreateComplianceRuleComponent, {
+      width: '80%',
+      height: '80%',
+      enterAnimationDuration,
+      exitAnimationDuration,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+
+      // TODO here we store the compliance Rule data
+
+    });
   }
 
 }

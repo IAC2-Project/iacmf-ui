@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {ComplianceJobEntity, KVEntity, ProductionSystemEntity} from "iacmf-api";
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {ComplianceJobEntity, KVEntity, ProductionSystemEntity, ProductionSystemService} from "iacmf-api";
+import {ProductionSystemsComponent} from "../production-systems.component";
 
 @Component({
   selector: 'app-select-production-sytem',
@@ -8,31 +9,25 @@ import {ComplianceJobEntity, KVEntity, ProductionSystemEntity} from "iacmf-api";
 })
 export class SelectProductionSytemComponent implements OnInit {
 
-   productionSystemEntities: ProductionSystemEntity[] = this.getDummyProductionSystemsData();
+  productionSystemEntities: ProductionSystemEntity[] = [];
 
-  selected = this.productionSystemEntities[0].id;
+  selected = -1;
 
-  constructor() { }
+  @Output("selectedProductionSystem")
+  selectedProductionSystem = new EventEmitter();
+
+  constructor(public productionSystemService: ProductionSystemService) {
+  }
 
   ngOnInit(): void {
+    this.productionSystemService.getCollectionResourceProductionsystementityGet1().subscribe(resp => resp._embedded?.productionSystemEntities?.forEach(data => this.productionSystemEntities.push(ProductionSystemsComponent.toProductionSystemEntity(data))))
   }
 
   _filter(id: number | undefined) {
     return this.productionSystemEntities.filter(ps => ps.id == id);
   }
 
-  getDummyProductionSystemsData() : ProductionSystemEntity[] {
-    return [
-      {
-        id: 1,
-        isDeleted: false,
-        iacTechnologyName: "OpenTOSCA", description: "someProdSystem", properties: new Array<KVEntity>(),
-      },
-      {
-        id: 2,
-        isDeleted: false,
-        iacTechnologyName: "OpenTOSCA", description: "someProdSystem", properties: new Array<KVEntity>(),
-      }
-    ];
+  emitProductionSystem() {
+    this.selectedProductionSystem.emit(this.selected);
   }
 }

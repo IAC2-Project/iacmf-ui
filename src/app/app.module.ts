@@ -19,7 +19,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTableModule} from "@angular/material/table";
 import {MatDialogModule} from "@angular/material/dialog";
 import {CreateProductionSystemDialogComponent} from './production-systems/create-production-system-dialog/create-production-system-dialog.component';
-import {CompliancejobsComponent} from './compliancejobs/compliancejobs.component';
+import {ComplianceJobsComponent} from './compliancejobs/compliance-jobs.component';
 import {CreateCompliancejobDialogComponent} from './compliancejobs/create-compliancejob-dialog/create-compliancejob-dialog.component';
 import {MatStepperModule} from "@angular/material/stepper";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -33,7 +33,7 @@ import {ValidationPluginsComponent} from "./validation-plugins/validation-plugin
 import {ReportingPluginsComponent} from "./reporting-plugins/reporting-plugins.component";
 import {ComplianceRulesComponent} from "./compliance-rules/compliance-rules.component";
 import { ConfigureRefinementPluginComponent } from './refinement-plugins/configure-refinement-plugin/configure-refinement-plugin.component';
-import {ConfigureComlianceRuleComponent} from "./compliance-rules/configure-compliance-rule/configure-compliance-rule.component";
+import {ConfigureComplianceRuleComponent} from "./compliance-rules/configure-compliance-rule/configure-compliance-rule.component";
 import {ConfigureComlianceIssueComponent} from "./compliance-issues/configure-compliance-issue/configure-compliance-issue.component";
 import {MatSelectModule} from "@angular/material/select";
 import { ConfigureValidationPluginComponent } from './validation-plugins/configure-validation-plugin/configure-validation-plugin.component';
@@ -44,6 +44,8 @@ import {MatDividerModule} from "@angular/material/divider";
 import { SelectProductionSytemComponent } from './production-systems/select-production-sytem/select-production-sytem.component';
 import { ConfigureFixingPluginComponent } from './compliance-issues/configure-fixing-plugin/configure-fixing-plugin.component';
 import {MatInputModule} from "@angular/material/input";
+import { ConfigureCheckingPluginComponent } from './compliance-rules/configure-checking-plugin/configure-checking-plugin.component';
+import { CreateComplianceRuleComponent } from './compliance-rules/create-compliance-rule/create-compliance-rule.component';
 
 
 @NgModule({
@@ -52,7 +54,7 @@ import {MatInputModule} from "@angular/material/input";
     ProductionSystemsComponent,
     TriggersComponent,
     CreateProductionSystemDialogComponent,
-    CompliancejobsComponent,
+    ComplianceJobsComponent,
     CreateCompliancejobDialogComponent,
     RefinementPluginsComponent,
     ComplianceIssuesComponent,
@@ -60,12 +62,14 @@ import {MatInputModule} from "@angular/material/input";
     ReportingPluginsComponent,
     ComplianceRulesComponent,
     ConfigureRefinementPluginComponent,
-    ConfigureComlianceRuleComponent,
+    ConfigureComplianceRuleComponent,
     ConfigureComlianceIssueComponent,
     ConfigureValidationPluginComponent,
     ConfigureReportingPluginComponent,
     SelectProductionSytemComponent,
-    ConfigureFixingPluginComponent
+    ConfigureFixingPluginComponent,
+    ConfigureCheckingPluginComponent,
+    CreateComplianceRuleComponent
   ],
   imports: [
     BrowserModule,

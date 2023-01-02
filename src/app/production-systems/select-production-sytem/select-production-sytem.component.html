@@ -2,7 +2,7 @@
   <mat-form-field appearance="fill">
     <mat-label>Select a Production System: </mat-label>
     <mat-select [(value)]="this.selected">
-      <mat-option *ngFor="let productionSystem of productionSystemEntities" value="{{productionSystem.id}}">
+      <mat-option *ngFor="let productionSystem of productionSystemEntities" value="{{productionSystem.id}}" (click)="emitProductionSystem()">
         {{productionSystem.id}}
       </mat-option>
     </mat-select>

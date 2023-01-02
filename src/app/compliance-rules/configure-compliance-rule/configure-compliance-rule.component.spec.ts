@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConfigureComlianceRuleComponent } from './configure-compliance-rule.component';
+import { ConfigureComplianceRuleComponent } from './configure-compliance-rule.component';
 
 describe('ConfigureRefinementPluginComponent', () => {
-  let component: ConfigureComlianceRuleComponent;
-  let fixture: ComponentFixture<ConfigureComlianceRuleComponent>;
+  let component: ConfigureComplianceRuleComponent;
+  let fixture: ComponentFixture<ConfigureComplianceRuleComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ConfigureComlianceRuleComponent ]
+      declarations: [ ConfigureComplianceRuleComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ConfigureComlianceRuleComponent);
+    fixture = TestBed.createComponent(ConfigureComplianceRuleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

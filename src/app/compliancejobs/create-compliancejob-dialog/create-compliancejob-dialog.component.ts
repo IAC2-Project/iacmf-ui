@@ -1,5 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
+import {ComplianceJobService} from "iacmf-api";
+import {ProductionSystemService} from "iacmf-api";
+import {ProductionSystemsComponent} from "../../production-systems/production-systems.component";
+import {Utils} from "../../utils/utils";
 
 @Component({
   selector: 'app-create-compliancejob-dialog',
@@ -8,15 +12,34 @@ import {FormBuilder, Validators} from "@angular/forms";
 })
 export class CreateCompliancejobDialogComponent implements OnInit {
 
+  selectedProductionSystem = -1;
+
   ngOnInit(): void {
   }
 
-  constructor(private _formBuilder: FormBuilder) {}
+  constructor(public complianceJobService : ComplianceJobService, public productionSystemService : ProductionSystemService) {}
 
-  firstFormGroup = this._formBuilder.group({
-    firstCtrl: ['', Validators.required],
-  });
-  secondFormGroup = this._formBuilder.group({
-    secondCtrl: ['', Validators.required],
-  });
+  productionSystemSelected($event: any) {
+    this.selectedProductionSystem = $event;
+  }
+
+  storeComplianceJob() {
+
+    if (this.selectedProductionSystem == -1) {
+      // TODO create a generic warning dialog and call it here with a meaningful message
+      console.log("Select a production system")
+      return;
+    }
+
+    this.productionSystemService.getCollectionResourceProductionsystementityGet1().subscribe(resp => {
+      resp._embedded?.productionSystemEntities?.filter(val => ProductionSystemsComponent.toProductionSystemEntity(val).id == this.selectedProductionSystem).forEach(resp =>
+      this.complianceJobService.postCollectionResourceCompliancejobentityPost({
+        productionSystem: Utils.getLinkProductionSystem(resp)
+      }).subscribe(resp => {
+        console.log(resp)
+      })
+      )
+    })
+
+  }
 }

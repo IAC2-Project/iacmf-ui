@@ -29,10 +29,10 @@ const ELEMENT_DATA: ComplianceJobEntity[] = [
 
 @Component({
   selector: 'app-compliancejobs',
-  templateUrl: './compliancejobs.component.html',
-  styleUrls: ['./compliancejobs.component.css']
+  templateUrl: './compliance-jobs.component.html',
+  styleUrls: ['./compliance-jobs.component.css']
 })
-export class CompliancejobsComponent implements OnInit {
+export class ComplianceJobsComponent implements OnInit {
 
 
   ngOnInit(): void {
