@@ -37,22 +37,14 @@ export class ComplianceRulesComponent implements OnInit {
 
   @Output("selectedComplianceRules") selectedComplianceRules = new EventEmitter();
 
-  constructor(public dialog: MatDialog, public complianceRulesService : ComplianceRulesService) {
+  constructor(public dialog: MatDialog, public complianceRulesService : ComplianceRulesService, public utils: Utils) {
     this.complianceRulesService.getCollectionResourceComplianceruleentityGet1().subscribe(resp =>
     resp._embedded?.complianceRuleEntities?.forEach(compRule => {
-      this.complianceRules.push(ComplianceRulesComponent.toComplianceRuleEntity(compRule))
+      this.complianceRules.push(this.utils.toComplianceRuleEntity(compRule))
     }))
   }
 
-  public static toComplianceRuleEntity(complianceRule : EntityModelComplianceRuleEntity) {
-    return {
-      id: Number(Utils.getLinkComplianceRule(complianceRule).split("/").slice(-1)[0]),
-      type: complianceRule.type,
-      location: complianceRule.location,
-      description: complianceRule.description,
-      isDeleted: complianceRule.isDeleted,
-    }
-  }
+
 
   addComplianceRule(complianceRule: number | undefined) {
     this.addedComplianceRules.push(this._filter(complianceRule)[0]);
@@ -100,7 +92,7 @@ export class ComplianceRulesComponent implements OnInit {
           description: result.data.description,
           type: result.data.type,
         }).subscribe(resp => {
-          this.complianceRules.push(ComplianceRulesComponent.toComplianceRuleEntity(resp))
+          this.complianceRules.push(this.utils.toComplianceRuleEntity(resp))
         })
     });
   }
@@ -111,7 +103,7 @@ export class ComplianceRulesComponent implements OnInit {
       isDeleted: complianceRule.isDeleted,
       description: complianceRule.description,
       location: complianceRule.location,
-      id: Number(Utils.getLinkComplianceRule(complianceRule).split("/").slice(-1)[0]),
+      id: Number(this.utils.getLinkComplianceRule(complianceRule).split("/").slice(-1)[0]),
     }
   }
   emitSelectedComplianceRules() {

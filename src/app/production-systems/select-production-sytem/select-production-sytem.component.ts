@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ComplianceJobEntity, KVEntity, ProductionSystemEntity, ProductionSystemService} from "iacmf-api";
 import {ProductionSystemsComponent} from "../production-systems.component";
+import {Utils} from "../../utils/utils";
 
 @Component({
   selector: 'app-select-production-sytem',
@@ -16,11 +17,11 @@ export class SelectProductionSytemComponent implements OnInit {
   @Output("selectedProductionSystem")
   selectedProductionSystem = new EventEmitter();
 
-  constructor(public productionSystemService: ProductionSystemService) {
+  constructor(public productionSystemService: ProductionSystemService, public utils: Utils) {
   }
 
   ngOnInit(): void {
-    this.productionSystemService.getCollectionResourceProductionsystementityGet1().subscribe(resp => resp._embedded?.productionSystemEntities?.forEach(data => this.productionSystemEntities.push(ProductionSystemsComponent.toProductionSystemEntity(data))))
+    this.productionSystemService.getCollectionResourceProductionsystementityGet1().subscribe(resp => resp._embedded?.productionSystemEntities?.forEach(data => this.productionSystemEntities.push(this.utils.toProductionSystemEntity(data))))
   }
 
   _filter(id: number | undefined) {

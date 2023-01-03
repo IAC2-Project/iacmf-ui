@@ -48,6 +48,7 @@ import { ConfigureCheckingPluginComponent } from './compliance-rules/configure-c
 import { CreateComplianceRuleComponent } from './compliance-rules/create-compliance-rule/create-compliance-rule.component';
 import { KvComponent } from './kv/kv.component';
 import { ConfigureProductionSystemDialogComponent } from './production-systems/configure-production-system-dialog/configure-production-system-dialog.component';
+import {Utils} from "./utils/utils";
 
 
 @NgModule({

@@ -35,13 +35,13 @@ export class ProductionSystemsComponent implements OnInit {
     this.productionSystemEntities = []
     this.productionSystemService.getCollectionResourceProductionsystementityGet1().subscribe(result => {
         result._embedded?.productionSystemEntities?.forEach(data => {
-          this.productionSystemEntities.push(ProductionSystemsComponent.toProductionSystemEntity(data))
+          this.productionSystemEntities.push(this.utils.toProductionSystemEntity(data))
         })
       }
     )
   }
 
-  constructor(public dialog: MatDialog, public productionSystemService: ProductionSystemService, public pluginUsageService: PluginUsageService, public kvEntityService : KeyValueService) {
+  constructor(public dialog: MatDialog, public utils: Utils, public productionSystemService: ProductionSystemService, public pluginUsageService: PluginUsageService, public kvEntityService : KeyValueService) {
 
   }
 
@@ -63,15 +63,15 @@ export class ProductionSystemsComponent implements OnInit {
             let req = {
               iacTechnologyName: result.data.iacTechnologyName,
               isDeleted: result.data.isDeleted,
-              properties: result.data.properties?.map((key: KVEntity) => Utils.getLinkEntityKV(key, this.kvEntityService)),
-              modelCreationPluginUsage: Utils.getLinkPluginUsage(resp)
+              properties: result.data.properties?.map((key: KVEntity) => this.utils.getLinkEntityKV(key)),
+              modelCreationPluginUsage: this.utils.getLinkPluginUsage(resp)
             }
             this.productionSystemService.postCollectionResourceProductionsystementityPost(req).subscribe(resp => {
-              this.productionSystemEntities.push(ProductionSystemsComponent.toProductionSystemEntity(resp))
+              this.productionSystemEntities.push(this.utils.toProductionSystemEntity(resp))
               // I'm gonna be honest here, it is not smooth
               // it would be easier if one could create an "empty" production service and then deliver the data from the dialog at once
               // now we have to create the KV entities out into the blue, and then link them
-              KvComponent.linkKVEntitiesWithProductionSystem(result.data.properties, ProductionSystemsComponent.toProductionSystemEntity(resp), this.kvEntityService, this.productionSystemService)
+              this.utils.linkKVEntitiesWithProductionSystem(result.data.properties, this.utils.toProductionSystemEntity(resp), this.kvEntityService, this.productionSystemService)
               this.refreshProductionSystems()
             });
           }
@@ -79,15 +79,6 @@ export class ProductionSystemsComponent implements OnInit {
       }
 
     });
-  }
-
-  public static toProductionSystemEntity(entityModelProductionSystemEntity : EntityModelProductionSystemEntity) {
-    return {
-      id: Number(Utils.getLinkProductionSystem(entityModelProductionSystemEntity).slice(-1)[0]),
-      isDeleted: entityModelProductionSystemEntity.isDeleted,
-      description: entityModelProductionSystemEntity.description,
-      iacTechnologyName: entityModelProductionSystemEntity.iacTechnologyName,
-    }
   }
 
 
@@ -110,8 +101,8 @@ export class ProductionSystemsComponent implements OnInit {
               id: result.id,
               iacTechnologyName: result.data.iacTechnologyName,
               isDeleted: result.data.isDeleted,
-              properties: result.data.properties?.map((key: KVEntity) => Utils.getLinkEntityKV(key, this.kvEntityService)),
-              modelCreationPluginUsage: Utils.getLinkPluginUsage(resp)
+              properties: result.data.properties?.map((key: KVEntity) => this.utils.getLinkEntityKV(key)),
+              modelCreationPluginUsage: this.utils.getLinkPluginUsage(resp)
             }
             this.productionSystemService.putItemResourceProductionsystementityPut(result.id, req).subscribe(resp => {
               let index = this.productionSystemEntities.indexOf(productionSystem);
@@ -119,7 +110,7 @@ export class ProductionSystemsComponent implements OnInit {
               if (index != -1) {
                 this.productionSystemEntities.splice(index, 1);
               }
-              this.productionSystemEntities.push(ProductionSystemsComponent.toProductionSystemEntity(resp))
+              this.productionSystemEntities.push(this.utils.toProductionSystemEntity(resp))
             });
           }
         )

@@ -18,7 +18,7 @@ export class CreateCompliancejobDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  constructor(public complianceJobService : ComplianceJobService, public productionSystemService : ProductionSystemService) {}
+  constructor(public complianceJobService : ComplianceJobService, public productionSystemService : ProductionSystemService, public utils: Utils) {}
 
   productionSystemSelected($event: any) {
     this.selectedProductionSystem = $event;
@@ -37,9 +37,9 @@ export class CreateCompliancejobDialogComponent implements OnInit {
     }
 
     this.productionSystemService.getCollectionResourceProductionsystementityGet1().subscribe(resp => {
-      resp._embedded?.productionSystemEntities?.filter(val => ProductionSystemsComponent.toProductionSystemEntity(val).id == this.selectedProductionSystem).forEach(resp =>
+      resp._embedded?.productionSystemEntities?.filter(val => this.utils.toProductionSystemEntity(val).id == this.selectedProductionSystem).forEach(resp =>
       this.complianceJobService.postCollectionResourceCompliancejobentityPost({
-        productionSystem: Utils.getLinkProductionSystem(resp)
+        productionSystem: this.utils.getLinkProductionSystem(resp)
       }).subscribe(resp => {
         console.log(resp)
       })

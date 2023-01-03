@@ -23,7 +23,7 @@ export class KvComponent implements OnInit {
   @Output("keyValueEntities") keyValueEntitiesEventEmitter = new EventEmitter();
   newKeyName: string = "";
 
-  constructor(public kvService: KeyValueService) { }
+  constructor(public kvService: KeyValueService, public utils: Utils) { }
 
   ngOnInit(): void {
     if (this.keyNamesToCreate.length != 0 && this.keyValueEntities.length != 0) {
@@ -50,7 +50,7 @@ export class KvComponent implements OnInit {
       productionSystem: productionSystem,
       complianceIssue: complianceIssue
     }).subscribe(resp => {
-      this.keyValueEntities.push(this.toKeyValueEntity(resp))
+      this.keyValueEntities.push(this.utils.toKeyValueEntity(resp))
       this.emitKeyValueEntities()
     })
   }
@@ -67,30 +67,13 @@ export class KvComponent implements OnInit {
     }, 2000);
   }
 
-  public static linkKVEntitiesWithProductionSystem(kvEntities: KVEntity[], productionSystem: ProductionSystemEntity, kvService: KeyValueService, productionSystemService: ProductionSystemService) {
-    kvEntities.forEach(kv => kvService.createPropertyReferenceKventityPut(String(kv.id), {
-      _links: {
-          productionSystem: {
-            href: Utils.getLinkEntityProductionSystem(productionSystem, productionSystemService)
-          }
-      }
-    }).subscribe(resp => console.log(resp)))
 
-  }
 
   updateKVEntity(kv : KVEntity) {
     this.kvService.putItemResourceKventityPut(String(kv.id) , {
       key: kv.key,
       value: kv.value
     }).subscribe(resp => console.log(resp))
-  }
-
-  toKeyValueEntity(kvEntity : EntityModelKVEntity) : KVEntity {
-    return {
-      key: kvEntity.key,
-      value: kvEntity.value,
-      id: Number(Utils.getLinkKV(kvEntity).split("/").slice(-1)[0])
-    }
   }
 
   emitKeyValueEntities() {
