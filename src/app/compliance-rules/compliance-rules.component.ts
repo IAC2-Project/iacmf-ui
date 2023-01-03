@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import { FormControl } from '@angular/forms';
 import {Observable} from "rxjs";
@@ -34,6 +34,8 @@ export class ComplianceRulesComponent implements OnInit {
   @Input("allowCreate") allowCreate: boolean = false;
   @Input("allowSelection") allowSelection: boolean = false;
   @Input("showAllRules") showAllRules: boolean = false;
+
+  @Output("selectedComplianceRules") selectedComplianceRules = new EventEmitter();
 
   constructor(public dialog: MatDialog, public complianceRulesService : ComplianceRulesService) {
     this.complianceRulesService.getCollectionResourceComplianceruleentityGet1().subscribe(resp =>
@@ -92,11 +94,28 @@ export class ComplianceRulesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-
-
-      // TODO here we store the compliance Rule data
-
+        this.complianceRulesService.postCollectionResourceComplianceruleentityPost({
+          isDeleted: false,
+          location: result.data.location,
+          description: result.data.description,
+          type: result.data.type,
+        }).subscribe(resp => {
+          this.complianceRules.push(ComplianceRulesComponent.toComplianceRuleEntity(resp))
+        })
     });
+  }
+
+  toComplianceRuleEntity(complianceRule : EntityModelComplianceRuleEntity) : ComplianceRuleEntity {
+    return {
+      type: complianceRule.type,
+      isDeleted: complianceRule.isDeleted,
+      description: complianceRule.description,
+      location: complianceRule.location,
+      id: Number(Utils.getLinkComplianceRule(complianceRule).split("/").slice(-1)[0]),
+    }
+  }
+  emitSelectedComplianceRules() {
+    this.selectedComplianceRules.emit(this.addedComplianceRules);
   }
 
 }

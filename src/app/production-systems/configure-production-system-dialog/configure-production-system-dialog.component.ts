@@ -1,14 +1,13 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {KVEntity, PluginPojo, PluginService, PluginUsageService, ProductionSystemEntity} from "iacmf-api";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {MatFormFieldModule} from "@angular/material/form-field";
 
 @Component({
-  selector: 'app-create-production-system-dialog',
-  templateUrl: './create-production-system-dialog.component.html',
-  styleUrls: ['./create-production-system-dialog.component.css']
+  selector: 'app-configure-production-system-dialog',
+  templateUrl: './configure-production-system-dialog.component.html',
+  styleUrls: ['./configure-production-system-dialog.component.css']
 })
-export class CreateProductionSystemDialogComponent implements OnInit {
+export class ConfigureProductionSystemDialogComponent implements OnInit {
 
   iacTechnologyName = "";
   description = "";
@@ -16,9 +15,17 @@ export class CreateProductionSystemDialogComponent implements OnInit {
   selectedCreationPluginIdentifier: string | undefined;
   kvEntities: Array<KVEntity> = [];
 
-  constructor(public dialogRef: MatDialogRef<CreateProductionSystemDialogComponent>,
-              public pluginService: PluginService) {
+  constructor(public dialogRef: MatDialogRef<ConfigureProductionSystemDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: ProductionSystemEntity, public pluginService: PluginService) {
     this.pluginService.getAllPlugins("MODEL_CREATION").forEach(result => result.forEach(pojo => this.allCreationPlugins.push(pojo)));
+
+    this.iacTechnologyName = data.iacTechnologyName
+    if (data.description != undefined) {
+      this.description = data.description
+    }
+    this.selectedCreationPluginIdentifier = data.modelCreationPluginUsage?.pluginIdentifier
+    if (data.properties != undefined) {
+      this.kvEntities = data.properties
+    }
   }
 
   ngOnInit(): void {
@@ -26,6 +33,7 @@ export class CreateProductionSystemDialogComponent implements OnInit {
 
   closeDialog(){
     this.dialogRef.close({event:'Closed', data: {
+        id: this.data.id,
         iacTechnologyName: this.iacTechnologyName,
         isDeleted: false,
         description: this.description,
@@ -34,9 +42,5 @@ export class CreateProductionSystemDialogComponent implements OnInit {
           pluginIdentifier: this.selectedCreationPluginIdentifier
         }
       }});
-  }
-
-  updateKeyValueEntities($event: Array<KVEntity>) {
-    this.kvEntities = $event;
   }
 }

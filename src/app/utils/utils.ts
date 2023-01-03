@@ -1,10 +1,25 @@
 import {
-  EntityModelComplianceRuleEntity,
+  EntityModelComplianceRuleEntity, EntityModelKVEntity,
   EntityModelPluginUsageEntity,
-  EntityModelProductionSystemEntity
+  EntityModelProductionSystemEntity, KeyValueService, KVEntity, ProductionSystemEntity, ProductionSystemService
 } from "iacmf-api";
 
 export class Utils {
+
+  public static getLinkEntityKV(kv : KVEntity, kvEntityService: KeyValueService) {
+    return kvEntityService.configuration.basePath + "/" + kv.id;
+  }
+
+  public static getLinkKV(kv: EntityModelKVEntity) {
+    if (kv._links != undefined) {
+      if (kv._links["self"] != undefined) {
+        if(kv._links["self"].href != undefined) {
+          return kv._links["self"].href;
+        }
+      }
+    }
+    return "";
+  }
 
   public static getLinkComplianceRule(complianceRule : EntityModelComplianceRuleEntity) {
     if (complianceRule._links != undefined) {
@@ -26,6 +41,10 @@ export class Utils {
       }
     }
     return "";
+  }
+
+  public static getLinkEntityProductionSystem(productionSystem: ProductionSystemEntity, productionSystemService: ProductionSystemService) {
+    return productionSystemService.configuration.basePath + "/" + productionSystem.id;
   }
 
   public static getLinkProductionSystem(entityModelProductionSystemEntity : EntityModelProductionSystemEntity) {

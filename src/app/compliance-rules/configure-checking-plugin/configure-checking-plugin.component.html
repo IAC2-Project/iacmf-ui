@@ -1,12 +1,18 @@
-<h1 mat-dialog-title>Configure Fixing Plugin</h1>
+<h1 mat-dialog-title>Configure Checking Plugin</h1>
 <div mat-dialog-content>
   <div>
-    <h2>Fixing Plugin {{data.id}}</h2>
+    <h4>Checking Plugin {{data.identifier}}</h4>
     <form>
       <div *ngIf="data != undefined">
-        {{data.id}}:<br>
-        IssueType: {{data.issueType}}<br>
+
         <br>
+        <div *ngIf="data.requiredConfigurationEntryNames != undefined && data.requiredConfigurationEntryNames.length != 0">
+        <h4>Properties:</h4>
+        <div *ngFor="let property of data.requiredConfigurationEntryNames">
+          {{property}}:
+          <input matInput type="text"/>
+        </div>
+        </div>
       </div>
     </form>
   </div>

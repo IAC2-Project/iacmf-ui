@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ComplianceRulesService} from "../../gen";
+import {ComplianceRulesService} from "iacmf-api";
 import {KVEntity} from "iacmf-api";
 import {MatDialogRef} from "@angular/material/dialog";
 
@@ -10,6 +10,7 @@ import {MatDialogRef} from "@angular/material/dialog";
 })
 export class CreateComplianceRuleComponent implements OnInit {
 
+  type = "";
   location = "";
   description = "";
   properties = new Array<KVEntity>;
@@ -34,6 +35,7 @@ export class CreateComplianceRuleComponent implements OnInit {
         isDeleted: false,
         description: this.description,
         properties: this.properties,
+        type: this.type
       }});
   }
 }

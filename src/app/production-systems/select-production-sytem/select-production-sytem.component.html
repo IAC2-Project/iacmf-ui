@@ -13,7 +13,14 @@
         <mat-card-title>ProductionSystemId: {{productionSystem.id}}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <p>IaC Technology: {{productionSystem.iacTechnologyName}}</p>
+        <h4>Description:</h4>
+        <p>{{productionSystem.description}}</p>
+        <h4>IaC Technology:</h4>
+        <p>{{productionSystem.iacTechnologyName}}</p>
+        <h4>Properties</h4>
+        <p *ngFor="let kv of productionSystem.properties">
+          <b>{{kv.key}}:</b> {{kv.value}}
+        </p>
       </mat-card-content>
     </mat-card>
     <br>

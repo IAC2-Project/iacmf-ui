@@ -1,0 +1,11 @@
+<h4>Add new Property:</h4>
+<input matInput type="text" [(ngModel)]="newKeyName"/>
+<button mat-button (click)="storeKVEntity(newKeyName)" disabled="{{newKeyName == undefined || newKeyName.length == 0}}">
+  Add Property
+</button>
+<br>
+<h4>Properties:</h4>
+<div *ngFor="let kv of keyValueEntities">
+  {{kv.key}}:
+  <input matInput type="text" [(ngModel)]="kv.value" (keyup)="updateWhenStopped($event, kv)"/>
+</div>

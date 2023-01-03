@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
-import {ComplianceJobService} from "iacmf-api";
+import {ComplianceJobService, ComplianceRuleEntity} from "iacmf-api";
 import {ProductionSystemService} from "iacmf-api";
 import {ProductionSystemsComponent} from "../../production-systems/production-systems.component";
 import {Utils} from "../../utils/utils";
@@ -13,6 +13,7 @@ import {Utils} from "../../utils/utils";
 export class CreateCompliancejobDialogComponent implements OnInit {
 
   selectedProductionSystem = -1;
+  selectedComplianceRules: ComplianceRuleEntity[] = [];
 
   ngOnInit(): void {
   }
@@ -21,6 +22,10 @@ export class CreateCompliancejobDialogComponent implements OnInit {
 
   productionSystemSelected($event: any) {
     this.selectedProductionSystem = $event;
+  }
+
+  complianceRulesSelected($event : any) {
+    this.selectedComplianceRules = $event;
   }
 
   storeComplianceJob() {

@@ -1,6 +1,6 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {IssueFixingConfigurationEntity} from "iacmf-api";
+import {IssueFixingConfigurationEntity, PluginPojo} from "iacmf-api";
 
 @Component({
   selector: 'app-configure-checking-plugin',
@@ -9,10 +9,17 @@ import {IssueFixingConfigurationEntity} from "iacmf-api";
 })
 export class ConfigureCheckingPluginComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: IssueFixingConfigurationEntity) { }
+
+  @Output("checkingPluginConfiguration") checkingPluginConfiguration = new EventEmitter();
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: PluginPojo) {
+
+  }
 
 
   ngOnInit(): void {
+
   }
+
 
 }

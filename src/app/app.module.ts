@@ -46,6 +46,8 @@ import { ConfigureFixingPluginComponent } from './compliance-issues/configure-fi
 import {MatInputModule} from "@angular/material/input";
 import { ConfigureCheckingPluginComponent } from './compliance-rules/configure-checking-plugin/configure-checking-plugin.component';
 import { CreateComplianceRuleComponent } from './compliance-rules/create-compliance-rule/create-compliance-rule.component';
+import { KvComponent } from './kv/kv.component';
+import { ConfigureProductionSystemDialogComponent } from './production-systems/configure-production-system-dialog/configure-production-system-dialog.component';
 
 
 @NgModule({
@@ -69,7 +71,9 @@ import { CreateComplianceRuleComponent } from './compliance-rules/create-complia
     SelectProductionSytemComponent,
     ConfigureFixingPluginComponent,
     ConfigureCheckingPluginComponent,
-    CreateComplianceRuleComponent
+    CreateComplianceRuleComponent,
+    KvComponent,
+    ConfigureProductionSystemDialogComponent
   ],
   imports: [
     BrowserModule,

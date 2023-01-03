@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {
-  EntityModelPluginUsageEntity, EntityModelProductionSystemEntity,
+  EntityModelPluginUsageEntity, EntityModelProductionSystemEntity, KeyValueService,
   KVEntity,
   PluginUsageService,
   ProductionSystemEntity,
@@ -11,9 +11,9 @@ import {CreateProductionSystemDialogComponent} from "./create-production-system-
 import {MatTable} from "@angular/material/table";
 import {Observable} from "rxjs";
 import {Utils} from "../utils/utils";
+import {ConfigureProductionSystemDialogComponent} from "./configure-production-system-dialog/configure-production-system-dialog.component";
+import {KvComponent} from "../kv/kv.component";
 
-// EXAMPLE DATA FOR THE UI MOCK
-const ELEMENT_DATA: ProductionSystemEntity[] = []
 
 @Component({
   selector: 'app-production-systems',
@@ -24,26 +24,28 @@ export class ProductionSystemsComponent implements OnInit {
 
 
   displayedColumns = ['id', 'isDeleted', 'iacTechnologyName'];
-  dataSource = ELEMENT_DATA;
+  productionSystemEntities: ProductionSystemEntity[] = [];
   @ViewChild(MatTable) table: MatTable<ProductionSystemEntity> | undefined;
 
   ngOnInit(): void {
+    this.refreshProductionSystems();
+  }
+
+  refreshProductionSystems() {
+    this.productionSystemEntities = []
     this.productionSystemService.getCollectionResourceProductionsystementityGet1().subscribe(result => {
         result._embedded?.productionSystemEntities?.forEach(data => {
-          this.dataSource.push(ProductionSystemsComponent.toProductionSystemEntity(data))
-          if (this.table != undefined) {
-            this.table.renderRows();
-          }
+          this.productionSystemEntities.push(ProductionSystemsComponent.toProductionSystemEntity(data))
         })
       }
     )
   }
 
-  constructor(public dialog: MatDialog, public productionSystemService: ProductionSystemService, public pluginUsageService: PluginUsageService) {
+  constructor(public dialog: MatDialog, public productionSystemService: ProductionSystemService, public pluginUsageService: PluginUsageService, public kvEntityService : KeyValueService) {
 
   }
 
-  openNewSystemDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+  openCreateSystemDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
     const dialogRef = this.dialog.open(CreateProductionSystemDialogComponent, {
       enterAnimationDuration,
       exitAnimationDuration
@@ -61,14 +63,16 @@ export class ProductionSystemsComponent implements OnInit {
             let req = {
               iacTechnologyName: result.data.iacTechnologyName,
               isDeleted: result.data.isDeleted,
-              properties: result.data.properties?.map((key: any) => String(key)),
+              properties: result.data.properties?.map((key: KVEntity) => Utils.getLinkEntityKV(key, this.kvEntityService)),
               modelCreationPluginUsage: Utils.getLinkPluginUsage(resp)
             }
             this.productionSystemService.postCollectionResourceProductionsystementityPost(req).subscribe(resp => {
-              this.dataSource.push(ProductionSystemsComponent.toProductionSystemEntity(resp))
-              if (this.table != undefined) {
-                this.table.renderRows();
-              }
+              this.productionSystemEntities.push(ProductionSystemsComponent.toProductionSystemEntity(resp))
+              // I'm gonna be honest here, it is not smooth
+              // it would be easier if one could create an "empty" production service and then deliver the data from the dialog at once
+              // now we have to create the KV entities out into the blue, and then link them
+              KvComponent.linkKVEntitiesWithProductionSystem(result.data.properties, ProductionSystemsComponent.toProductionSystemEntity(resp), this.kvEntityService, this.productionSystemService)
+              this.refreshProductionSystems()
             });
           }
         )
@@ -87,4 +91,40 @@ export class ProductionSystemsComponent implements OnInit {
   }
 
 
+  openConfigureProductionSystemDialog(productionSystem: ProductionSystemEntity, enterAnimationDuration: string, exitAnimationDuration: string): void {
+    const dialogRef = this.dialog.open(ConfigureProductionSystemDialogComponent, {
+      enterAnimationDuration,
+      exitAnimationDuration
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+
+      if (result.data.modelCreationPluginUsage?.pluginIdentifier != undefined) {
+        let pluginReq = {
+          pluginIdentifier: result.data.modelCreationPluginUsage?.pluginIdentifier
+        }
+
+        this.pluginUsageService.postCollectionResourcePluginusageentityPost(pluginReq).subscribe(resp => {
+            let req = {
+              id: result.id,
+              iacTechnologyName: result.data.iacTechnologyName,
+              isDeleted: result.data.isDeleted,
+              properties: result.data.properties?.map((key: KVEntity) => Utils.getLinkEntityKV(key, this.kvEntityService)),
+              modelCreationPluginUsage: Utils.getLinkPluginUsage(resp)
+            }
+            this.productionSystemService.putItemResourceProductionsystementityPut(result.id, req).subscribe(resp => {
+              let index = this.productionSystemEntities.indexOf(productionSystem);
+              // should actually never happen here...
+              if (index != -1) {
+                this.productionSystemEntities.splice(index, 1);
+              }
+              this.productionSystemEntities.push(ProductionSystemsComponent.toProductionSystemEntity(resp))
+            });
+          }
+        )
+      }
+
+    });
+  }
 }
