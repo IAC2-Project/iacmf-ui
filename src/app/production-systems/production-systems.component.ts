@@ -52,32 +52,7 @@ export class ProductionSystemsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-
-
-      if (result.data.modelCreationPluginUsage?.pluginIdentifier != undefined) {
-        let pluginReq = {
-          pluginIdentifier: result.data.modelCreationPluginUsage?.pluginIdentifier
-        }
-
-        this.pluginUsageService.postCollectionResourcePluginusageentityPost(pluginReq).subscribe(resp => {
-            let req = {
-              iacTechnologyName: result.data.iacTechnologyName,
-              isDeleted: result.data.isDeleted,
-              properties: result.data.properties?.map((key: KVEntity) => this.utils.getLinkEntityKV(key)),
-              modelCreationPluginUsage: this.utils.getLinkPluginUsage(resp)
-            }
-            this.productionSystemService.postCollectionResourceProductionsystementityPost(req).subscribe(resp => {
-              this.productionSystemEntities.push(this.utils.toProductionSystemEntity(resp))
-              // I'm gonna be honest here, it is not smooth
-              // it would be easier if one could create an "empty" production service and then deliver the data from the dialog at once
-              // now we have to create the KV entities out into the blue, and then link them
-              this.utils.linkKVEntitiesWithProductionSystem(result.data.properties, this.utils.toProductionSystemEntity(resp), this.kvEntityService, this.productionSystemService)
-              this.refreshProductionSystems()
-            });
-          }
-        )
-      }
-
+      this.refreshProductionSystems()
     });
   }
 
@@ -85,37 +60,12 @@ export class ProductionSystemsComponent implements OnInit {
   openConfigureProductionSystemDialog(productionSystem: ProductionSystemEntity, enterAnimationDuration: string, exitAnimationDuration: string): void {
     const dialogRef = this.dialog.open(ConfigureProductionSystemDialogComponent, {
       enterAnimationDuration,
-      exitAnimationDuration
+      exitAnimationDuration,
+      data: productionSystem
     });
 
     dialogRef.afterClosed().subscribe(result => {
-
-
-      if (result.data.modelCreationPluginUsage?.pluginIdentifier != undefined) {
-        let pluginReq = {
-          pluginIdentifier: result.data.modelCreationPluginUsage?.pluginIdentifier
-        }
-
-        this.pluginUsageService.postCollectionResourcePluginusageentityPost(pluginReq).subscribe(resp => {
-            let req = {
-              id: result.id,
-              iacTechnologyName: result.data.iacTechnologyName,
-              isDeleted: result.data.isDeleted,
-              properties: result.data.properties?.map((key: KVEntity) => this.utils.getLinkEntityKV(key)),
-              modelCreationPluginUsage: this.utils.getLinkPluginUsage(resp)
-            }
-            this.productionSystemService.putItemResourceProductionsystementityPut(result.id, req).subscribe(resp => {
-              let index = this.productionSystemEntities.indexOf(productionSystem);
-              // should actually never happen here...
-              if (index != -1) {
-                this.productionSystemEntities.splice(index, 1);
-              }
-              this.productionSystemEntities.push(this.utils.toProductionSystemEntity(resp))
-            });
-          }
-        )
-      }
-
+      this.refreshProductionSystems()
     });
   }
 }

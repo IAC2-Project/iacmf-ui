@@ -23,7 +23,7 @@ export class KvComponent implements OnInit {
   @Output("keyValueEntities") keyValueEntitiesEventEmitter = new EventEmitter();
   newKeyName: string = "";
 
-  constructor(public kvService: KeyValueService, public utils: Utils) { }
+  constructor(public kvService: KeyValueService, public utils: Utils, public productionSystemService: ProductionSystemService) { }
 
   ngOnInit(): void {
     if (this.keyNamesToCreate.length != 0 && this.keyValueEntities.length != 0) {
@@ -36,11 +36,22 @@ export class KvComponent implements OnInit {
 
     this.keyNamesToCreate.forEach(key => this.storeKVEntity(key))
 
-    this.loadKVEntityForProductionSystem(this.productionSystem);
+    if (this.productionSystem != undefined) {
+      this.loadKVEntityForProductionSystem(this.productionSystem);
+    }
   }
 
-  loadKVEntityForProductionSystem(productionSystem: ProductionSystemEntity | undefined) {
-    this.kvService.getCollectionResourceKventityGet1().subscribe(kv => console.log(kv));
+  loadKVEntityForProductionSystem(productionSystem: ProductionSystemEntity) {
+    if (productionSystem.id == undefined) {
+      throw new Error("Please load KV Map with persistet production system entity")
+    }
+    this.keyValueEntities = []
+    this.productionSystemService.followPropertyReferenceProductionsystementityGet21(String(productionSystem.id)).subscribe( resp => {
+      resp._embedded?.kVEntities?.forEach(kv => {
+        this.keyValueEntities.push(kv);
+      })
+      this.emitKeyValueEntities()
+    })
   }
 
   storeKVEntity(key: string, value?: string, productionSystem? : string, complianceIssue?: string) {
@@ -50,7 +61,7 @@ export class KvComponent implements OnInit {
       productionSystem: productionSystem,
       complianceIssue: complianceIssue
     }).subscribe(resp => {
-      this.keyValueEntities.push(this.utils.toKeyValueEntity(resp))
+      this.keyValueEntities.push(resp)
       this.emitKeyValueEntities()
     })
   }
@@ -69,11 +80,15 @@ export class KvComponent implements OnInit {
 
 
 
-  updateKVEntity(kv : KVEntity) {
-    this.kvService.putItemResourceKventityPut(String(kv.id) , {
+  updateKVEntity(kv : EntityModelKVEntity) {
+    let link = this.utils.getLinkKV("self", kv);
+    if (link == undefined) {
+      throw Error("Can't update KV when it is not a stored entity")
+    }
+    this.kvService.putItemResourceKventityPut(link.split("/").slice(-1)[0] , {
       key: kv.key,
       value: kv.value
-    }).subscribe(resp => console.log(resp))
+    }).subscribe(resp => this.emitKeyValueEntities())
   }
 
   emitKeyValueEntities() {

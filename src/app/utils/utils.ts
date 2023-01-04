@@ -1,7 +1,13 @@
 import {
-  EntityModelComplianceRuleEntity, EntityModelKVEntity,
+  EntityModelComplianceRuleEntity,
+  EntityModelKVEntity,
   EntityModelPluginUsageEntity,
-  EntityModelProductionSystemEntity, KeyValueService, KVEntity, ProductionSystemEntity, ProductionSystemService
+  EntityModelProductionSystemEntity,
+  KeyValueService,
+  KVEntity,
+  PluginUsageEntity, PluginUsageService,
+  ProductionSystemEntity,
+  ProductionSystemService
 } from "iacmf-api";
 import {Injectable} from "@angular/core";
 
@@ -12,7 +18,7 @@ import {Injectable} from "@angular/core";
 })
 export class Utils {
 
-  constructor(public kvEntityService: KeyValueService, public productionSystemService : ProductionSystemService) {
+  constructor(public kvEntityService: KeyValueService, public productionSystemService : ProductionSystemService, public pluginUsage: PluginUsageService) {
 
   }
 
@@ -34,14 +40,47 @@ export class Utils {
     }
   }
 
-  public linkKVEntitiesWithProductionSystem(kvEntities: KVEntity[], productionSystem: ProductionSystemEntity, kvService: KeyValueService, productionSystemService: ProductionSystemService) {
-    kvEntities.forEach(kv => kvService.createPropertyReferenceKventityPut1(String(kv.id), {
+  public linkPluginUsageWithProductionSystem(pluginUsage: EntityModelPluginUsageEntity, productionSystem: EntityModelProductionSystemEntity) {
+    let body = {
       _links: {
         "productionSystem": {
-          href: this.getLinkEntityProductionSystem(productionSystem)
+          href: this.getLinkProductionSystem(productionSystem)
         }
       }
-    }).subscribe(resp => console.log(resp)))
+    }
+    let link = this.getLinkPluginUsage("self",pluginUsage);
+    if (link == undefined) {
+      return
+    }
+    this.pluginUsage.createPropertyReferencePluginusageentityPatch4(link.split("/").slice(-1)[0], body).subscribe(resp => console.log(resp))
+  }
+
+  public getProductionSystemId(productionSystem : EntityModelProductionSystemEntity) : number {
+    let res = this.toProductionSystemEntity(productionSystem).id;
+    if (res == undefined) {
+      throw Error("The id is missing of produciton system in database")
+    } else {
+      return res;
+    }
+  }
+
+  public linkKVEntitiesWithProductionSystem(kvEntities: EntityModelKVEntity[], productionSystem: EntityModelProductionSystemEntity) {
+     kvEntities.forEach(kv => {
+       this.productionSystemService.getItemResourceProductionsystementityGet(String(this.getProductionSystemId(productionSystem))).subscribe(resp => {
+         let link = this.getLinkKV("self",kv);
+         if (link == undefined) {
+           return
+         }
+         let body = {
+           _links: {
+             "productionSystem": {
+               href: this.getLinkProductionSystem(resp)
+             }
+           }
+         }
+         this.kvEntityService.createPropertyReferenceKventityPut1(link.split("/").slice(-1)[0], body).subscribe(resp => console.log(resp))
+       })
+     })
   }
 
   public getLinkEntityKV(kv : KVEntity) {
@@ -70,19 +109,15 @@ export class Utils {
     return "";
   }
 
-  public getLinkPluginUsage(entityModelPluginUsage : EntityModelPluginUsageEntity) {
+  public getLinkPluginUsage(linkName: string, entityModelPluginUsage : EntityModelPluginUsageEntity) {
     if (entityModelPluginUsage._links != undefined) {
-      if (entityModelPluginUsage._links["self"] != undefined) {
-        if(entityModelPluginUsage._links["self"].href != undefined) {
-          return entityModelPluginUsage._links["self"].href;
+      if (entityModelPluginUsage._links[linkName] != undefined) {
+        if(entityModelPluginUsage._links[linkName].href != undefined) {
+          return entityModelPluginUsage._links[linkName].href;
         }
       }
     }
     return "";
-  }
-
-  public getLinkEntityProductionSystem(productionSystem: ProductionSystemEntity) {
-    return this.productionSystemService.configuration.basePath + "/" + productionSystem.id;
   }
 
   public getLinkProductionSystem(entityModelProductionSystemEntity : EntityModelProductionSystemEntity) {
@@ -96,20 +131,31 @@ export class Utils {
     return "";
   }
 
-  public toProductionSystemEntity(entityModelProductionSystemEntity : EntityModelProductionSystemEntity) {
-    return {
+  public toProductionSystemEntity(entityModelProductionSystemEntity : EntityModelProductionSystemEntity) : ProductionSystemEntity {
+    let data : ProductionSystemEntity = {
       id: Number(this.getLinkProductionSystem(entityModelProductionSystemEntity).slice(-1)[0]),
       isDeleted: entityModelProductionSystemEntity.isDeleted,
       description: entityModelProductionSystemEntity.description,
       iacTechnologyName: entityModelProductionSystemEntity.iacTechnologyName,
-      properties: this.getKVEntitiesForProductionSystem(entityModelProductionSystemEntity)
+      properties: undefined,
+      modelCreationPluginUsage: undefined
     }
+    this.getPluginUsageForProductionSystem(entityModelProductionSystemEntity, data)
+    this.getKVEntitiesForProductionSystem(entityModelProductionSystemEntity, data)
+    return data
   }
 
-  public getKVEntitiesForProductionSystem(entityModelProductionSystemEntity: EntityModelProductionSystemEntity) : KVEntity[] {
-    let res: KVEntity[] = []
+  public getPluginUsageForProductionSystem(entityModelProductionSystemEntity: EntityModelProductionSystemEntity , data: ProductionSystemEntity) {
+    this.productionSystemService.followPropertyReferenceProductionsystementityGet1(this.getLinkProductionSystem(entityModelProductionSystemEntity).split("/").slice(-1)[0]).subscribe(resp => data.modelCreationPluginUsage = resp);
+  }
+
+  public getKVEntitiesForProductionSystem(entityModelProductionSystemEntity: EntityModelProductionSystemEntity, data : ProductionSystemEntity) {
     this.productionSystemService.followPropertyReferenceProductionsystementityGet21(this.getLinkProductionSystem(entityModelProductionSystemEntity).split("/").slice(-1)[0])
-      .subscribe(resp => resp._embedded?.kVEntities?.forEach(kv => res.push(kv)))
-    return res;
+      .subscribe(resp => resp._embedded?.kVEntities?.forEach(kv => {
+        if (data.properties == undefined) {
+          data.properties = new Array<KVEntity>()
+        }
+        data.properties.push(kv)
+      }))
   }
 }
