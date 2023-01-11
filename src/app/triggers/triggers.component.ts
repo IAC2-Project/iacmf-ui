@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { catchError, map } from 'rxjs/operators';
+import {Component} from '@angular/core';
+import {catchError} from 'rxjs/operators';
 
-import { Subscription } from 'rxjs';
-import { ErrorHandler } from '../utils/ErrorHandler';
-import { CollectionModelEntityModelTriggerEntity, TriggerEntity, TriggerService} from 'iacmf-api';
+import {Subscription} from 'rxjs';
+import {ErrorHandler} from '../utils/ErrorHandler';
+import {CollectionModelEntityModelTriggerEntity, TriggerEntity, TriggerService} from 'iacmf-api';
 
 @Component({
   selector: 'app-triggers',
