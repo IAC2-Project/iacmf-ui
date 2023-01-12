@@ -49,6 +49,8 @@ import { KvComponent } from './kv/kv.component';
 import { ConfigureProductionSystemDialogComponent } from './production-systems/configure-production-system-dialog/configure-production-system-dialog.component';
 import {Utils} from "./utils/utils";
 import { PluginUsageComponent } from './plugin-usage/plugin-usage.component';
+import { ExecutionComponent } from './execution/execution.component';
+import { CreateExecutionComponent } from './execution/create-execution/create-execution.component';
 
 
 @NgModule({
@@ -74,7 +76,9 @@ import { PluginUsageComponent } from './plugin-usage/plugin-usage.component';
     CreateComplianceRuleComponent,
     KvComponent,
     ConfigureProductionSystemDialogComponent,
-    PluginUsageComponent
+    PluginUsageComponent,
+    ExecutionComponent,
+    CreateExecutionComponent
   ],
   imports: [
     BrowserModule,

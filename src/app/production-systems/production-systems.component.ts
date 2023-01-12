@@ -24,7 +24,6 @@ export class ProductionSystemsComponent implements OnInit {
 
 
   productionSystemEntities: EntityModelProductionSystemEntity[] = [];
-  @ViewChild(MatTable) table: MatTable<EntityModelProductionSystemEntity> | undefined;
   prodToKVMap: any = {};
 
 

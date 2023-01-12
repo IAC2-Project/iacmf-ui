@@ -51,12 +51,21 @@ export class CreateCompliancejobDialogComponent implements OnInit {
       return;
     }
 
+    if (this.checkingPluginConfiguration == undefined) {
+      console.log("Select checking plugin")
+      return;
+    }
+
+    let plugin = this.checkingPluginConfiguration
+
     this.productionSystemService.getCollectionResourceProductionsystementityGet1().subscribe(resp => {
       resp._embedded?.productionSystemEntities?.filter(val => Number(this.utils.getId(val)) == this.selectedProductionSystem).forEach(resp =>
       this.complianceJobService.postCollectionResourceCompliancejobentityPost({
         name: "someName",
         id: -1,
-        productionSystem: this.utils.getLink("self", resp)
+        productionSystem: this.utils.getLink("self", resp),
+        checkingPluginUsage: this.utils.getLink("self", plugin),
+        complianceRuleConfigurations: this.selectedComplianceRules.map((cr: EntityModelComplianceRuleEntity) =>this.utils.getLink("self", cr))
       }).subscribe(resp => {
         console.log(resp)
       })

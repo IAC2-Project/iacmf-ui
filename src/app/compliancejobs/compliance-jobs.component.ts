@@ -1,33 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {
-  ComplianceJobEntity,
+  ComplianceJobEntity, ComplianceJobService,
   ComplianceRuleParameterAssignmentEntity,
-  ComplianceRuleParameterEntity,
+  ComplianceRuleParameterEntity, EntityModelComplianceJobEntity,
   ExecutionEntity,
   KVEntity,
   TriggerEntity
 } from "iacmf-api";
 import {CreateCompliancejobDialogComponent} from "./create-compliancejob-dialog/create-compliancejob-dialog.component";
-
-// EXAMPLE DATA FOR THE UI MOCK
-const ELEMENT_DATA: ComplianceJobEntity[] = [
-  {
-    id: 1,
-    name: "someName",
-    description: "someJob",
-    triggers: new Array<TriggerEntity>(),
-    executions: new Array<ExecutionEntity>(),
-    productionSystem: {
-      id: 1,
-      name: "someName",
-      isDeleted: false,
-      iacTechnologyName: "someIac",
-      description: "someDesc",
-      properties: new Array<KVEntity>(),
-    }
-  }
-]
+import {Utils} from "../utils/utils";
 
 @Component({
   selector: 'app-compliancejobs',
@@ -38,18 +20,32 @@ export class ComplianceJobsComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.refreshComplianceJobs()
   }
-  displayedColumns = ['id', 'description', 'modelCheckingPluginId'];
-  dataSource = ELEMENT_DATA;
+  dataSource: EntityModelComplianceJobEntity[] = [];
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, public complianceJobService : ComplianceJobService, public utils : Utils) {}
+
+  refreshComplianceJobs() {
+    this.dataSource = []
+
+    this.complianceJobService.getCollectionResourceCompliancejobentityGet1().subscribe(result => {
+      result._embedded?.complianceJobEntities?.forEach(data => {
+        this.dataSource.push(data)
+      })
+    })
+  }
 
   openNewJobDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(CreateCompliancejobDialogComponent, {
+    const dialogRef = this.dialog.open(CreateCompliancejobDialogComponent, {
       width: '80%',
       height: '80%',
       enterAnimationDuration,
       exitAnimationDuration,
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.refreshComplianceJobs()
+    })
   }
 }

@@ -20,7 +20,7 @@
         <artifactId>maven-antrun-plugin</artifactId>
         <version>3.1.0</version>
         <executions>
-          <execution>
+          <!--<execution>
             <phase>clean</phase>
             <goals>
               <goal>run</goal>
@@ -32,7 +32,7 @@
                   includeemptydirs="true"/>
               </target>
             </configuration>
-          </execution>
+          </execution> -->
         </executions>
       </plugin>
       <plugin>
@@ -48,7 +48,7 @@
               <goal>generate</goal>
             </goals>
             <configuration>
-              <inputSpec>${project.basedir}/src/assets/openapi-doc/api.json</inputSpec>
+              <inputSpec>${project.basedir}/src/assets/openapi-doc/api-docs.json</inputSpec>
               <output>${project.basedir}/src/app/gen/</output>
               <generatorName>typescript-angular</generatorName>
               <configOptions>
@@ -65,7 +65,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.1.0</version>
         <executions>
-          <execution>
+          <!--<execution>
             <id>npm uninstall (iacmf-api from iacmf-ui)</id>
             <goals>
               <goal>exec</goal>
@@ -79,7 +79,7 @@
               </arguments>
               <workingDirectory>${project.basedir}</workingDirectory>
             </configuration>
-          </execution>
+          </execution>-->
           <execution>
             <id>npm install (iacmf-api)</id>
             <goals>
