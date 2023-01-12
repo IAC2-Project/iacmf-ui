@@ -3,7 +3,12 @@ import {catchError} from 'rxjs/operators';
 
 import {Subscription} from 'rxjs';
 import {ErrorHandler} from '../utils/ErrorHandler';
-import {CollectionModelEntityModelTriggerEntity, TriggerEntity, TriggerService} from 'iacmf-api';
+import {
+  CollectionModelEntityModelTriggerEntity,
+  EntityModelTriggerEntity,
+  TriggerEntity,
+  TriggerService
+} from 'iacmf-api';
 
 @Component({
   selector: 'app-triggers',
@@ -12,7 +17,7 @@ import {CollectionModelEntityModelTriggerEntity, TriggerEntity, TriggerService} 
 })
 export class TriggersComponent {
 
-  triggers: TriggerEntity[] | undefined = [];
+  triggers: EntityModelTriggerEntity[] | undefined = [];
   subscriptions: Subscription[] = [];
 
   constructor(private service: TriggerService) {

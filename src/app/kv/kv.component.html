@@ -4,8 +4,10 @@
   Add Property
 </button>
 <br>
+<div *ngIf="this.keyValueEntities.length > 0">
 <h4>Properties:</h4>
 <div *ngFor="let kv of keyValueEntities">
   {{kv.key}}:
   <input matInput type="text" [(ngModel)]="kv.value" (keyup)="updateWhenStopped($event, kv)"/>
+</div>
 </div>

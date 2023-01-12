@@ -3,8 +3,8 @@
   <div>
     <h4>{{data.identifier}}</h4>
     <h5>Parameters:</h5>
-    <form *ngIf="data.requiredConfigurationEntryNames != undefined">
-      <div *ngFor="let parameter of data.requiredConfigurationEntryNames">
+    <form *ngIf="data.configurationEntryNames != undefined">
+      <div *ngFor="let parameter of data.configurationEntryNames">
         <mat-form-field  appearance="fill">
           {{parameter}}:<br>
           <input matInput placeholder="{{parameter}}" value="{{parameter}}">

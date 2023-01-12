@@ -24,19 +24,19 @@ export class ConfigureComlianceIssueComponent implements OnInit {
     return [{
       identifier: "FixingPlugin1",
       pluginType: "ISSUE_FIXING",
-      requiredConfigurationEntryNames: [
-        "someKey",
-        "someValue",
-        "someKey2"
+      configurationEntryNames: [
+        {name:"someKey"},
+        {name:"someValue"},
+        {name:"someKey2"}
       ]
     },
       {
         identifier: "FixingPlugin2",
         pluginType: "ISSUE_FIXING",
-        requiredConfigurationEntryNames: [
-          "someKey",
-          "someValue",
-          "someKey2"
+        configurationEntryNames: [
+          {name:"someKey"},
+          {name:"someValue"},
+          {name:"someKey2"}
         ]
       }];
   }

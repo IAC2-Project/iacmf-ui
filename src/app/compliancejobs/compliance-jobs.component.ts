@@ -14,11 +14,13 @@ import {CreateCompliancejobDialogComponent} from "./create-compliancejob-dialog/
 const ELEMENT_DATA: ComplianceJobEntity[] = [
   {
     id: 1,
+    name: "someName",
     description: "someJob",
     triggers: new Array<TriggerEntity>(),
     executions: new Array<ExecutionEntity>(),
     productionSystem: {
       id: 1,
+      name: "someName",
       isDeleted: false,
       iacTechnologyName: "someIac",
       description: "someDesc",

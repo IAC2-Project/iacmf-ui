@@ -1,25 +1,23 @@
 <div>
-  <button *ngIf="allowCreate" mat-button (click)="openCreateComplianceRuleDialog('0ms', '0ms')">CREATE</button>
+  <button *ngIf="allowCreate" mat-raised-button (click)="openCreateComplianceRuleDialog('0ms', '0ms')">CREATE</button>
   <div *ngIf="allowSelection" >
   <mat-form-field appearance="fill" >
     <mat-label>Select an option</mat-label>
     <mat-select [(value)]="selected">
-      <mat-option *ngFor="let complianceRule of complianceRules" [value]="complianceRule.id">
-        Rule {{complianceRule.id}}
+      <mat-option *ngFor="let complianceRule of complianceRules" [value]="this.utils.getId(complianceRule)">
+        Rule {{this.utils.getId(complianceRule)}}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <button mat-button (click)="addComplianceRule(selected); emitSelectedComplianceRules()">ADD</button>
   <div *ngFor="let complianceRule of addedComplianceRules">
-  <mat-card *ngIf="complianceRule.id != undefined">
+  <mat-card *ngIf="this.utils.getId(complianceRule) != undefined">
     <mat-card-header>
-      <mat-card-title>Compliance Rule {{complianceRule.id}}</mat-card-title>
+      <mat-card-title>Compliance Rule {{this.utils.getId(complianceRule)}}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <p>
-        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-        bred for hunting.
+        {{complianceRule.description}}
       </p>
     </mat-card-content>
     <mat-card-actions>
@@ -32,15 +30,13 @@
   </div>
   <div *ngIf="showAllRules">
     <div *ngFor="let complianceRule of complianceRules">
-      <mat-card *ngIf="complianceRule.id != undefined">
+      <mat-card *ngIf="this.utils.getId(complianceRule) != undefined">
         <mat-card-header>
-          <mat-card-title>Compliance Rule {{complianceRule.id}}</mat-card-title>
+          <mat-card-title>Compliance Rule {{this.utils.getId(complianceRule)}}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <p>
-            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-            A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-            bred for hunting.
+            {{complianceRule.description}}
           </p>
         </mat-card-content>
         <mat-card-actions>

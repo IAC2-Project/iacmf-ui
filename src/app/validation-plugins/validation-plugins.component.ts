@@ -29,19 +29,19 @@ export class ValidationPluginsComponent implements OnInit {
   allValidationPlugins: PluginPojo[] = [{
     identifier: "ValidationPlugin1",
     pluginType: "VALIDATION",
-    requiredConfigurationEntryNames: [
-      "someKey",
-      "someValue",
-      "someKey2"
+    configurationEntryNames: [
+      {name: "someKey"},
+      {name: "someValue"},
+      {name: "someKey2"}
     ]
   },
     {
       identifier: "ValidationPlugin2",
       pluginType: "VALIDATION",
-      requiredConfigurationEntryNames: [
-        "someKey",
-        "someValue",
-        "someKey2"
+      configurationEntryNames: [
+        {name: "someKey"},
+        {name: "someValue"},
+        {name: "someKey2"}
       ]
     }];
 

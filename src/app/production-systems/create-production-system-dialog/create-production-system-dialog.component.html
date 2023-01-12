@@ -1,6 +1,9 @@
 <h1 mat-dialog-title>Register Production System</h1>
 <div mat-dialog-content>
 
+  <h4>Name:</h4>
+  <input matInput type="text" [(ngModel)]="name"/>
+
   <h4>IaC Technology:</h4>
   <input matInput type="text" [(ngModel)]="iacTechnologyName"/>
 
@@ -9,14 +12,16 @@
   <textarea matInput type="text" [(ngModel)]="description">
     </textarea>
 
-  <br>
+  <mat-divider style="width: 100%; display: inline-block;"></mat-divider>
+  <span style="padding: 20px; font-weight: 500;">Select Creation Plugin</span>
+  <mat-divider style="width: 100%; display: inline-block;"></mat-divider>
 
-  <h4>Select Model Creation Plugin:</h4>
-  <mat-select [(value)]="this.selectedCreationPluginIdentifier">
-    <mat-option *ngFor="let creationPlugin of allCreationPlugins" value="{{creationPlugin.identifier}}">
-      {{creationPlugin.identifier}}
-    </mat-option>
-  </mat-select>
+  <app-plugin-usage (selectedPluginIdentifierEvent)="updatePluginUsage($event)" [pluginType]="'MODEL_CREATION'"></app-plugin-usage>
+
+  <mat-divider style="width: 100%; display: inline-block;"></mat-divider>
+  <span style="padding: 20px; font-weight: 500;">Add Production System Properties</span>
+  <mat-divider style="width: 100%; display: inline-block;"></mat-divider>
+
 
   <app-kv (keyValueEntities)="updateKeyValueEntities($event)"></app-kv>
 

@@ -1,54 +1,27 @@
 <h1 mat-dialog-title>Configure Compliance Rule</h1>
 <div mat-dialog-content>
   <div>
-    <h4>Compliance Rule {{data.id}}</h4>
+    <h4>Compliance Rule {{this.utils.getId(data)}}</h4>
     <h5>Description:</h5>
     <p>{{data.description}}</p>
-    <h5>Parameters:</h5>
-    <form>
-      <div *ngFor="let parameter of data.parameters">
-        <mat-form-field  appearance="fill">
-          <div>{{parameter.name}}:<input matInput placeholder="{{parameter.name}}" value="{{parameter.type}}"></div>
-        </mat-form-field>
+    <div *ngIf="this.complianceRuleParameters.length > 0">
+    <h5>Parameter Assignment:</h5>
+
+      <div *ngFor="let parameter of this.complianceRuleParameterAssignments">
+          Name:{{parameter.name}} Type: {{parameter.type}}
+        <br>
+         <input matInput type="text" value="{{parameter.value}}">
         <br>
       </div>
-    </form>
-  </div>
-  <div>
-    <h4>Select Checking Plugin</h4>
-    <div>
-      <mat-form-field appearance="fill">
-        <mat-label>Select a plugin</mat-label>
-        <mat-select [(value)]="selected">
-          <mat-option *ngFor="let checkingPlugin of checkingPlugins" [value]="checkingPlugin.identifier">
-            {{checkingPlugin.identifier}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <button mat-button (click)="addCheckingPlugin(selected)">ADD</button>
-      <div *ngFor="let checkingPlugin of addedCheckingPlugins">
-        <mat-card *ngIf="checkingPlugin.identifier != undefined">
-          <mat-card-header>
-            <mat-card-title>Fixing Plugin {{checkingPlugin.identifier}}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p>
-              The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-              A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-              bred for hunting.
-            </p>
-          </mat-card-content>
-          <mat-card-actions>
-            <button mat-button (click)="openConfigureCheckingPluginDialog(checkingPlugin,'0ms', '0ms')">CONFIGURE</button>
-            <button mat-button (click)="removeCheckingPlugin(checkingPlugin)">DELETE</button>
-          </mat-card-actions>
-        </mat-card>
-        <br>
-      </div>
+
     </div>
   </div>
+  <div>
+
+
+
 </div>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>No</button>
-  <button mat-button mat-dialog-close cdkFocusInitial>Ok</button>
+  <button mat-button mat-dialog-close cdkFocusInitial (click)="storeComplianceRuleConfiguration()">Ok</button>
 </div>

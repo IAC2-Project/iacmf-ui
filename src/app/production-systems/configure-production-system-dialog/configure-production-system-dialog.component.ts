@@ -1,5 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {
+  EntityModelKVEntity,
   KVEntity,
   PluginPojo,
   PluginService,
@@ -50,15 +51,18 @@ export class ConfigureProductionSystemDialogComponent implements OnInit {
       throw new Error("ProductionSystem is not persisted in the backend")
     }
     let pluginReq = {
+      id: -1,
       pluginIdentifier: this.selectedCreationPluginIdentifier
     }
 
     this.pluginUsageService.postCollectionResourcePluginusageentityPost(pluginReq).subscribe(resp => {
         let req = {
+          id: -1,
+          name: this.data.name,
           iacTechnologyName: this.iacTechnologyName,
           isDeleted: this.data.isDeleted,
           description: this.description,
-          properties: this.kvEntities.map((key: KVEntity) => this.utils.getLinkKV("self", key)).map(s => {
+          properties: this.kvEntities.map((key: EntityModelKVEntity) => this.utils.getLink("self", key)).map(s => {
             // this is stupid, I know, you know, all know
             // but somehow using a filter is not working for the compiler...
             if (s == undefined) {
@@ -67,7 +71,7 @@ export class ConfigureProductionSystemDialogComponent implements OnInit {
               return s
             }
           }),
-          modelCreationPluginUsage: this.utils.getLinkPluginUsage("self", resp)
+          modelCreationPluginUsage: this.utils.getLink("self", resp)
         }
         this.productionSystemService.putItemResourceProductionsystementityPut(String(this.data.id), req).subscribe(prod => {
           this.utils.linkKVEntitiesWithProductionSystem(this.kvEntities, prod)

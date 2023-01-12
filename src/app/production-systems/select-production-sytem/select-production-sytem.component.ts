@@ -1,5 +1,11 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {ComplianceJobEntity, KVEntity, ProductionSystemEntity, ProductionSystemService} from "iacmf-api";
+import {
+  ComplianceJobEntity,
+  EntityModelProductionSystemEntity,
+  KVEntity,
+  ProductionSystemEntity,
+  ProductionSystemService
+} from "iacmf-api";
 import {ProductionSystemsComponent} from "../production-systems.component";
 import {Utils} from "../../utils/utils";
 
@@ -10,7 +16,7 @@ import {Utils} from "../../utils/utils";
 })
 export class SelectProductionSytemComponent implements OnInit {
 
-  productionSystemEntities: ProductionSystemEntity[] = [];
+  productionSystemEntities: EntityModelProductionSystemEntity[] = [];
 
   selected = -1;
 
@@ -21,11 +27,11 @@ export class SelectProductionSytemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.productionSystemService.getCollectionResourceProductionsystementityGet1().subscribe(resp => resp._embedded?.productionSystemEntities?.forEach(data => this.productionSystemEntities.push(this.utils.toProductionSystemEntity(data))))
+    this.productionSystemService.getCollectionResourceProductionsystementityGet1().subscribe(resp => resp._embedded?.productionSystemEntities?.forEach(data => this.productionSystemEntities.push(data)))
   }
 
   _filter(id: number | undefined) {
-    return this.productionSystemEntities.filter(ps => ps.id == id);
+    return this.productionSystemEntities.filter(ps => Number(this.utils.getId(ps)) == id);
   }
 
   emitProductionSystem() {

@@ -4,7 +4,7 @@
     <h2>{{data.identifier}}</h2>
     <h3>Parameters</h3>
     <form>
-      <div *ngFor="let parameter of data.requiredConfigurationEntryNames">
+      <div *ngFor="let parameter of data.configurationEntryNames">
         <mat-form-field  appearance="fill">
           {{parameter}}:<br>
           <input matInput placeholder="{{parameter}}" value="{{parameter}}">

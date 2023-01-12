@@ -17,16 +17,22 @@
 
     <br>
 
-    <h4>Add new Property definition:</h4>
-    <input matInput type="text" [(ngModel)]="newPropName"/>
-    <button mat-button (click)="createNewProperty()" disabled="{{newPropName == undefined || newPropName.length == 0}}">
-      Add Property
+    <h4>Add new Compliance Rule Parameter:</h4>
+    <input matInput type="text" [(ngModel)]="newComplianceRuleParameterName"/>
+    <mat-select [(value)]="this.newType">
+      <mat-option *ngFor="let possibleType of ['INT' , 'DECIMAL' , 'STRING' , 'STRING_LIST' , 'BOOLEAN']" value="{{possibleType}}">
+        {{possibleType}}
+      </mat-option>
+    </mat-select>
+    <button mat-button (click)="createNewProperty()" disabled="{{newComplianceRuleParameterName == undefined || newComplianceRuleParameterName.length == 0}}">
+      Add Parameter
     </button>
     <br>
-    <h4>Properties:</h4>
-    <div *ngFor="let property of properties">
-      {{property.key}}:
-      <input matInput type="text" [(ngModel)]="property.value"/>
+    <div *ngIf="this.complianceRuleParameters.length > 0">
+    <h4>Parameter:</h4>
+    <div *ngFor="let complianceRuleParameter of this.complianceRuleParameters">
+      {{complianceRuleParameter.name}}:{{complianceRuleParameter.type}}
+    </div>
     </div>
   </div>
 </div>

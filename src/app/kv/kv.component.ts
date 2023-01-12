@@ -19,7 +19,7 @@ export class KvComponent implements OnInit {
 
   @Input("productionSystem") productionSystem: ProductionSystemEntity | undefined;
   @Input("keysValueEntitiesToCreate") keyNamesToCreate : Array<string> = [];
-  @Input("keyValueEntitiesToConfigure") keyValueEntities : Array<KVEntity> = [];
+  @Input("keyValueEntitiesToConfigure") keyValueEntities : Array<EntityModelKVEntity> = [];
   @Output("keyValueEntities") keyValueEntitiesEventEmitter = new EventEmitter();
   newKeyName: string = "";
 
@@ -56,6 +56,7 @@ export class KvComponent implements OnInit {
 
   storeKVEntity(key: string, value?: string, productionSystem? : string, complianceIssue?: string) {
     this.kvService.postCollectionResourceKventityPost({
+      id: -1,
       key: key,
       value: value,
       productionSystem: productionSystem,
@@ -68,7 +69,7 @@ export class KvComponent implements OnInit {
 
   // seem elegant first to check when the user is finished typing and we can update the value,
   // however, it is actually brutal
-  updateWhenStopped($event: any, kv : KVEntity) {
+  updateWhenStopped($event: any, kv : EntityModelKVEntity) {
     setTimeout(() => {
       // to be a little more robust it would be better to check if there are indeed changes
       // e.g. like this:
@@ -81,11 +82,12 @@ export class KvComponent implements OnInit {
 
 
   updateKVEntity(kv : EntityModelKVEntity) {
-    let link = this.utils.getLinkKV("self", kv);
+    let link = this.utils.getLink("self", kv);
     if (link == undefined) {
       throw Error("Can't update KV when it is not a stored entity")
     }
     this.kvService.putItemResourceKventityPut(link.split("/").slice(-1)[0] , {
+      id: Number(this.utils.getId(kv)),
       key: kv.key,
       value: kv.value
     }).subscribe(resp => this.emitKeyValueEntities())

@@ -31,19 +31,19 @@ export class ReportingPluginsComponent implements OnInit {
   reportingPluginDummies: PluginPojo[] = [{
     identifier: "ReportingPlugin1",
     pluginType: "REPORTING",
-    requiredConfigurationEntryNames: [
-      "someKey",
-      "someValue",
-      "someKey2"
+    configurationEntryNames: [
+      {name:"someKey"},
+      {name: "someValue"},
+      {name:"someKey2"}
     ]
   },
     {
       identifier: "ReportingPlugin2",
       pluginType: "REPORTING",
-      requiredConfigurationEntryNames: [
-        "someKey",
-        "someValue",
-        "someKey2"
+      configurationEntryNames: [
+        {name:"someKey"},
+        {name: "someValue"},
+        {name:"someKey2"}
       ]
     }];
 

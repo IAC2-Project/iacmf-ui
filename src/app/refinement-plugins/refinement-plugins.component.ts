@@ -29,19 +29,19 @@ export class RefinementPluginsComponent implements OnInit {
   allRefinmentPlugins2: PluginPojo[] = [{
     identifier: "RefinmentPlugin1",
     pluginType: "MODEL_REFINEMENT",
-    requiredConfigurationEntryNames: [
-      "someKey",
-      "someValue",
-      "someKey2"
+    configurationEntryNames: [
+      {name:"someKey"},
+      {name: "someValue"},
+      {name:"someKey2"}
     ]
   },
     {
       identifier: "RefinmentPlugin2",
       pluginType: "MODEL_REFINEMENT",
-      requiredConfigurationEntryNames: [
-        "someKey",
-        "someValue",
-        "someKey2"
+      configurationEntryNames: [
+        {name:"someKey"},
+        {name: "someValue"},
+        {name:"someKey2"}
       ]
     }];
   selected = this.allRefinmentPlugins2[0].identifier;

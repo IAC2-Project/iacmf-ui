@@ -23,9 +23,11 @@ import {KvComponent} from "../kv/kv.component";
 export class ProductionSystemsComponent implements OnInit {
 
 
-  displayedColumns = ['id', 'isDeleted', 'iacTechnologyName'];
-  productionSystemEntities: ProductionSystemEntity[] = [];
-  @ViewChild(MatTable) table: MatTable<ProductionSystemEntity> | undefined;
+  productionSystemEntities: EntityModelProductionSystemEntity[] = [];
+  @ViewChild(MatTable) table: MatTable<EntityModelProductionSystemEntity> | undefined;
+  prodToKVMap: any = {};
+
+
 
   ngOnInit(): void {
     this.refreshProductionSystems();
@@ -33,9 +35,10 @@ export class ProductionSystemsComponent implements OnInit {
 
   refreshProductionSystems() {
     this.productionSystemEntities = []
+    this.prodToKVMap = {};
     this.productionSystemService.getCollectionResourceProductionsystementityGet1().subscribe(result => {
         result._embedded?.productionSystemEntities?.forEach(data => {
-          this.productionSystemEntities.push(this.utils.toProductionSystemEntity(data))
+          this.productionSystemEntities.push(data)
         })
       }
     )
@@ -57,7 +60,7 @@ export class ProductionSystemsComponent implements OnInit {
   }
 
 
-  openConfigureProductionSystemDialog(productionSystem: ProductionSystemEntity, enterAnimationDuration: string, exitAnimationDuration: string): void {
+  openConfigureProductionSystemDialog(productionSystem: EntityModelProductionSystemEntity, enterAnimationDuration: string, exitAnimationDuration: string): void {
     const dialogRef = this.dialog.open(ConfigureProductionSystemDialogComponent, {
       enterAnimationDuration,
       exitAnimationDuration,

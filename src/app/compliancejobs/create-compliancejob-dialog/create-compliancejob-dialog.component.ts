@@ -1,6 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
-import {ComplianceJobService, ComplianceRuleEntity} from "iacmf-api";
+import {
+  ComplianceJobService,
+  ComplianceRuleEntity,
+  EntityModelComplianceRuleEntity, EntityModelPluginConfigurationEntity,
+  EntityModelPluginUsageEntity
+} from "iacmf-api";
 import {ProductionSystemService} from "iacmf-api";
 import {ProductionSystemsComponent} from "../../production-systems/production-systems.component";
 import {Utils} from "../../utils/utils";
@@ -13,7 +18,8 @@ import {Utils} from "../../utils/utils";
 export class CreateCompliancejobDialogComponent implements OnInit {
 
   selectedProductionSystem = -1;
-  selectedComplianceRules: ComplianceRuleEntity[] = [];
+  selectedComplianceRules: EntityModelComplianceRuleEntity[] = [];
+  checkingPluginConfiguration: EntityModelPluginUsageEntity | undefined;
 
   ngOnInit(): void {
   }
@@ -28,6 +34,10 @@ export class CreateCompliancejobDialogComponent implements OnInit {
     this.selectedComplianceRules = $event;
   }
 
+  saveCheckingPluginConfiguration($event : EntityModelPluginUsageEntity) {
+    this.checkingPluginConfiguration = $event;
+  }
+
   storeComplianceJob() {
 
     if (this.selectedProductionSystem == -1) {
@@ -36,10 +46,17 @@ export class CreateCompliancejobDialogComponent implements OnInit {
       return;
     }
 
+    if (this.selectedComplianceRules.length == 0) {
+      console.log("Select atleast one compliance rule to check")
+      return;
+    }
+
     this.productionSystemService.getCollectionResourceProductionsystementityGet1().subscribe(resp => {
-      resp._embedded?.productionSystemEntities?.filter(val => this.utils.toProductionSystemEntity(val).id == this.selectedProductionSystem).forEach(resp =>
+      resp._embedded?.productionSystemEntities?.filter(val => Number(this.utils.getId(val)) == this.selectedProductionSystem).forEach(resp =>
       this.complianceJobService.postCollectionResourceCompliancejobentityPost({
-        productionSystem: this.utils.getLinkProductionSystem(resp)
+        name: "someName",
+        id: -1,
+        productionSystem: this.utils.getLink("self", resp)
       }).subscribe(resp => {
         console.log(resp)
       })

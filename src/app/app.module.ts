@@ -44,11 +44,11 @@ import {MatDividerModule} from "@angular/material/divider";
 import { SelectProductionSytemComponent } from './production-systems/select-production-sytem/select-production-sytem.component';
 import { ConfigureFixingPluginComponent } from './compliance-issues/configure-fixing-plugin/configure-fixing-plugin.component';
 import {MatInputModule} from "@angular/material/input";
-import { ConfigureCheckingPluginComponent } from './compliance-rules/configure-checking-plugin/configure-checking-plugin.component';
 import { CreateComplianceRuleComponent } from './compliance-rules/create-compliance-rule/create-compliance-rule.component';
 import { KvComponent } from './kv/kv.component';
 import { ConfigureProductionSystemDialogComponent } from './production-systems/configure-production-system-dialog/configure-production-system-dialog.component';
 import {Utils} from "./utils/utils";
+import { PluginUsageComponent } from './plugin-usage/plugin-usage.component';
 
 
 @NgModule({
@@ -71,10 +71,10 @@ import {Utils} from "./utils/utils";
     ConfigureReportingPluginComponent,
     SelectProductionSytemComponent,
     ConfigureFixingPluginComponent,
-    ConfigureCheckingPluginComponent,
     CreateComplianceRuleComponent,
     KvComponent,
-    ConfigureProductionSystemDialogComponent
+    ConfigureProductionSystemDialogComponent,
+    PluginUsageComponent
   ],
   imports: [
     BrowserModule,

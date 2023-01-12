@@ -1,7 +1,17 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
-import {ComplianceIssueEntity, ComplianceRuleEntity, PluginPojo, PluginService} from "iacmf-api";
-import {ConfigureCheckingPluginComponent} from "../configure-checking-plugin/configure-checking-plugin.component";
+import {
+  ComplianceIssueEntity, ComplianceRuleConfigurationService,
+  ComplianceRuleEntity, ComplianceRuleParameterAssignmentService,
+  ComplianceRuleParameterService,
+  ComplianceRulesService, EntityModelComplianceRuleConfigurationEntity,
+  EntityModelComplianceRuleEntity,
+  EntityModelComplianceRuleParameterAssignmentEntity,
+  EntityModelComplianceRuleParameterEntity, EntityModelPluginConfigurationEntity, EntityModelPluginUsageEntity,
+  PluginPojo,
+  PluginService
+} from "iacmf-api";
+import {Utils} from "../../utils/utils";
 
 @Component({
   selector: 'app-compliance-rule-plugin',
@@ -10,46 +20,74 @@ import {ConfigureCheckingPluginComponent} from "../configure-checking-plugin/con
 })
 export class ConfigureComplianceRuleComponent implements OnInit {
 
-  checkingPlugins: PluginPojo[] = [];
-  addedCheckingPlugins: PluginPojo[] = [];
+  checkingPluginConfiguration: EntityModelPluginUsageEntity | undefined;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: ComplianceRuleEntity, public dialog: MatDialog,public pluginService: PluginService) {
-    this.pluginService.getAllPlugins("ISSUE_CHECKING").forEach(result => result.forEach(pojo => this.checkingPlugins.push(pojo)));
+  complianceRuleParameters: EntityModelComplianceRuleParameterEntity[] = []
+  complianceRuleParameterAssignments: EntityModelComplianceRuleParameterAssignmentEntity[] = []
+  @Output("createdComplianceRuleConfiguration") complianceRuleConfigurationEmitter = new EventEmitter();
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: EntityModelComplianceRuleEntity,
+              public complianceRulesConfigurationService: ComplianceRuleConfigurationService,
+              public complianceRuleParameterAssigmentService: ComplianceRuleParameterAssignmentService, public utils: Utils, public dialog: MatDialog, public complianceRuleService: ComplianceRulesService, public pluginService: PluginService) {
+
   }
 
   selected = undefined;
 
   ngOnInit(): void {
+    this.complianceRuleService.followPropertyReferenceComplianceruleentityGet1(String(this.utils.getId(this.data))).subscribe(resp => {
+      resp._embedded?.complianceRuleParameterEntities?.forEach(param => {
+        this.complianceRuleParameters.push(param)
+        this.complianceRuleParameterAssignments.push({
+          name: param.name,
+          type: param.type,
+          value: ""
+        })
+      })
+    })
   }
 
 
-  addCheckingPlugin(checkingPlugin: string | undefined) {
-    this.addedCheckingPlugins.pop();
-    this.addedCheckingPlugins.push(this._filter(checkingPlugin)[0]);
-  }
-
-  removeCheckingPlugin(checkingPlugin: PluginPojo) {
-    const index = this.addedCheckingPlugins.indexOf(checkingPlugin);
-
-    if (index >= 0) {
-      this.addedCheckingPlugins.splice(index, 1);
+  findComplianceRuleParameter(assignmentName: string | undefined) {
+    if (assignmentName == undefined) {
+      throw new Error("AssigmentName must be defined")
     }
+    return this.complianceRuleParameters.filter(param => param.name.includes(assignmentName))[0]
   }
 
-  private _filter(value: string | undefined): PluginPojo[] {
-    if (value == undefined) {
-      return []
-    }
-    return this.checkingPlugins.filter(checkingPlugin => checkingPlugin.identifier != undefined && checkingPlugin.identifier.includes(value));
+
+
+  emitComplianceRuleConfiguration( conf : EntityModelComplianceRuleConfigurationEntity) {
+    this.complianceRuleConfigurationEmitter.emit(conf);
   }
 
-  openConfigureCheckingPluginDialog(checkingPlugin: PluginPojo, enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(ConfigureCheckingPluginComponent, {
-      width: '80%',
-      height: '80%',
-      enterAnimationDuration,
-      exitAnimationDuration,
-      data: checkingPlugin,
-    });
+  storeComplianceRuleConfiguration() {
+    this.complianceRulesConfigurationService.postCollectionResourceComplianceruleconfigurationentityPost({
+      id: -1,
+      issueType: this.data.type,
+      complianceRule: this.utils.getLink("self", this.data),
+    }).subscribe(resp => {
+      this.complianceRuleParameterAssignments.forEach(ass => {
+        this.complianceRuleParameterAssigmentService.postCollectionResourceComplianceruleparameterassignmententityPost({
+          id: -1,
+          name: ass.name,
+          type: ass.type,
+          value: ass.value,
+          complianceRuleConfiguration: this.utils.getLink("self", resp),
+          parameter: this.utils.getLink("self", this.findComplianceRuleParameter(ass.name))
+        }).subscribe(assResp => {
+          let body = {
+            _links: {
+              "complianceRuleConfiguration": {
+                href: this.utils.getLink("self", resp)
+              }
+            }
+          }
+          this.complianceRuleParameterAssigmentService.createPropertyReferenceComplianceruleparameterassignmententityPut(String(this.utils.getId(assResp)), body).subscribe(resp2 => {
+            this.emitComplianceRuleConfiguration(resp);
+          })
+        })
+      })
+    })
   }
 }

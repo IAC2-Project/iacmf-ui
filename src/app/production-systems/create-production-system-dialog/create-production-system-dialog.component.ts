@@ -1,5 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {
+  EntityModelKVEntity,
+  EntityModelPluginUsageEntity,
   KVEntity,
   PluginPojo,
   PluginService,
@@ -18,15 +20,14 @@ import {Utils} from "../../utils/utils";
 })
 export class CreateProductionSystemDialogComponent implements OnInit {
 
+  name = "";
   iacTechnologyName = "";
   description = "";
-  allCreationPlugins = new Array<PluginPojo>();
-  selectedCreationPluginIdentifier: string | undefined;
+  selectedPluginUsage: EntityModelPluginUsageEntity | undefined;
   kvEntities: Array<KVEntity> = [];
 
   constructor(public dialogRef: MatDialogRef<CreateProductionSystemDialogComponent>,
               public pluginService: PluginService, public pluginUsageService: PluginUsageService, public utils: Utils, public productionSystemService: ProductionSystemService) {
-    this.pluginService.getAllPlugins("MODEL_CREATION").forEach(result => result.forEach(pojo => this.allCreationPlugins.push(pojo)));
   }
 
   ngOnInit(): void {
@@ -34,43 +35,48 @@ export class CreateProductionSystemDialogComponent implements OnInit {
 
   closeDialog() {
 
-    if (this.selectedCreationPluginIdentifier == undefined) {
+    if (this.selectedPluginUsage == undefined) {
       throw new Error("Must select creation plugin")
     }
-    let pluginReq = {
-      pluginIdentifier: this.selectedCreationPluginIdentifier
-    }
 
-    this.pluginUsageService.postCollectionResourcePluginusageentityPost(pluginReq).subscribe(resp => {
-        let req = {
+
+    let req = {
+      id: -1,
+      name: this.name,
+      iacTechnologyName: this.iacTechnologyName,
+      isDeleted: false,
+      description: this.description,
+      properties: this.kvEntities.map((key: EntityModelKVEntity) => this.utils.getLink("self", key)),
+      modelCreationPluginUsage: this.utils.getLink( "self", this.selectedPluginUsage)
+    }
+    this.productionSystemService.postCollectionResourceProductionsystementityPost(req).subscribe(prod => {
+      // I'm gonna be honest here, it is not smooth
+      // it would be easier if one could create an "empty" production service and then deliver the data from the dialog at once
+      // now we have to create the KV entities out into the blue, and then link them
+      this.utils.linkKVEntitiesWithProductionSystem(this.kvEntities, prod)
+
+      // dont ask me why we have to do this twice
+      if (this.selectedPluginUsage == undefined) {
+        throw new Error("Must select creation plugin")
+      }
+
+      this.utils.linkPluginUsageWithProductionSystem(this.selectedPluginUsage, prod)
+      this.dialogRef.close({
+        event: 'Closed', data: {
           iacTechnologyName: this.iacTechnologyName,
           isDeleted: false,
           description: this.description,
-          properties: this.kvEntities.map((key: KVEntity) => this.utils.getLinkEntityKV(key)),
-          modelCreationPluginUsage: this.utils.getLinkPluginUsage("self", resp)
+          properties: this.kvEntities,
+          modelCreationPluginUsage: {
+            pluginIdentifier: this.selectedPluginUsage
+          }
         }
-        this.productionSystemService.postCollectionResourceProductionsystementityPost(req).subscribe(prod => {
-          // I'm gonna be honest here, it is not smooth
-          // it would be easier if one could create an "empty" production service and then deliver the data from the dialog at once
-          // now we have to create the KV entities out into the blue, and then link them
-          this.utils.linkKVEntitiesWithProductionSystem(this.kvEntities, prod)
-          this.utils.linkPluginUsageWithProductionSystem(resp, prod)
-          this.dialogRef.close({
-            event: 'Closed', data: {
-              iacTechnologyName: this.iacTechnologyName,
-              isDeleted: false,
-              description: this.description,
-              properties: this.kvEntities,
-              modelCreationPluginUsage: {
-                pluginIdentifier: this.selectedCreationPluginIdentifier
-              }
-            }
-          });
-        });
-      }
-    )
+      });
+    });
+  }
 
-
+  updatePluginUsage($event: EntityModelPluginUsageEntity) {
+    this.selectedPluginUsage = $event
   }
 
   updateKeyValueEntities($event: Array<KVEntity>) {
