@@ -7,6 +7,7 @@ import {
 import {KVEntity} from "iacmf-client";
 import {MatDialogRef} from "@angular/material/dialog";
 import {Utils} from "../../utils/utils";
+import {TestData} from "../../utils/tests/TestData";
 
 @Component({
   selector: 'app-create-compliance-rule',
@@ -15,6 +16,7 @@ import {Utils} from "../../utils/utils";
 })
 export class CreateComplianceRuleComponent implements OnInit {
 
+  name = "";
   type = "";
   location = "";
   description = "";
@@ -23,7 +25,36 @@ export class CreateComplianceRuleComponent implements OnInit {
 
   complianceRuleParameters = new Array<EntityModelComplianceRuleParameterEntity>()
 
-  constructor(public dialogRef: MatDialogRef<CreateComplianceRuleComponent>, public utils: Utils, public complianceRuleService : ComplianceRulesService, public complianceRuleParameterService : ComplianceRuleParameterService) {
+  constructor(public dialogRef: MatDialogRef<CreateComplianceRuleComponent>,
+              public testData: TestData, public utils: Utils, public complianceRuleService : ComplianceRulesService, public complianceRuleParameterService : ComplianceRuleParameterService) {
+
+  }
+
+  fillTestData() {
+    let testCompRule = this.testData.createUseCaseComplianceRules()[0];
+
+    if (testCompRule.complianceRule?.name != undefined) {
+      this.name = testCompRule.complianceRule?.name;
+    }
+
+    if (testCompRule.complianceRule?.type != undefined) {
+      this.type = testCompRule.complianceRule?.type;
+    }
+
+    if (testCompRule.complianceRule?.location != undefined) {
+      this.location = testCompRule.complianceRule?.location;
+    }
+
+    if (testCompRule.complianceRule?.description != undefined) {
+      this.description = testCompRule.complianceRule?.description;
+    }
+
+    testCompRule.complianceRule?.parameters?.forEach(param => {
+      this.complianceRuleParameters.push({
+        name: param.name,
+        type: param.type
+      })
+    })
 
   }
 
@@ -41,7 +72,7 @@ export class CreateComplianceRuleComponent implements OnInit {
   closeDialog(){
     this.complianceRuleService.postCollectionResourceComplianceruleentityPost({
       id: -1,
-      name: "someName",
+      name: this.name,
       isDeleted: false,
       location: this.location,
       description: this.description,
@@ -68,6 +99,7 @@ export class CreateComplianceRuleComponent implements OnInit {
     })
 
     this.dialogRef.close({event:'Closed', data: {
+        name: this.name,
         location: this.location,
         isDeleted: false,
         description: this.description,

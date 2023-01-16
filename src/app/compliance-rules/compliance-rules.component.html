@@ -17,6 +17,9 @@
     </mat-card-header>
     <mat-card-content>
       <p>
+        {{complianceRule.name}}
+      </p>
+      <p>
         {{complianceRule.description}}
       </p>
     </mat-card-content>
@@ -35,6 +38,9 @@
           <mat-card-title>Compliance Rule {{this.utils.getId(complianceRule)}}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
+          <p>
+            {{complianceRule.name}}
+          </p>
           <p>
             {{complianceRule.description}}
           </p>

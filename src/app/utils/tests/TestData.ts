@@ -1,4 +1,6 @@
 import {
+  ComplianceRuleConfigurationEntity,
+  ComplianceRuleEntity,
   EntityModelComplianceRuleEntity,
   EntityModelKVEntity,
   EntityModelPluginUsageEntity,
@@ -21,6 +23,33 @@ export class TestData {
 
   constructor() {
 
+  }
+
+
+  createUseCaseComplianceRules() : Array<ComplianceRuleConfigurationEntity> {
+    return [{
+      complianceRule:  {
+        id: -1,
+        name: "Unexpected Docker Containers Rule",
+        description: "There shouldn't be Docker Containers running which are not reflected in the model",
+        isDeleted: false,
+        location: "http://localhost:8080/winery/compliancerules/http%253A%252F%252Fwww.example.org%252Ftosca%252Fcompliancerules/no-unexpected-docker-containers_w1-wip1",
+        parameters: [{
+          id: -1,
+          name: "ENGINE_URL",
+          type: "STRING"
+        }],
+        type: "subgraph-matching"
+      },
+      issueType: "UNEXPECTED_DOCKER_CONTAINERS",
+      id: -1,
+      complianceRuleParameterAssignments: [{
+        id: -1,
+        name: "ENGINE_URL",
+        type: "STRING",
+        value: "tcp://host.docker.internal:2375",
+      }]
+    }];
   }
 
   createUseCaseProductionSystem() : ProductionSystemEntity {
