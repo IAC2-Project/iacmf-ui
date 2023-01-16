@@ -5,9 +5,10 @@ import {
   KVEntity,
   ProductionSystemEntity,
   ProductionSystemService
-} from "iacmf-api";
+} from "iacmf-client";
 import {ProductionSystemsComponent} from "../production-systems.component";
 import {Utils} from "../../utils/utils";
+
 
 @Component({
   selector: 'app-select-production-sytem',

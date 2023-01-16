@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
-import {ComplianceIssueEntity, PluginPojo} from "iacmf-api";
+import {ComplianceIssueEntity, PluginPojo} from "iacmf-client";
 import {ConfigureFixingPluginComponent} from "../configure-fixing-plugin/configure-fixing-plugin.component";
 
 @Component({

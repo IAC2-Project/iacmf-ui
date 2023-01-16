@@ -8,7 +8,7 @@ import {
   EntityModelTriggerEntity,
   TriggerEntity,
   TriggerService
-} from 'iacmf-api';
+} from 'iacmf-client';
 
 @Component({
   selector: 'app-triggers',

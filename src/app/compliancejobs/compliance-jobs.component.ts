@@ -7,7 +7,7 @@ import {
   ExecutionEntity,
   KVEntity,
   TriggerEntity
-} from "iacmf-api";
+} from "iacmf-client";
 import {CreateCompliancejobDialogComponent} from "./create-compliancejob-dialog/create-compliancejob-dialog.component";
 import {Utils} from "../utils/utils";
 

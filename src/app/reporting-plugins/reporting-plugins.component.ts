@@ -9,7 +9,7 @@ import {async} from "rxjs";
 import {ConfigureValidationPluginComponent} from "../validation-plugins/configure-validation-plugin/configure-validation-plugin.component";
 import {ConfigureReportingPluginComponent} from "./configure-reporting-plugin/configure-reporting-plugin.component";
 import {MatDialog} from "@angular/material/dialog";
-import {PluginPojo} from "iacmf-api";
+import {PluginPojo} from "iacmf-client";
 
 
 

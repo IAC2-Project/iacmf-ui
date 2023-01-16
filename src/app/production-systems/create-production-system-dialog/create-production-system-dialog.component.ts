@@ -8,10 +8,12 @@ import {
   PluginUsageService,
   ProductionSystemEntity,
   ProductionSystemService
-} from "iacmf-api";
+} from "iacmf-client";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {MatFormFieldModule} from "@angular/material/form-field";
+import {TestData} from "../../utils/tests/TestData";
 import {Utils} from "../../utils/utils";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-create-production-system-dialog',
@@ -24,13 +26,45 @@ export class CreateProductionSystemDialogComponent implements OnInit {
   iacTechnologyName = "";
   description = "";
   selectedPluginUsage: EntityModelPluginUsageEntity | undefined;
-  kvEntities: Array<KVEntity> = [];
+  kvEntities: Array<EntityModelKVEntity> = [];
+
+  // used to share events to the child components, for example emitting when the test data button was clicked and the kv component needs updates
+  shareNewKVEvents: Subject<EntityModelKVEntity> = new Subject<EntityModelKVEntity>();
+  emitEventToChild(data: EntityModelKVEntity) {
+    this.shareNewKVEvents.next(data);
+  }
+
+  shareNewPluginUsageEvents: Subject<EntityModelPluginUsageEntity> = new Subject<EntityModelPluginUsageEntity>();
+
+  emitPluginUsageEventToChild(data: EntityModelPluginUsageEntity) {
+    this.shareNewPluginUsageEvents.next(data);
+  }
 
   constructor(public dialogRef: MatDialogRef<CreateProductionSystemDialogComponent>,
-              public pluginService: PluginService, public pluginUsageService: PluginUsageService, public utils: Utils, public productionSystemService: ProductionSystemService) {
+              public pluginService: PluginService,
+              public pluginUsageService: PluginUsageService,
+              public utils: Utils,
+              public productionSystemService: ProductionSystemService,
+              public testData : TestData) {
   }
 
   ngOnInit(): void {
+  }
+
+  fillTestData() {
+    let testProdSytem = this.testData.createUseCaseProductionSystem();
+    this.name = testProdSytem.name;
+    this.iacTechnologyName = testProdSytem.iacTechnologyName;
+    if (testProdSytem.description != undefined) {
+      this.description = testProdSytem.description;
+    }
+    if (testProdSytem.modelCreationPluginUsage?.pluginIdentifier != undefined) {
+      this.emitPluginUsageEventToChild({
+        pluginIdentifier: testProdSytem.modelCreationPluginUsage?.pluginIdentifier
+      });
+    }
+    this.selectedPluginUsage = testProdSytem.modelCreationPluginUsage
+    testProdSytem.properties?.forEach(kv => this.emitEventToChild(kv))
   }
 
   closeDialog() {

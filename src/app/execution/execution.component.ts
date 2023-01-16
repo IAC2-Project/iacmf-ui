@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {ExecutionEntity, ExecutionService} from "iacmf-api";
-import {Utils} from "../utils/utils";
+import {ExecutionEntity, ExecutionService} from "iacmf-client";
 import {CreateProductionSystemDialogComponent} from "../production-systems/create-production-system-dialog/create-production-system-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {CreateExecutionComponent} from "./create-execution/create-execution.component";
+import {Utils} from "../utils/utils";
 
 @Component({
   selector: 'app-execution',

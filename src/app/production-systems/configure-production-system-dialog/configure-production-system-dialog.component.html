@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Register Production System</h1>
+<h1 mat-dialog-title>Configure Production System</h1>
 <div mat-dialog-content>
 
   <h4>IaC Technology:</h4>
@@ -11,6 +11,13 @@
 
   <br>
 
+  <mat-divider style="width: 100%; display: inline-block;"></mat-divider>
+  <span style="padding: 20px; font-weight: 500;">Select Creation Plugin</span>
+  <mat-divider style="width: 100%; display: inline-block;"></mat-divider>
+
+  <app-plugin-usage (selectedPluginIdentifierEvent)="updatePluginUsage($event)" [pluginType]="'MODEL_CREATION'" [productionSystem]="this.data"></app-plugin-usage>
+
+
   <!-- You can't change the model creation plugin, learned the hard way :D
   <h4>Select Model Creation Plugin:</h4>
   <mat-select [(value)]="this.selectedCreationPluginIdentifier">
@@ -19,7 +26,7 @@
     </mat-option>
   </mat-select> -->
 
-  <app-kv [keyValueEntitiesToConfigure]="kvEntities" (keyValueEntities)="updateKeyValueEntities($event)"></app-kv>
+  <app-kv [keyValueEntitiesToConfigure]="kvEntities" (keyValueEntities)="updateKeyValueEntities($event)" [productionSystem]="this.data"></app-kv>
 
 </div>
 <div mat-dialog-actions>

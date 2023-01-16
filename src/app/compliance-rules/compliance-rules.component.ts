@@ -7,11 +7,11 @@ import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {map, startWith} from 'rxjs/operators';
 import {async} from "rxjs";
 import {ConfigureRefinementPluginComponent} from "../refinement-plugins/configure-refinement-plugin/configure-refinement-plugin.component";
-import {ComplianceRuleEntity, ComplianceRulesService, EntityModelComplianceRuleEntity} from "iacmf-api";
+import {ComplianceRuleEntity, ComplianceRulesService, EntityModelComplianceRuleEntity} from "iacmf-client";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfigureComplianceRuleComponent} from "./configure-compliance-rule/configure-compliance-rule.component";
-import {Utils} from "../utils/utils";
 import {CreateComplianceRuleComponent} from "./create-compliance-rule/create-compliance-rule.component";
+import {Utils} from "../utils/utils";
 
 @Component({
   selector: 'app-compliance-rules',

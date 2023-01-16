@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {PluginPojo} from "iacmf-api";
+import {PluginPojo} from "iacmf-client";
 
 @Component({
   selector: 'app-configure-reporting-plugin',

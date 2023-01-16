@@ -5,8 +5,8 @@ import {
   ComplianceRuleEntity,
   EntityModelComplianceRuleEntity, EntityModelPluginConfigurationEntity,
   EntityModelPluginUsageEntity
-} from "iacmf-api";
-import {ProductionSystemService} from "iacmf-api";
+} from "iacmf-client";
+import {ProductionSystemService} from "iacmf-client";
 import {ProductionSystemsComponent} from "../../production-systems/production-systems.component";
 import {Utils} from "../../utils/utils";
 
@@ -68,6 +68,7 @@ export class CreateCompliancejobDialogComponent implements OnInit {
         complianceRuleConfigurations: this.selectedComplianceRules.map((cr: EntityModelComplianceRuleEntity) =>this.utils.getLink("self", cr))
       }).subscribe(resp => {
         console.log(resp)
+        this
       })
       )
     })

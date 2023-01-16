@@ -3,8 +3,8 @@ import {
   ComplianceRuleParameterService,
   ComplianceRulesService,
   EntityModelComplianceRuleParameterEntity
-} from "iacmf-api";
-import {KVEntity} from "iacmf-api";
+} from "iacmf-client";
+import {KVEntity} from "iacmf-client";
 import {MatDialogRef} from "@angular/material/dialog";
 import {Utils} from "../../utils/utils";
 

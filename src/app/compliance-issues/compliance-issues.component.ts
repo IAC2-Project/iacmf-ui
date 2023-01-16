@@ -5,7 +5,7 @@ import {Observable} from "rxjs";
 import {MatChipInputEvent} from "@angular/material/chips";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {map, startWith} from 'rxjs/operators';
-import {ComplianceIssueEntity} from "iacmf-api";
+import {ComplianceIssueEntity} from "iacmf-client";
 import {ConfigureComlianceIssueComponent} from "./configure-compliance-issue/configure-compliance-issue.component";
 import {MatDialog} from "@angular/material/dialog";
 

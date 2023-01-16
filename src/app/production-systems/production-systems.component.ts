@@ -6,13 +6,13 @@ import {
   PluginUsageService,
   ProductionSystemEntity,
   ProductionSystemService
-} from "iacmf-api";
+} from "iacmf-client";
 import {CreateProductionSystemDialogComponent} from "./create-production-system-dialog/create-production-system-dialog.component";
 import {MatTable} from "@angular/material/table";
 import {Observable} from "rxjs";
-import {Utils} from "../utils/utils";
 import {ConfigureProductionSystemDialogComponent} from "./configure-production-system-dialog/configure-production-system-dialog.component";
 import {KvComponent} from "../kv/kv.component";
+import {Utils} from "../utils/utils";
 
 
 @Component({

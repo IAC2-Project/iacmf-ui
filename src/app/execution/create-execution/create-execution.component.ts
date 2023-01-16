@@ -7,7 +7,7 @@ import {
   ExecutionService,
   PluginService,
   PluginUsageService
-} from "iacmf-api";
+} from "iacmf-client";
 import {Utils} from "../../utils/utils";
 
 @Component({
@@ -55,9 +55,6 @@ export class CreateExecutionComponent implements OnInit {
         event: 'Closed', data: resp
       });
     })
-
-
-
   }
 
 }

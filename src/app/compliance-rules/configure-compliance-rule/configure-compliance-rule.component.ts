@@ -10,8 +10,9 @@ import {
   EntityModelComplianceRuleParameterEntity, EntityModelPluginConfigurationEntity, EntityModelPluginUsageEntity,
   PluginPojo,
   PluginService
-} from "iacmf-api";
+} from "iacmf-client";
 import {Utils} from "../../utils/utils";
+
 
 @Component({
   selector: 'app-compliance-rule-plugin',

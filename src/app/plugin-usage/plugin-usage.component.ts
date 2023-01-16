@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {
   EntityModelKVEntity,
   EntityModelPluginConfigurationEntity,
-  EntityModelPluginUsageEntity,
+  EntityModelPluginUsageEntity, EntityModelProductionSystemEntity,
   KVEntity,
   PluginConfigurationEntity,
   PluginConfigurationEntryDescriptor,
@@ -12,8 +12,9 @@ import {
   PluginUsageEntity,
   PluginUsageService,
   ProductionSystemService
-} from "iacmf-api";
+} from "iacmf-client";
 import {Utils} from "../utils/utils";
+import {Observable, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-plugin-usage',
@@ -26,27 +27,61 @@ export class PluginUsageComponent implements OnInit {
 
   @Input("pluginUsageId") pluginUsageId : number = -1;
   @Input("pluginType") pluginType = "";
+  @Input("productionSystem") productionSystem: EntityModelProductionSystemEntity | undefined
   allPlugins = new Array<PluginPojo>();
   selectedPluginIdentifier: string = "";
   pluginUsage : EntityModelPluginUsageEntity = {pluginIdentifier: ""}
   pluginUsageConfigurations : Array<EntityModelPluginConfigurationEntity> = new Array<EntityModelPluginConfigurationEntity>();
   newKeyName: string = "";
 
+  @Input("pluginUsageIdentifierSub") pluginUsageIdentifierSub: Observable<EntityModelPluginUsageEntity> | undefined;
+  private pluginUsageIdentifierCreateEventsSubscription: Subscription | undefined;
+
   @Output("selectedPluginIdentifierEvent") selectedPluginIdentifierEventEmitter = new EventEmitter()
 
-  constructor(public pluginService: PluginService, public pluginUsageService: PluginUsageService, public utils: Utils, public pluginUsageConfigurationService : PluginConfigurationService) {
+  constructor(public pluginService: PluginService, public pluginUsageService: PluginUsageService, public utils: Utils, public pluginUsageConfigurationService : PluginConfigurationService, public productionSystemService: ProductionSystemService) {
   }
 
   ngOnInit(): void {
     this.allPlugins = new Array<PluginPojo>();
     this.pluginService.getAllPlugins(this.pluginType).forEach(result => result.forEach(pojo => this.allPlugins.push(pojo)));
 
+
     if (this.pluginUsageId != -1) {
-      this.pluginUsageService.getItemResourcePluginusageentityGet(String(this.pluginUsageId)).subscribe(resp => {
-        this.pluginUsage = resp
-        this.selectedPluginIdentifier = this.pluginUsage.pluginIdentifier
-        this.pluginUsageService.followPropertyReferencePluginusageentityGet41(String(this.pluginUsageId)).subscribe(resp2 => resp2._embedded?.pluginConfigurationEntities?.forEach(conf => this.pluginUsageConfigurations.push(conf)))
+      this.loadPluginUsage();
+    }
+
+    if (this.pluginUsageIdentifierSub != undefined) {
+      this.pluginUsageIdentifierCreateEventsSubscription = this.pluginUsageIdentifierSub.subscribe((data: EntityModelPluginUsageEntity) => {
+        this.selectedPluginIdentifier = data.pluginIdentifier
+        this.pluginChanged()
+      });
+    }
+
+    if (this.productionSystem != undefined) {
+      this.productionSystemService.followPropertyReferenceProductionsystementityGet1(String(this.utils.getId(this.productionSystem))).subscribe( resp => {
+        this.pluginUsageId = Number(this.utils.getId(resp));
+        this.loadPluginUsage();
       })
+    }
+
+
+  }
+
+  loadPluginUsage() {
+    this.pluginUsageService.getItemResourcePluginusageentityGet(String(this.pluginUsageId)).subscribe(resp => {
+      this.pluginUsage = resp
+      this.selectedPluginIdentifier = this.pluginUsage.pluginIdentifier
+      this.pluginUsageService.followPropertyReferencePluginusageentityGet41(String(this.pluginUsageId)).subscribe(resp2 => {
+        resp2._embedded?.pluginConfigurationEntities?.forEach(conf => this.pluginUsageConfigurations.push(conf))
+        this.emitPluginUsage()
+      })
+    })
+  }
+
+  ngOnDestroy() {
+    if (this.pluginUsageIdentifierCreateEventsSubscription != undefined) {
+      this.pluginUsageIdentifierCreateEventsSubscription.unsubscribe();
     }
   }
 

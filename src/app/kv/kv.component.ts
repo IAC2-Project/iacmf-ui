@@ -1,13 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {
   ComplianceIssueEntity,
-  EntityModelKVEntity,
+  EntityModelKVEntity, EntityModelProductionSystemEntity,
   KeyValueService,
   KVEntity,
   ProductionSystemEntity,
   ProductionSystemService
-} from "iacmf-api";
+} from "iacmf-client";
 import {Utils} from "../utils/utils";
+import {Observable, Subscription} from "rxjs";
 
 
 @Component({
@@ -17,11 +18,15 @@ import {Utils} from "../utils/utils";
 })
 export class KvComponent implements OnInit {
 
-  @Input("productionSystem") productionSystem: ProductionSystemEntity | undefined;
+  @Input("productionSystem") productionSystem: EntityModelProductionSystemEntity | undefined;
   @Input("keysValueEntitiesToCreate") keyNamesToCreate : Array<string> = [];
   @Input("keyValueEntitiesToConfigure") keyValueEntities : Array<EntityModelKVEntity> = [];
   @Output("keyValueEntities") keyValueEntitiesEventEmitter = new EventEmitter();
   newKeyName: string = "";
+
+  // enables to changes from the parent while this child is open, basically the parent can send events down here and we react to it
+  @Input("keyValueOnSubCreation") keyValueOnSubCreation: Observable<EntityModelKVEntity> | undefined;
+  private kvCreateEventsSubscription: Subscription | undefined;
 
   constructor(public kvService: KeyValueService, public utils: Utils, public productionSystemService: ProductionSystemService) { }
 
@@ -34,6 +39,12 @@ export class KvComponent implements OnInit {
       throw new Error("If using a production system no keysValueEntitiesToCreate or keyValueEntitiesToConfigure is required")
     }
 
+    if (this.keyValueOnSubCreation != undefined) {
+      this.kvCreateEventsSubscription = this.keyValueOnSubCreation.subscribe((data: EntityModelKVEntity) => {
+        this.storeKVEntity(data.key, data.value)
+      });
+    }
+
     this.keyNamesToCreate.forEach(key => this.storeKVEntity(key))
 
     if (this.productionSystem != undefined) {
@@ -41,12 +52,18 @@ export class KvComponent implements OnInit {
     }
   }
 
-  loadKVEntityForProductionSystem(productionSystem: ProductionSystemEntity) {
-    if (productionSystem.id == undefined) {
+  ngOnDestroy() {
+    if (this.kvCreateEventsSubscription != undefined) {
+      this.kvCreateEventsSubscription.unsubscribe();
+    }
+  }
+
+  loadKVEntityForProductionSystem(productionSystem: EntityModelProductionSystemEntity) {
+    if (this.utils.getId(productionSystem) == undefined) {
       throw new Error("Please load KV Map with persistet production system entity")
     }
     this.keyValueEntities = []
-    this.productionSystemService.followPropertyReferenceProductionsystementityGet21(String(productionSystem.id)).subscribe( resp => {
+    this.productionSystemService.followPropertyReferenceProductionsystementityGet21(String(this.utils.getId(productionSystem))).subscribe( resp => {
       resp._embedded?.kVEntities?.forEach(kv => {
         this.keyValueEntities.push(kv);
       })

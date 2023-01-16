@@ -1,15 +1,13 @@
+
+import {Inject, Injectable} from "@angular/core";
 import {
-  EntityModelComplianceRuleEntity,
   EntityModelKVEntity,
   EntityModelPluginUsageEntity,
   EntityModelProductionSystemEntity,
   KeyValueService,
-  KVEntity,
-  PluginUsageEntity, PluginUsageService,
-  ProductionSystemEntity,
+  PluginUsageService,
   ProductionSystemService, RepresentationModelObject
-} from "iacmf-api";
-import {Injectable} from "@angular/core";
+} from "iacmf-client";
 
 
 @Injectable({
@@ -19,7 +17,7 @@ import {Injectable} from "@angular/core";
 })
 export class Utils {
 
-  constructor(public kvEntityService: KeyValueService, public productionSystemService : ProductionSystemService, public pluginUsage: PluginUsageService) {
+  constructor(private kvEntityService: KeyValueService, private productionSystemService : ProductionSystemService, private pluginUsage: PluginUsageService) {
 
   }
 

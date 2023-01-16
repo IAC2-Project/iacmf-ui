@@ -13,7 +13,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {LayoutModule} from '@angular/cdk/layout';
 import {HttpClientModule} from '@angular/common/http';
-import {ApiModule} from 'iacmf-api';
+import {ApiModule, Configuration} from 'iacmf-client';
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTableModule} from "@angular/material/table";
@@ -47,11 +47,9 @@ import {MatInputModule} from "@angular/material/input";
 import { CreateComplianceRuleComponent } from './compliance-rules/create-compliance-rule/create-compliance-rule.component';
 import { KvComponent } from './kv/kv.component';
 import { ConfigureProductionSystemDialogComponent } from './production-systems/configure-production-system-dialog/configure-production-system-dialog.component';
-import {Utils} from "./utils/utils";
 import { PluginUsageComponent } from './plugin-usage/plugin-usage.component';
 import { ExecutionComponent } from './execution/execution.component';
 import { CreateExecutionComponent } from './execution/create-execution/create-execution.component';
-
 
 @NgModule({
   declarations: [

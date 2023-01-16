@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import {FormControl} from '@angular/forms';
 import {Observable} from "rxjs";
@@ -9,7 +9,7 @@ import {async} from "rxjs";
 import {CreateCompliancejobDialogComponent} from "../compliancejobs/create-compliancejob-dialog/create-compliancejob-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfigureRefinementPluginComponent} from "./configure-refinement-plugin/configure-refinement-plugin.component";
-import {KVEntity, PluginPojo} from "iacmf-api";
+import {KVEntity, PluginPojo} from "iacmf-client";
 
 @Component({
   selector: 'app-refinement-plugins',
