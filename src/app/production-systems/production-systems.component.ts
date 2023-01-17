@@ -52,7 +52,7 @@ export class ProductionSystemsComponent implements OnInit {
     matDialogConfig.exitAnimationDuration = exitAnimationDuration;
     const dialogRef = this.dialog.open(CreateProductionSystemDialogComponent, matDialogConfig);
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       this.refreshProductionSystems()
     });
   }

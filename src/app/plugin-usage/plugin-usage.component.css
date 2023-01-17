@@ -8,3 +8,15 @@ form {
 mat-form-field {
   width: 100%;
 }
+
+.configuration-param {
+  margin-top: 1em;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  float: left;
+  margin-right: 1em;
+}
+label:after { content: ": " }

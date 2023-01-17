@@ -51,6 +51,7 @@ import { PluginUsageComponent } from './plugin-usage/plugin-usage.component';
 import { ExecutionComponent } from './execution/execution.component';
 import { CreateExecutionComponent } from './execution/create-execution/create-execution.component';
 import { ReadablePipe } from './utils/pipes/readable.pipe';
+import { ConfigureRefinementPluginDialogComponent } from './refinement-plugins/configure-refinement-plugin-dialog/configure-refinement-plugin-dialog.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { ReadablePipe } from './utils/pipes/readable.pipe';
     PluginUsageComponent,
     ExecutionComponent,
     CreateExecutionComponent,
-    ReadablePipe
+    ReadablePipe,
+    ConfigureRefinementPluginDialogComponent
   ],
   imports: [
     BrowserModule,

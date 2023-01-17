@@ -14,14 +14,14 @@
         </mat-label>
         <input matInput type="text" [(ngModel)]="name" name="productionSystemName"/>
       </mat-form-field>
-      <br />
+      <br/>
       <mat-form-field>
         <mat-label>
           IaC Technology
         </mat-label>
         <input matInput type="text" [(ngModel)]="iacTechnologyName" name="iacTechnologyName"/>
       </mat-form-field>
-      <br />
+      <br/>
       <mat-form-field>
         <mat-label>
           Description
@@ -37,8 +37,7 @@
       </mat-expansion-panel-header>
 
       <app-plugin-usage (selectedPluginIdentifierEvent)="updatePluginUsage($event)" [pluginType]="'MODEL_CREATION'"
-                        [showHeader]="false"
-                        [pluginUsageIdentifierSub]="this.shareNewPluginUsageEvents.asObservable()"></app-plugin-usage>
+                        [showHeader]="false" [pluginUsageIdentifierSub]="this.shareNewPluginUsageEvents.asObservable()"></app-plugin-usage>
 
     </mat-expansion-panel>
     <mat-expansion-panel style="margin-bottom: 2em">

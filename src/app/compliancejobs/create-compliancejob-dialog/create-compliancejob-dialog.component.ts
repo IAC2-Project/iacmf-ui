@@ -20,6 +20,7 @@ export class CreateCompliancejobDialogComponent implements OnInit {
   selectedProductionSystem = -1;
   selectedComplianceRules: EntityModelComplianceRuleEntity[] = [];
   checkingPluginConfiguration: EntityModelPluginUsageEntity | undefined;
+  refinementPluginUsages = new Array<EntityModelPluginUsageEntity>();
 
   ngOnInit(): void {
   }
@@ -32,6 +33,21 @@ export class CreateCompliancejobDialogComponent implements OnInit {
 
   complianceRulesSelected($event : any) {
     this.selectedComplianceRules = $event;
+  }
+
+  refinementPluginAdded($event: EntityModelPluginUsageEntity) {
+    this.refinementPluginUsages.push($event);
+    console.debug($event);
+  }
+
+  refinementPluginRemoved($event: EntityModelPluginUsageEntity) {
+    if ($event != undefined &&  $event.pluginIdentifier) {
+      let toRemove = this.refinementPluginUsages.filter(usage => usage.pluginIdentifier === $event.pluginIdentifier)[0];
+      let index = this.refinementPluginUsages.indexOf(toRemove);
+      this.refinementPluginUsages.slice(index, 1);
+    }
+
+    console.debug($event);
   }
 
   saveCheckingPluginConfiguration($event : EntityModelPluginUsageEntity) {

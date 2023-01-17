@@ -6,7 +6,7 @@
       <app-select-production-sytem (selectedProductionSystem)="productionSystemSelected($event)"></app-select-production-sytem>
     </mat-step>
     <mat-step label="Refinement">
-      <app-refinement-plugins></app-refinement-plugins>
+      <app-refinement-plugins (pluginAdded)="refinementPluginAdded($event)" (pluginRemoved)="refinementPluginRemoved($event)"></app-refinement-plugins>
     </mat-step>
     <mat-step  label="Compliance Rules">
       <app-compliance-rules [allowCreate]="false" [allowSelection]="true" [showAllRules]="false" (selectedComplianceRules)="complianceRulesSelected($event)" ></app-compliance-rules>
