@@ -44,8 +44,9 @@ export class ComplianceJobsComponent implements OnInit {
       exitAnimationDuration,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result  => {
       this.refreshComplianceJobs()
     })
   }
+  
 }

@@ -95,16 +95,14 @@ export class CreateComplianceRuleComponent implements OnInit {
           this.complianceRuleParameterService.createPropertyReferenceComplianceruleparameterentityPut(String(this.utils.getId(param)), body)
         })
       })
-
+      this.dialogRef.close({event:'Closed', data: {
+          name: this.name,
+          location: this.location,
+          isDeleted: false,
+          description: this.description,
+          type: this.type,
+          complianceRuleParameterEntities: this.complianceRuleParameters
+        }});
     })
-
-    this.dialogRef.close({event:'Closed', data: {
-        name: this.name,
-        location: this.location,
-        isDeleted: false,
-        description: this.description,
-        type: this.type,
-        complianceRuleParameterEntities: this.complianceRuleParameters
-      }});
   }
 }
