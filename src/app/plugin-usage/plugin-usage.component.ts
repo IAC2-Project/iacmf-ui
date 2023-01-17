@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   EntityModelKVEntity,
   EntityModelPluginConfigurationEntity,
@@ -13,8 +13,8 @@ import {
   PluginUsageService,
   ProductionSystemService
 } from "iacmf-client";
-import {Utils} from "../utils/utils";
-import {Observable, Subscription} from "rxjs";
+import { Utils } from "../utils/utils";
+import { Observable, Subscription } from "rxjs";
 
 @Component({
   selector: 'app-plugin-usage',
@@ -23,15 +23,13 @@ import {Observable, Subscription} from "rxjs";
 })
 export class PluginUsageComponent implements OnInit {
 
-
-
-  @Input("pluginUsageId") pluginUsageId : number = -1;
+  @Input("pluginUsageId") pluginUsageId: number = -1;
   @Input("pluginType") pluginType = "";
   @Input("productionSystem") productionSystem: EntityModelProductionSystemEntity | undefined
   allPlugins = new Array<PluginPojo>();
   selectedPluginIdentifier: string = "";
-  pluginUsage : EntityModelPluginUsageEntity = {pluginIdentifier: ""}
-  pluginUsageConfigurations : Array<EntityModelPluginConfigurationEntity> = new Array<EntityModelPluginConfigurationEntity>();
+  pluginUsage: EntityModelPluginUsageEntity = { pluginIdentifier: "" }
+  pluginUsageConfigurations: Array<EntityModelPluginConfigurationEntity> = new Array<EntityModelPluginConfigurationEntity>();
   newKeyName: string = "";
 
   @Input("pluginUsageIdentifierSub") pluginUsageIdentifierSub: Observable<EntityModelPluginUsageEntity> | undefined;
@@ -39,13 +37,12 @@ export class PluginUsageComponent implements OnInit {
 
   @Output("selectedPluginIdentifierEvent") selectedPluginIdentifierEventEmitter = new EventEmitter()
 
-  constructor(public pluginService: PluginService, public pluginUsageService: PluginUsageService, public utils: Utils, public pluginUsageConfigurationService : PluginConfigurationService, public productionSystemService: ProductionSystemService) {
+  constructor(public pluginService: PluginService, public pluginUsageService: PluginUsageService, public utils: Utils, public pluginUsageConfigurationService: PluginConfigurationService, public productionSystemService: ProductionSystemService) {
   }
 
   ngOnInit(): void {
     this.allPlugins = new Array<PluginPojo>();
-    this.pluginService.getAllPlugins(this.pluginType).forEach(result => result.forEach(pojo => this.allPlugins.push(pojo)));
-
+    this.pluginService.getAllPlugins(this.pluginType).subscribe(result => result.forEach(pojo => this.allPlugins.push(pojo)));
 
     if (this.pluginUsageId != -1) {
       this.loadPluginUsage();
@@ -59,12 +56,11 @@ export class PluginUsageComponent implements OnInit {
     }
 
     if (this.productionSystem != undefined) {
-      this.productionSystemService.followPropertyReferenceProductionsystementityGet1(String(this.utils.getId(this.productionSystem))).subscribe( resp => {
+      this.productionSystemService.followPropertyReferenceProductionsystementityGet1(String(this.utils.getId(this.productionSystem))).subscribe(resp => {
         this.pluginUsageId = Number(this.utils.getId(resp));
         this.loadPluginUsage();
       })
     }
-
 
   }
 
@@ -90,12 +86,14 @@ export class PluginUsageComponent implements OnInit {
   }
 
   storePluginConfigurationEntity(conf: PluginConfigurationEntryDescriptor, key: string, value: string) {
-    if (conf.name ==undefined) {
+    if (conf.name == undefined) {
       throw new Error("Plugin Configuration has no key")
     }
-    this.pluginUsageConfigurationService.postCollectionResourcePluginconfigurationentityPost({id: -1,
-    key: conf.name,
-    value: ""}).subscribe(resp => {
+    this.pluginUsageConfigurationService.postCollectionResourcePluginconfigurationentityPost({
+      id: -1,
+      key: conf.name,
+      value: ""
+    }).subscribe(resp => {
       let body = {
         _links: {
           "pluginUsage": {
@@ -112,7 +110,7 @@ export class PluginUsageComponent implements OnInit {
 
   // seem elegant first to check when the user is finished typing and we can update the value,
   // however, it is actually brutal
-  updateWhenStopped($event: any, pluginConfigurationEntity : EntityModelPluginConfigurationEntity) {
+  updateWhenStopped($event: any, pluginConfigurationEntity: EntityModelPluginConfigurationEntity) {
     setTimeout(() => {
       // to be a little more robust it would be better to check if there are indeed changes
       // e.g. like this:
@@ -138,11 +136,15 @@ export class PluginUsageComponent implements OnInit {
     })
   }
 
-  updatePluginConfigurationEntity(pluginConfigurationEntity : EntityModelPluginConfigurationEntity) {
+  updatePluginConfigurationEntity(pluginConfigurationEntity: EntityModelPluginConfigurationEntity) {
     this.pluginUsageConfigurationService.putItemResourcePluginconfigurationentityPut(String(this.utils.getId(pluginConfigurationEntity)), {
       id: Number(this.utils.getId(pluginConfigurationEntity)),
       key: pluginConfigurationEntity.key,
       value: pluginConfigurationEntity.value
     }).subscribe(resp => console.log(resp))
+  }
+
+  readable(word: string): string {
+    return word.split('_').map(part => part[0].toUpperCase() + part.slice(1).toLowerCase()).join(' ');
   }
 }

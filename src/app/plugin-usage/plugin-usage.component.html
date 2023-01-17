@@ -1,22 +1,43 @@
-<div>
-<h4>Select {{this.pluginType}} Plugin:</h4>
-<mat-select [(value)]="this.selectedPluginIdentifier" (selectionChange)="pluginChanged()">
-  <mat-option *ngFor="let plugin of allPlugins" value="{{plugin.identifier}}">
-    {{plugin.identifier}}
-  </mat-option>
-</mat-select>
+<form>
+  <h4>Configure {{pluginType | readable}} Plugin</h4>
+  <mat-form-field class="full-width">
+    <mat-label>
+      Select plugin:
+    </mat-label>
+    <mat-select [(value)]="this.selectedPluginIdentifier" (selectionChange)="pluginChanged()" class="full-width">
+      <mat-option *ngFor="let plugin of allPlugins" value="{{plugin.identifier}}">
+        {{plugin.identifier}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <h5>Configuration Parameters</h5>
+  <div *ngIf="this.selectedPluginIdentifier.length > 0 && this.pluginUsageConfigurations.length > 0">
+    <div *ngFor="let pluginConfiguration of pluginUsageConfigurations">
+      <mat-form-field class="full-width">
+        <mat-label>
+          {{pluginConfiguration.key}}
+        </mat-label>
+        <input matInput type="text" [(ngModel)]="pluginConfiguration.value"
+               (keyup)="updateWhenStopped($event, pluginConfiguration)"/>
+
+      </mat-form-field>
+    </div>
+  </div>
 
   <h4>Add new Plugin Configuration Parameter:</h4>
   <input matInput type="text" [(ngModel)]="newKeyName"/>
-  <button mat-button (click)="storePluginConfigurationEntity({name: newKeyName},newKeyName, '')" disabled="{{newKeyName == undefined || newKeyName.length == 0}}">
+  <button mat-button (click)="storePluginConfigurationEntity({name: newKeyName},newKeyName, '')"
+          disabled="{{newKeyName == undefined || newKeyName.length == 0}}">
     Add Parameter
   </button>
   <br>
   <div *ngIf="this.selectedPluginIdentifier.length > 0 && this.pluginUsageConfigurations.length > 0">
-  <h4>Properties:</h4>
-  <div *ngFor="let pluginConfiguration of pluginUsageConfigurations">
-    {{pluginConfiguration.key}}:
-    <input matInput type="text" [(ngModel)]="pluginConfiguration.value" (keyup)="updateWhenStopped($event, pluginConfiguration)"/>
+    <h4>Properties:</h4>
+    <div *ngFor="let pluginConfiguration of pluginUsageConfigurations">
+      {{pluginConfiguration.key}}:
+      <input matInput type="text" [(ngModel)]="pluginConfiguration.value"
+             (keyup)="updateWhenStopped($event, pluginConfiguration)"/>
+    </div>
   </div>
-  </div>
-</div>
+</form>
