@@ -2,6 +2,14 @@
 <div mat-dialog-content>
   <div>
 
+    <button mat-button (click)="fillTestData()">Create Test Data</button>
+
+
+    <h4>name:</h4>
+    <input matInput type="text" [(ngModel)]="name"/>
+
+    <br>
+
     <h4>Type:</h4>
     <input matInput type="text" [(ngModel)]="type"/>
 

@@ -1,6 +1,8 @@
 <h1 mat-dialog-title>Configure Compliance Rule</h1>
 <div mat-dialog-content>
   <div>
+    <button mat-button (click)="fillInTestData()">Create Test Data</button>
+
     <h4>Compliance Rule {{this.utils.getId(data)}}</h4>
     <h5>Description:</h5>
     <p>{{data.description}}</p>

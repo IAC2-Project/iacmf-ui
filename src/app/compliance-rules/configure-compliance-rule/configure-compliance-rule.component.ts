@@ -12,6 +12,7 @@ import {
   PluginService
 } from "iacmf-client";
 import {Utils} from "../../utils/utils";
+import {TestData} from "../../utils/tests/TestData";
 
 
 @Component({
@@ -28,12 +29,29 @@ export class ConfigureComplianceRuleComponent implements OnInit {
   @Output("createdComplianceRuleConfiguration") complianceRuleConfigurationEmitter = new EventEmitter();
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: EntityModelComplianceRuleEntity,
+              public testData : TestData,
               public complianceRulesConfigurationService: ComplianceRuleConfigurationService,
               public complianceRuleParameterAssigmentService: ComplianceRuleParameterAssignmentService, public utils: Utils, public dialog: MatDialog, public complianceRuleService: ComplianceRulesService, public pluginService: PluginService) {
 
   }
 
   selected = undefined;
+
+  fillInTestData() {
+    let complianceRule = this.testData.createUseCaseComplianceRules()[0];
+    complianceRule.complianceRuleParameterAssignments?.forEach(paramAssignment => {
+      this.complianceRuleParameterAssignments.filter(param => {
+        if (paramAssignment.name != undefined) {
+          return param.name?.includes(paramAssignment.name)
+        } else {
+          return false
+        }
+      }).forEach(param => {
+        param.value = paramAssignment.value
+      })
+    })
+
+  }
 
   ngOnInit(): void {
     this.complianceRuleService.followPropertyReferenceComplianceruleentityGet1(String(this.utils.getId(this.data))).subscribe(resp => {
