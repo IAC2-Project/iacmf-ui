@@ -65,19 +65,19 @@ export class TestData {
       },
       properties: [{
         id: -1,
-        key: "opentosca_hostname",
+        key: "opentoscacontainer_hostname",
         value: "localhost"
       },{
         id: -1,
-        key: "opentosca_port",
+        key: "opentoscacontainer_port",
         value: "1337"
       },{
         id: -1,
-        key: "opentosca_appId",
-        value: "RealWorld-Application_Angular-Spring-MySQL-w1"
+        key: "opentoscacontainer_appId",
+        value: "RealWorld-Application_Angular-Spring-MySQL-w1.csar"
       },{
         id: -1,
-        key: "opentosca_instanceId",
+        key: "opentoscacontainer_instanceId",
         value: "instanceId"
       },{
         id: -1,
