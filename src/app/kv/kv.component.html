@@ -1,13 +1,28 @@
+<div *ngIf="this.keyValueEntities.length > 0">
+  <h4>Properties:</h4>
+  <div *ngFor="let kv of keyValueEntities">
+    <mat-form-field>
+      <mat-label>
+        {{kv.key}}
+      </mat-label>
+      <input matInput type="text" [(ngModel)]="kv.value" (keyup)="updateWhenStopped($event, kv)"/>
+    </mat-form-field>
+  </div>
+</div>
+<div *ngIf="this.keyValueEntities.length === 0">
+  <span>No properties exist yet!</span>
+</div>
+<br>
 <h4>Add new Property:</h4>
-<input matInput type="text" [(ngModel)]="newKeyName"/>
-<button mat-button (click)="storeKVEntity(newKeyName)" disabled="{{newKeyName == undefined || newKeyName.length == 0}}">
+<mat-form-field>
+  <mat-label>
+    Property name
+  </mat-label>
+  <input matInput type="text" [(ngModel)]="newKeyName"/>
+</mat-form-field>
+<button mat-button (click)="storeKVEntity(newKeyName)"
+        disabled="{{newKeyName == undefined || newKeyName.length == 0}}">
   Add Property
 </button>
-<br>
-<div *ngIf="this.keyValueEntities.length > 0">
-<h4>Properties:</h4>
-<div *ngFor="let kv of keyValueEntities">
-  {{kv.key}}:
-  <input matInput type="text" [(ngModel)]="kv.value" (keyup)="updateWhenStopped($event, kv)"/>
-</div>
-</div>
+
+

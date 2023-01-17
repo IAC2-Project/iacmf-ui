@@ -23,14 +23,18 @@ import { Observable, Subscription } from "rxjs";
 })
 export class PluginUsageComponent implements OnInit {
 
+  @Input("showHeader") showHeader: boolean = true;
   @Input("pluginUsageId") pluginUsageId: number = -1;
   @Input("pluginType") pluginType = "";
   @Input("productionSystem") productionSystem: EntityModelProductionSystemEntity | undefined
   allPlugins = new Array<PluginPojo>();
   selectedPluginIdentifier: string = "";
+  selectedPluginDescription: string | undefined = '';
   pluginUsage: EntityModelPluginUsageEntity = { pluginIdentifier: "" }
   pluginUsageConfigurations: Array<EntityModelPluginConfigurationEntity> = new Array<EntityModelPluginConfigurationEntity>();
+  pluginUsageConfigurationDescriptors: Array<PluginConfigurationEntryDescriptor> | undefined = Array<PluginConfigurationEntryDescriptor>();
   newKeyName: string = "";
+  entryType: typeof PluginConfigurationEntryDescriptor.TypeEnum = PluginConfigurationEntryDescriptor.TypeEnum;
 
   @Input("pluginUsageIdentifierSub") pluginUsageIdentifierSub: Observable<EntityModelPluginUsageEntity> | undefined;
   private pluginUsageIdentifierCreateEventsSubscription: Subscription | undefined;
@@ -85,14 +89,14 @@ export class PluginUsageComponent implements OnInit {
     this.selectedPluginIdentifierEventEmitter.emit(this.pluginUsage)
   }
 
-  storePluginConfigurationEntity(conf: PluginConfigurationEntryDescriptor, key: string, value: string) {
+  storePluginConfigurationEntity(conf: PluginConfigurationEntryDescriptor, value: string) {
     if (conf.name == undefined) {
       throw new Error("Plugin Configuration has no key")
     }
     this.pluginUsageConfigurationService.postCollectionResourcePluginconfigurationentityPost({
       id: -1,
       key: conf.name,
-      value: ""
+      value: value
     }).subscribe(resp => {
       let body = {
         _links: {
@@ -122,16 +126,21 @@ export class PluginUsageComponent implements OnInit {
   }
 
   pluginChanged() {
-
     this.pluginUsageService.postCollectionResourcePluginusageentityPost({
       pluginIdentifier: this.selectedPluginIdentifier,
       id: -1
     }).subscribe(resp => {
       this.pluginUsage = resp
       this.pluginUsageConfigurations = new Array<EntityModelPluginConfigurationEntity>();
-      this.allPlugins.filter(plugin => plugin.identifier?.includes(this.pluginUsage.pluginIdentifier)).forEach(plugin => plugin.configurationEntryNames?.forEach(entry => {
-        this.storePluginConfigurationEntity(entry, "", "")
-      }))
+      let currentPlugin = this.getCurrentPlugin();
+
+      if (currentPlugin != null) {
+        this.pluginUsageConfigurationDescriptors = currentPlugin.configurationEntryNames;
+        this.selectedPluginDescription = currentPlugin.description;
+        currentPlugin.configurationEntryNames?.forEach(entry => {
+          this.storePluginConfigurationEntity(entry, "")
+        });
+      }
       this.emitPluginUsage()
     })
   }
@@ -144,7 +153,14 @@ export class PluginUsageComponent implements OnInit {
     }).subscribe(resp => console.log(resp))
   }
 
-  readable(word: string): string {
-    return word.split('_').map(part => part[0].toUpperCase() + part.slice(1).toLowerCase()).join(' ');
+  getCurrentPlugin(): PluginPojo | null {
+    let temp = this.allPlugins.filter(plugin => plugin.identifier?.includes(this.pluginUsage.pluginIdentifier));
+
+    if (temp.length > 0) {
+      return temp[0];
+    }
+
+    return null;
   }
+
 }

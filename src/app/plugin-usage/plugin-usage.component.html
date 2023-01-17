@@ -1,43 +1,65 @@
-<form>
-  <h4>Configure {{pluginType | readable}} Plugin</h4>
-  <mat-form-field class="full-width">
+<h4 *ngIf="showHeader">Configure {{pluginType | readable}} Plugin</h4>
+<div>
+  <mat-form-field [class]="'full-width'">
     <mat-label>
-      Select plugin:
+      Select plugin
     </mat-label>
-    <mat-select [(value)]="this.selectedPluginIdentifier" (selectionChange)="pluginChanged()" class="full-width">
-      <mat-option *ngFor="let plugin of allPlugins" value="{{plugin.identifier}}">
+    <mat-select [(value)]="this.selectedPluginIdentifier" (selectionChange)="pluginChanged()" name="pluginId">
+      <mat-option *ngFor="let plugin of allPlugins" [value]="plugin.identifier">
         {{plugin.identifier}}
       </mat-option>
     </mat-select>
   </mat-form-field>
 
-  <h5>Configuration Parameters</h5>
-  <div *ngIf="this.selectedPluginIdentifier.length > 0 && this.pluginUsageConfigurations.length > 0">
-    <div *ngFor="let pluginConfiguration of pluginUsageConfigurations">
-      <mat-form-field class="full-width">
-        <mat-label>
-          {{pluginConfiguration.key}}
-        </mat-label>
-        <input matInput type="text" [(ngModel)]="pluginConfiguration.value"
-               (keyup)="updateWhenStopped($event, pluginConfiguration)"/>
 
-      </mat-form-field>
+  <div *ngIf="this.selectedPluginIdentifier.length > 0">
+    <span>{{selectedPluginDescription}}</span>
+    <div *ngIf="this.pluginUsageConfigurations.length > 0">
+      <h5>Configuration Parameters</h5>
+      <div *ngFor="let pluginConfiguration of pluginUsageConfigurations; let i = index">
+        <mat-form-field *ngIf="pluginUsageConfigurationDescriptors && pluginUsageConfigurationDescriptors[i]" appearance="standard">
+          <mat-label>
+            {{pluginConfiguration.key}}
+          </mat-label>
+          <!-- Url -->
+          <input  *ngIf="pluginUsageConfigurationDescriptors[i].isRequired && pluginUsageConfigurationDescriptors[i].type===entryType.Url"
+                  matInput type="url" [(ngModel)]="pluginConfiguration.value"
+                  (keyup)="updateWhenStopped($event, pluginConfiguration)" name="{{pluginConfiguration.value}}" required>
+
+
+          <input *ngIf="!(pluginUsageConfigurationDescriptors[i].isRequired) && pluginUsageConfigurationDescriptors[i].type===entryType.Url"
+                 matInput type="url" [(ngModel)]="pluginConfiguration.value"
+                 (keyup)="updateWhenStopped($event, pluginConfiguration)" name="{{pluginConfiguration.value}}"/>
+          <!-- Number -->
+          <input  *ngIf="pluginUsageConfigurationDescriptors[i].isRequired && pluginUsageConfigurationDescriptors[i].type===entryType.Number"
+                     matInput type="number" [(ngModel)]="pluginConfiguration.value"
+                     (keyup)="updateWhenStopped($event, pluginConfiguration)" name="{{pluginConfiguration.value}}" required>
+
+
+          <input *ngIf="!(pluginUsageConfigurationDescriptors[i].isRequired) && pluginUsageConfigurationDescriptors[i].type===entryType.Number"
+                 matInput type="number" [(ngModel)]="pluginConfiguration.value"
+                 (keyup)="updateWhenStopped($event, pluginConfiguration)" name="{{pluginConfiguration.value}}"/>
+
+          <!-- Multiline String -->
+          <textarea  *ngIf="pluginUsageConfigurationDescriptors[i].isRequired && pluginUsageConfigurationDescriptors[i].type===entryType.MultiLineString"
+                 matInput type="text" [(ngModel)]="pluginConfiguration.value"
+                 (keyup)="updateWhenStopped($event, pluginConfiguration)" name="{{pluginConfiguration.value}}" required>
+          </textarea>
+
+          <textarea *ngIf="!(pluginUsageConfigurationDescriptors[i].isRequired) && pluginUsageConfigurationDescriptors[i].type===entryType.MultiLineString"
+                 matInput type="text" [(ngModel)]="pluginConfiguration.value"
+                 (keyup)="updateWhenStopped($event, pluginConfiguration)" name="{{pluginConfiguration.value}}">
+          </textarea>
+          <mat-hint
+            *ngIf="pluginUsageConfigurationDescriptors && pluginUsageConfigurationDescriptors[i] && pluginUsageConfigurationDescriptors[i].description">
+            {{pluginUsageConfigurationDescriptors[i].description}}
+          </mat-hint>
+        </mat-form-field>
+
+      </div>
+    </div>
+    <div *ngIf="this.pluginUsageConfigurations.length === 0">
+      <span>This plugin does not require configuration.</span>
     </div>
   </div>
-
-  <h4>Add new Plugin Configuration Parameter:</h4>
-  <input matInput type="text" [(ngModel)]="newKeyName"/>
-  <button mat-button (click)="storePluginConfigurationEntity({name: newKeyName},newKeyName, '')"
-          disabled="{{newKeyName == undefined || newKeyName.length == 0}}">
-    Add Parameter
-  </button>
-  <br>
-  <div *ngIf="this.selectedPluginIdentifier.length > 0 && this.pluginUsageConfigurations.length > 0">
-    <h4>Properties:</h4>
-    <div *ngFor="let pluginConfiguration of pluginUsageConfigurations">
-      {{pluginConfiguration.key}}:
-      <input matInput type="text" [(ngModel)]="pluginConfiguration.value"
-             (keyup)="updateWhenStopped($event, pluginConfiguration)"/>
-    </div>
-  </div>
-</form>
+</div>
