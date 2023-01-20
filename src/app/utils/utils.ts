@@ -61,7 +61,7 @@ export class Utils {
     if (link == undefined) {
       return
     }
-    this.pluginUsage.createPropertyReferencePluginusageentityPatch4(String(this.getId(pluginUsage)), body).subscribe(resp => console.log(resp))
+    this.pluginUsage.createPropertyReferencePluginusageentityPut4(String(this.getId(pluginUsage)), body).subscribe(resp => console.log(resp))
   }
 
   public linkKVEntitiesWithProductionSystem(kvEntities: EntityModelKVEntity[], productionSystem: EntityModelProductionSystemEntity) {

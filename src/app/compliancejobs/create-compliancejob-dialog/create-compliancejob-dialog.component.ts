@@ -84,7 +84,7 @@ export class CreateCompliancejobDialogComponent implements OnInit {
         complianceRuleConfigurations: this.selectedComplianceRules.map((cr: EntityModelComplianceRuleEntity) =>this.utils.getLink("self", cr))
       }).subscribe(resp => {
         console.log(resp)
-        this
+
       })
       )
     })

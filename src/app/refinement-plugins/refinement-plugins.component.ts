@@ -1,21 +1,18 @@
-import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter,  OnInit, Output } from '@angular/core';
 
 import { async, forkJoin } from "rxjs";
 
 import { MatDialog } from "@angular/material/dialog";
+
 import {
-  ConfigureRefinementPluginComponent
-} from "./configure-refinement-plugin/configure-refinement-plugin.component";
-import {
-  EntityModelComplianceJobEntity, PluginConfigurationService,
+  PluginConfigurationService,
   PluginPojo, PluginService, PluginUsageService
 } from "iacmf-client";
 import { EntityModelPluginUsageEntity } from 'iacmf-client/model/entityModelPluginUsageEntity';
 import { Utils } from '../utils/utils';
 import {
-  ConfigureRefinementPluginDialogComponent
-} from './configure-refinement-plugin-dialog/configure-refinement-plugin-dialog.component';
-import { EntityModelPluginConfigurationEntity } from 'iacmf-client/model/entityModelPluginConfigurationEntity';
+  PluginUsageConfigurationDialogComponent
+} from '../plugin-usage/plugin-usage-configuration-dialog/plugin-usage-configuration-dialog.component';
 
 @Component({
   selector: 'app-refinement-plugins',
@@ -58,7 +55,7 @@ export class RefinementPluginsComponent implements OnInit {
   openConfigureRefinementPluginDialog(pluginIndex: number, enterAnimationDuration: string, exitAnimationDuration: string): void {
     if (pluginIndex >= 0) {
       let pluginUsage = this.addedPluginUsages[pluginIndex];
-      this.dialog.open(ConfigureRefinementPluginDialogComponent, {
+      this.dialog.open(PluginUsageConfigurationDialogComponent, {
         width: '80%',
         enterAnimationDuration,
         exitAnimationDuration,

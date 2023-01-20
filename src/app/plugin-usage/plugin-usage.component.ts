@@ -148,14 +148,14 @@ export class PluginUsageComponent implements OnInit {
   // seem elegant first to check when the user is finished typing and we can update the value,
   // however, it is actually brutal
   updateWhenStopped($event: any, pluginConfigurationEntity: EntityModelPluginConfigurationEntity) {
-    setTimeout(() => {
-      // to be a little more robust it would be better to check if there are indeed changes
-      // e.g. like this:
-      //if (!$event.target.value.includes(kv.value)) {
-      // but this doesn't seem to work as expected
-      this.updatePluginConfigurationEntity(pluginConfigurationEntity)
-      //}
-    }, 2000);
+    // setTimeout(() => {
+    //   // to be a little more robust it would be better to check if there are indeed changes
+    //   // e.g. like this:
+    //   //if (!$event.target.value.includes(kv.value)) {
+    //   // but this doesn't seem to work as expected
+    //   this.updatePluginConfigurationEntity(pluginConfigurationEntity).subscribe();
+    //   //}
+    // }, 2000);
   }
 
   pluginChanged() {
@@ -176,12 +176,20 @@ export class PluginUsageComponent implements OnInit {
     })
   }
 
+  public updateAllPluginConfigurations() {
+    let invocations = new Array<Observable<EntityModelPluginConfigurationEntity>>();
+    this.pluginUsageConfigurations.forEach(c => {
+      invocations.push(this.updatePluginConfigurationEntity(c));
+    });
+
+    return forkJoin(invocations);
+  }
   updatePluginConfigurationEntity(pluginConfigurationEntity: EntityModelPluginConfigurationEntity) {
-    this.pluginUsageConfigurationService.putItemResourcePluginconfigurationentityPut(String(this.utils.getId(pluginConfigurationEntity)), {
+    return this.pluginUsageConfigurationService.putItemResourcePluginconfigurationentityPut(String(this.utils.getId(pluginConfigurationEntity)), {
       id: Number(this.utils.getId(pluginConfigurationEntity)),
       key: pluginConfigurationEntity.key,
       value: pluginConfigurationEntity.value
-    }).subscribe(resp => console.log(resp))
+    });
   }
 
   getCurrentPlugin(): PluginPojo | null {

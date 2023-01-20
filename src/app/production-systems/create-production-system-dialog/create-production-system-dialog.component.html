@@ -36,7 +36,7 @@
         Select Creation Plugin
       </mat-expansion-panel-header>
 
-      <app-plugin-usage (selectedPluginIdentifierEvent)="updatePluginUsage($event)" [pluginType]="'MODEL_CREATION'"
+      <app-plugin-usage #pluginUsage (selectedPluginIdentifierEvent)="updatePluginUsage($event)" [pluginType]="'MODEL_CREATION'"
                         [showHeader]="false" [pluginUsageIdentifierSub]="this.shareNewPluginUsageEvents.asObservable()"></app-plugin-usage>
 
     </mat-expansion-panel>

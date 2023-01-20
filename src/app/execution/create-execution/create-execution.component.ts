@@ -21,7 +21,6 @@ export class CreateExecutionComponent implements OnInit {
 
   selected = -1;
 
-
   constructor(public dialogRef: MatDialogRef<CreateExecutionComponent>,
               public executionService: ExecutionService, public utils: Utils, public complianceJobService: ComplianceJobService) { }
 
@@ -50,7 +49,7 @@ export class CreateExecutionComponent implements OnInit {
     }
 
     this.executionService.executeComplianceJob(this.selected, false).subscribe(resp => {
-      console.log(resp)
+      console.log(resp);
       this.dialogRef.close({
         event: 'Closed', data: resp
       });
