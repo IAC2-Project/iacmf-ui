@@ -9,6 +9,7 @@ import {
 import {ProductionSystemService} from "iacmf-client";
 import {ProductionSystemsComponent} from "../../production-systems/production-systems.component";
 import {Utils} from "../../utils/utils";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-create-compliancejob-dialog',
@@ -25,7 +26,7 @@ export class CreateCompliancejobDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  constructor(public complianceJobService : ComplianceJobService, public productionSystemService : ProductionSystemService, public utils: Utils) {}
+  constructor(public dialogRef: MatDialogRef<CreateCompliancejobDialogComponent>, public complianceJobService : ComplianceJobService, public productionSystemService : ProductionSystemService, public utils: Utils) {}
 
   productionSystemSelected($event: any) {
     this.selectedProductionSystem = $event;
@@ -83,8 +84,8 @@ export class CreateCompliancejobDialogComponent implements OnInit {
         checkingPluginUsage: this.utils.getLink("self", plugin),
         complianceRuleConfigurations: this.selectedComplianceRules.map((cr: EntityModelComplianceRuleEntity) =>this.utils.getLink("self", cr))
       }).subscribe(resp => {
-        console.log(resp)
-
+        console.log(resp);
+        this.dialogRef.close({event:'Closed', data: resp});
       })
       )
     })
