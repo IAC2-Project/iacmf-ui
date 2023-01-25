@@ -50,6 +50,8 @@ import { ConfigureProductionSystemDialogComponent } from './production-systems/c
 import { PluginUsageComponent } from './plugin-usage/plugin-usage.component';
 import { ExecutionComponent } from './execution/execution.component';
 import { CreateExecutionComponent } from './execution/create-execution/create-execution.component';
+import { ReadablePipe } from './utils/pipes/readable.pipe';
+import { PluginUsageConfigurationDialogComponent } from './plugin-usage/plugin-usage-configuration-dialog/plugin-usage-configuration-dialog.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +78,9 @@ import { CreateExecutionComponent } from './execution/create-execution/create-ex
     ConfigureProductionSystemDialogComponent,
     PluginUsageComponent,
     ExecutionComponent,
-    CreateExecutionComponent
+    CreateExecutionComponent,
+    ReadablePipe,
+    PluginUsageConfigurationDialogComponent
   ],
   imports: [
     BrowserModule,

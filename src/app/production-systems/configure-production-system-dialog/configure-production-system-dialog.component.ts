@@ -1,15 +1,15 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import {
   EntityModelKVEntity, EntityModelPluginUsageEntity, EntityModelProductionSystemEntity,
   KVEntity,
   PluginPojo,
   PluginService,
   PluginUsageService,
-  ProductionSystemEntity,
   ProductionSystemService
 } from "iacmf-client";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {Utils} from "../../utils/utils";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { Utils } from "../../utils/utils";
+import { PluginUsageComponent } from '../../plugin-usage/plugin-usage.component';
 
 @Component({
   selector: 'app-configure-production-system-dialog',
@@ -17,7 +17,7 @@ import {Utils} from "../../utils/utils";
   styleUrls: ['./configure-production-system-dialog.component.css']
 })
 export class ConfigureProductionSystemDialogComponent implements OnInit {
-
+  @ViewChild('pluginUsage', { static: false }) pluginUsageComponent: PluginUsageComponent | undefined;
   iacTechnologyName = "";
   description = "";
   allCreationPlugins = new Array<PluginPojo>();
@@ -49,39 +49,45 @@ export class ConfigureProductionSystemDialogComponent implements OnInit {
       throw new Error("ProductionSystem is not persisted in the backend")
     }
 
-    let req = {
-      id: -1,
-      name: this.data.name,
-      iacTechnologyName: this.iacTechnologyName,
-      isDeleted: this.data.isDeleted,
-      description: this.description,
-      properties: this.kvEntities.map((key: EntityModelKVEntity) => this.utils.getLink("self", key)).map(s => {
-        // this is stupid, I know, you know, all know
-        // but somehow using a filter is not working for the compiler...
-        if (s == undefined) {
-          return ""
-        } else {
-          return s
-        }
-      }),
-      modelCreationPluginUsage: this.utils.getLink("self", this.selectedCreationPluginIdentifier)
-    }
-    this.productionSystemService.putItemResourceProductionsystementityPut(String(this.utils.getId(this.data)), req).subscribe(prod => {
-      this.dialogRef.close({
-        event: 'Closed', data: {
-          id: this.utils.getId(this.data),
-          iacTechnologyName: this.iacTechnologyName,
-          isDeleted: false,
-          description: this.description,
-          properties: this.kvEntities,
-          modelCreationPluginUsage: {
-            pluginIdentifier: this.selectedCreationPluginIdentifier
+    this.pluginUsageComponent?.updateAllPluginConfigurations().subscribe(() => {
+      // don't ask :)
+      if (this.selectedCreationPluginIdentifier == undefined) {
+        throw new Error("A creation plugin must be selected")
+      }
+
+      let req = {
+        id: -1,
+        name: this.data.name,
+        iacTechnologyName: this.iacTechnologyName,
+        isDeleted: this.data.isDeleted,
+        description: this.description,
+        properties: this.kvEntities.map((key: EntityModelKVEntity) => this.utils.getLink("self", key)).map(s => {
+          // this is stupid, I know, you know, all know
+          // but somehow using a filter is not working for the compiler...
+          if (s == undefined) {
+            return ""
+          } else {
+            return s
           }
-        }
+        }),
+        modelCreationPluginUsage: this.utils.getLink("self", this.selectedCreationPluginIdentifier)
+      }
+      this.productionSystemService.putItemResourceProductionsystementityPut(String(this.utils.getId(this.data)), req).subscribe(prod => {
+        this.dialogRef.close({
+          event: 'Closed', data: {
+            id: this.utils.getId(this.data),
+            iacTechnologyName: this.iacTechnologyName,
+            isDeleted: false,
+            description: this.description,
+            properties: this.kvEntities,
+            modelCreationPluginUsage: {
+              pluginIdentifier: this.selectedCreationPluginIdentifier
+            }
+          }
+        });
       });
+
     });
-
-
   }
 
   updateKeyValueEntities($event: Array<KVEntity>) {

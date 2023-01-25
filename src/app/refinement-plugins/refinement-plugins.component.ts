@@ -1,15 +1,18 @@
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
-import {COMMA, ENTER} from "@angular/cdk/keycodes";
-import {FormControl} from '@angular/forms';
-import {Observable} from "rxjs";
-import {MatChipInputEvent} from "@angular/material/chips";
-import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
-import {map, startWith} from 'rxjs/operators';
-import {async} from "rxjs";
-import {CreateCompliancejobDialogComponent} from "../compliancejobs/create-compliancejob-dialog/create-compliancejob-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
-import {ConfigureRefinementPluginComponent} from "./configure-refinement-plugin/configure-refinement-plugin.component";
-import {KVEntity, PluginPojo} from "iacmf-client";
+import { Component, EventEmitter,  OnInit, Output } from '@angular/core';
+
+import { async, forkJoin } from "rxjs";
+
+import { MatDialog } from "@angular/material/dialog";
+
+import {
+  PluginConfigurationService,
+  PluginPojo, PluginService, PluginUsageService
+} from "iacmf-client";
+import { EntityModelPluginUsageEntity } from 'iacmf-client/model/entityModelPluginUsageEntity';
+import { Utils } from '../utils/utils';
+import {
+  PluginUsageConfigurationDialogComponent
+} from '../plugin-usage/plugin-usage-configuration-dialog/plugin-usage-configuration-dialog.component';
 
 @Component({
   selector: 'app-refinement-plugins',
@@ -17,39 +20,26 @@ import {KVEntity, PluginPojo} from "iacmf-client";
   styleUrls: ['./refinement-plugins.component.css']
 })
 export class RefinementPluginsComponent implements OnInit {
+  @Output("pluginAdded") pluginAddedEventEmitter = new EventEmitter();
+  @Output("pluginRemoved") pluginRemovedEventEmitter = new EventEmitter();
+  @Output("pluginConfigured") pluginConfiguredEventEmitter = new EventEmitter();
 
+  allPlugins = new Array<PluginPojo>();
+  addedRefinementPlugins = new Array<PluginPojo>();
+  addedPluginUsages = new Array<EntityModelPluginUsageEntity>();
+
+  selected = undefined;
 
   ngOnInit(): void {
+    this.pluginService.getAllPlugins(PluginPojo.PluginTypeEnum.ModelRefinement).subscribe(result => result.forEach(pojo => this.allPlugins.push(pojo)));
   }
 
-  addedRefinementPlugins: PluginPojo[] = [];
-  // TODO this must be replaced by a proper representation of refinementplugins and their inputs
-
-
-  allRefinmentPlugins2: PluginPojo[] = [{
-    identifier: "RefinmentPlugin1",
-    pluginType: "MODEL_REFINEMENT",
-    configurationEntryNames: [
-      {name:"someKey"},
-      {name: "someValue"},
-      {name:"someKey2"}
-    ]
-  },
-    {
-      identifier: "RefinmentPlugin2",
-      pluginType: "MODEL_REFINEMENT",
-      configurationEntryNames: [
-        {name:"someKey"},
-        {name: "someValue"},
-        {name:"someKey2"}
-      ]
-    }];
-  selected = this.allRefinmentPlugins2[0].identifier;
-
-  constructor(public dialog: MatDialog) {
-
+  constructor(private dialog: MatDialog,
+              private pluginService: PluginService,
+              private pluginUsageService: PluginUsageService,
+              private pluginConfigurationService: PluginConfigurationService,
+              private utils: Utils) {
   }
-
 
   private _filter(value: string | undefined): PluginPojo[] {
     if (value == undefined) {
@@ -57,30 +47,46 @@ export class RefinementPluginsComponent implements OnInit {
     }
     const filterValue = value.toLowerCase();
 
-    return this.allRefinmentPlugins2.filter(refinementPlugin =>
+    return this.allPlugins.filter(refinementPlugin =>
       refinementPlugin.identifier != undefined && refinementPlugin.identifier.toLowerCase().includes(filterValue)
     );
   }
 
-  openConfigureRefinementPluginDialog(refinementPlugin: PluginPojo, enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(ConfigureRefinementPluginComponent, {
-      width: '80%',
-      height: '80%',
-      enterAnimationDuration,
-      exitAnimationDuration,
-      data: refinementPlugin,
-    });
+  openConfigureRefinementPluginDialog(pluginIndex: number, enterAnimationDuration: string, exitAnimationDuration: string): void {
+    if (pluginIndex >= 0) {
+      let pluginUsage = this.addedPluginUsages[pluginIndex];
+      this.dialog.open(PluginUsageConfigurationDialogComponent, {
+        width: '80%',
+        enterAnimationDuration,
+        exitAnimationDuration,
+        data: Number(this.utils.getId(pluginUsage)),
+      });
+    }
   }
 
-  addRefinementPlugin(refinementPluginDummy: string | undefined) {
-    this.addedRefinementPlugins.push(this._filter(refinementPluginDummy)[0]);
+  addRefinementPlugin(refinementPluginId: string | undefined) {
+    if (refinementPluginId != undefined) {
+      this.addedRefinementPlugins.push(this._filter(refinementPluginId)[0]);
+
+      this.pluginUsageService.postCollectionResourcePluginusageentityPost({
+        pluginIdentifier: refinementPluginId,
+        id: -1
+      }).subscribe(resp => {
+        this.addedPluginUsages.push(resp);
+        this.pluginAddedEventEmitter.emit(resp);
+      })
+    }
   }
 
-  removeRefinementPlugin(refinementPluginDummy: PluginPojo) {
-    const index = this.addedRefinementPlugins.indexOf(refinementPluginDummy);
+  removeRefinementPlugin(refinementPluginPojo: PluginPojo) {
+    const index = this.addedRefinementPlugins.indexOf(refinementPluginPojo);
 
     if (index >= 0) {
+      let pluginUsage = this.addedPluginUsages[index];
+      this.addedPluginUsages.splice(index, 1);
       this.addedRefinementPlugins.splice(index, 1);
+      const pluginUsageId = String(this.utils.getId(pluginUsage));
+      this.utils.removePluginUsage(pluginUsageId).subscribe(() => this.pluginRemovedEventEmitter.emit(pluginUsage));
     }
   }
 }

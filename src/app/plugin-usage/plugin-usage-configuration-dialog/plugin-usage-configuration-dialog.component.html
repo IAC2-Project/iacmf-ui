@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Configure Refinement Plugin</h1>
+<div style="margin-bottom: 10px" mat-dialog-content>
+  <app-plugin-usage #pluginUsage (selectedPluginIdentifierEvent)="updatePluginUsage($event)" [pluginType]="'MODEL_REFINEMENT'"
+                    [showHeader]="false" [canChangeIdentifier]="false" [pluginUsageId]="data" ></app-plugin-usage>
+</div>
+
+<div class="footer" mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button cdkFocusInitial (click)="closeDialog()">OK</button>
+</div>
+

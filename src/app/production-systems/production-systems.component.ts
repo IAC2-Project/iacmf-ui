@@ -1,19 +1,20 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import {
-  EntityModelPluginUsageEntity, EntityModelProductionSystemEntity, KeyValueService,
-  KVEntity,
+  EntityModelProductionSystemEntity, KeyValueService,
   PluginUsageService,
-  ProductionSystemEntity,
   ProductionSystemService
 } from "iacmf-client";
-import {CreateProductionSystemDialogComponent} from "./create-production-system-dialog/create-production-system-dialog.component";
-import {MatTable} from "@angular/material/table";
-import {Observable} from "rxjs";
-import {ConfigureProductionSystemDialogComponent} from "./configure-production-system-dialog/configure-production-system-dialog.component";
-import {KvComponent} from "../kv/kv.component";
-import {Utils} from "../utils/utils";
-
+import { MatTable } from "@angular/material/table";
+import { Observable } from "rxjs";
+import {
+  ConfigureProductionSystemDialogComponent
+} from "./configure-production-system-dialog/configure-production-system-dialog.component";
+import { KvComponent } from "../kv/kv.component";
+import { Utils } from "../utils/utils";
+import {
+  CreateProductionSystemDialogComponent
+} from './create-production-system-dialog/create-production-system-dialog.component';
 
 @Component({
   selector: 'app-production-systems',
@@ -22,11 +23,8 @@ import {Utils} from "../utils/utils";
 })
 export class ProductionSystemsComponent implements OnInit {
 
-
   productionSystemEntities: EntityModelProductionSystemEntity[] = [];
   prodToKVMap: any = {};
-
-
 
   ngOnInit(): void {
     this.refreshProductionSystems();
@@ -43,21 +41,21 @@ export class ProductionSystemsComponent implements OnInit {
     )
   }
 
-  constructor(public dialog: MatDialog, public utils: Utils, public productionSystemService: ProductionSystemService, public pluginUsageService: PluginUsageService, public kvEntityService : KeyValueService) {
+  constructor(public dialog: MatDialog, public utils: Utils, public productionSystemService: ProductionSystemService, public pluginUsageService: PluginUsageService, public kvEntityService: KeyValueService) {
 
   }
 
   openCreateSystemDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    const dialogRef = this.dialog.open(CreateProductionSystemDialogComponent, {
-      enterAnimationDuration,
-      exitAnimationDuration
-    });
+    const matDialogConfig = new MatDialogConfig();
+    matDialogConfig.width = "70%";
+    matDialogConfig.enterAnimationDuration = enterAnimationDuration;
+    matDialogConfig.exitAnimationDuration = exitAnimationDuration;
+    const dialogRef = this.dialog.open(CreateProductionSystemDialogComponent, matDialogConfig);
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       this.refreshProductionSystems()
     });
   }
-
 
   openConfigureProductionSystemDialog(productionSystem: EntityModelProductionSystemEntity, enterAnimationDuration: string, exitAnimationDuration: string): void {
     const dialogRef = this.dialog.open(ConfigureProductionSystemDialogComponent, {

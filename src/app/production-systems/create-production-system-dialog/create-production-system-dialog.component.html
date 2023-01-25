@@ -1,35 +1,58 @@
 <h1 mat-dialog-title>Register Production System</h1>
-<div mat-dialog-content>
+<div style="margin-bottom: 10px" mat-dialog-content>
 
   <button mat-button (click)="fillTestData()">Create Test Data</button>
 
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        Basic Information
+      </mat-expansion-panel-header>
+      <mat-form-field>
+        <mat-label>
+          Name
+        </mat-label>
+        <input matInput type="text" [(ngModel)]="name" name="productionSystemName"/>
+      </mat-form-field>
+      <br/>
+      <mat-form-field>
+        <mat-label>
+          IaC Technology
+        </mat-label>
+        <input matInput type="text" [(ngModel)]="iacTechnologyName" name="iacTechnologyName"/>
+      </mat-form-field>
+      <br/>
+      <mat-form-field>
+        <mat-label>
+          Description
+        </mat-label>
+        <textarea matInput type="text" [(ngModel)]="description" name="description"></textarea>
+      </mat-form-field>
 
-  <h4>Name:</h4>
-  <input matInput type="text" [(ngModel)]="name"/>
+    </mat-expansion-panel>
 
-  <h4>IaC Technology:</h4>
-  <input matInput type="text" [(ngModel)]="iacTechnologyName"/>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        Select Creation Plugin
+      </mat-expansion-panel-header>
 
-  <br>
-  <h4>Description:</h4>
-  <textarea matInput type="text" [(ngModel)]="description">
-    </textarea>
+      <app-plugin-usage #pluginUsage (selectedPluginIdentifierEvent)="updatePluginUsage($event)" [pluginType]="'MODEL_CREATION'"
+                        [showHeader]="false" [pluginUsageIdentifierSub]="this.shareNewPluginUsageEvents.asObservable()"></app-plugin-usage>
 
-  <mat-divider style="width: 100%; display: inline-block;"></mat-divider>
-  <span style="padding: 20px; font-weight: 500;">Select Creation Plugin</span>
-  <mat-divider style="width: 100%; display: inline-block;"></mat-divider>
+    </mat-expansion-panel>
+    <mat-expansion-panel style="margin-bottom: 2em">
+      <mat-expansion-panel-header>
+        Production System Properties
+      </mat-expansion-panel-header>
 
-  <app-plugin-usage (selectedPluginIdentifierEvent)="updatePluginUsage($event)" [pluginType]="'MODEL_CREATION'" [pluginUsageIdentifierSub]="this.shareNewPluginUsageEvents.asObservable()"></app-plugin-usage>
-
-  <mat-divider style="width: 100%; display: inline-block;"></mat-divider>
-  <span style="padding: 20px; font-weight: 500;">Add Production System Properties</span>
-  <mat-divider style="width: 100%; display: inline-block;"></mat-divider>
-
-
-  <app-kv (keyValueEntities)="updateKeyValueEntities($event)" [keyValueOnSubCreation]="this.shareNewKVEvents.asObservable()"></app-kv>
-
+      <app-kv (keyValueEntities)="updateKeyValueEntities($event)"
+              [keyValueOnSubCreation]="this.shareNewKVEvents.asObservable()"></app-kv>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>
-<div mat-dialog-actions>
-  <button mat-button mat-dialog-close>No</button>
-  <button mat-button cdkFocusInitial (click)="closeDialog()">Ok</button>
+
+<div class="footer" mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button cdkFocusInitial (click)="closeDialog()">OK</button>
 </div>
+

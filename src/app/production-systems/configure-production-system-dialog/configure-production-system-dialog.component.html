@@ -15,7 +15,7 @@
   <span style="padding: 20px; font-weight: 500;">Select Creation Plugin</span>
   <mat-divider style="width: 100%; display: inline-block;"></mat-divider>
 
-  <app-plugin-usage (selectedPluginIdentifierEvent)="updatePluginUsage($event)" [pluginType]="'MODEL_CREATION'" [productionSystem]="this.data"></app-plugin-usage>
+  <app-plugin-usage #pluginUsage (selectedPluginIdentifierEvent)="updatePluginUsage($event)" [pluginType]="'MODEL_CREATION'" [productionSystem]="this.data"></app-plugin-usage>
 
 
   <!-- You can't change the model creation plugin, learned the hard way :D
