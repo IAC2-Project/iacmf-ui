@@ -16,8 +16,9 @@ import {
   ProductionSystemService
 } from "iacmf-client";
 import { Utils } from "../utils/utils";
-import { forkJoin, Observable, Subscription } from "rxjs";
+import { forkJoin, Observable, of, Subscription } from "rxjs";
 import { PluginConfigurationEntityResponse } from 'iacmf-client/model/pluginConfigurationEntityResponse';
+import { getMatIconNameNotFoundError } from '@angular/material/icon';
 
 @Component({
   selector: 'app-plugin-usage',
@@ -177,12 +178,18 @@ export class PluginUsageComponent implements OnInit {
   }
 
   public updateAllPluginConfigurations() {
-    let invocations = new Array<Observable<EntityModelPluginConfigurationEntity>>();
-    this.pluginUsageConfigurations.forEach(c => {
-      invocations.push(this.updatePluginConfigurationEntity(c));
-    });
+    console.log("updating ", this.pluginUsageConfigurations.length, " configuration entries...");
 
-    return forkJoin(invocations);
+    if (this.pluginUsageConfigurations.length > 0) {
+      let invocations = new Array<Observable<EntityModelPluginConfigurationEntity>>();
+      this.pluginUsageConfigurations.forEach(c => {
+        invocations.push(this.updatePluginConfigurationEntity(c));
+      });
+
+      return forkJoin(invocations);
+    } else  {
+      return of([]);
+    }
   }
   updatePluginConfigurationEntity(pluginConfigurationEntity: EntityModelPluginConfigurationEntity) {
     return this.pluginUsageConfigurationService.putItemResourcePluginconfigurationentityPut(String(this.utils.getId(pluginConfigurationEntity)), {

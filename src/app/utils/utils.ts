@@ -74,7 +74,7 @@ export class Utils {
             }
           }
         }
-        this.kvEntityService.createPropertyReferenceKventityPut1(String(this.getId(kv)), body).subscribe(resp => console.log(resp))
+        this.kvEntityService.createPropertyReferenceKventityPut1(String(this.getId(kv)), body).subscribe();
       })
     })
   }

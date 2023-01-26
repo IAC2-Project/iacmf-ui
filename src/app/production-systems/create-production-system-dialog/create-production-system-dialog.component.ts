@@ -75,7 +75,6 @@ export class CreateProductionSystemDialogComponent implements OnInit {
     }
 
     this.pluginUsageComponent?.updateAllPluginConfigurations().subscribe(() => {
-      console.log("Updated the plugin configuration entries!");
       // to make the stupid compiler shut up!
       if (this.selectedPluginUsage == undefined) {
         throw new Error("Must select creation plugin")
