@@ -1,10 +1,8 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { EntityModelComplianceJobEntity, ExecutionEntity, ExecutionService } from "iacmf-client";
+import {  ExecutionEntity, ExecutionService } from "iacmf-client";
 import { MatDialog } from "@angular/material/dialog";
-import { CreateExecutionComponent } from "./create-execution/create-execution.component";
 import { Utils } from "../utils/utils";
 import { interval } from "rxjs";
-import { PluginUsageComponent } from '../plugin-usage/plugin-usage.component';
 import { MatExpansionPanel } from '@angular/material/expansion';
 
 @Component({
