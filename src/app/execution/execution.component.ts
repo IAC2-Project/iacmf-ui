@@ -4,6 +4,7 @@ import {CreateProductionSystemDialogComponent} from "../production-systems/creat
 import {MatDialog} from "@angular/material/dialog";
 import {CreateExecutionComponent} from "./create-execution/create-execution.component";
 import {Utils} from "../utils/utils";
+import {interval} from "rxjs";
 
 @Component({
   selector: 'app-execution',
@@ -18,6 +19,9 @@ export class ExecutionComponent implements OnInit {
 
   ngOnInit(): void {
     this.refreshExecutions()
+    interval(15000).subscribe(interval => {
+      this.refreshExecutions()
+    })
   }
 
   refreshExecutions() {

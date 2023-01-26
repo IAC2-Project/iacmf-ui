@@ -50,9 +50,7 @@ export class CreateExecutionComponent implements OnInit {
 
     this.executionService.executeComplianceJob(this.selected, false).subscribe(resp => {
       console.log(resp);
-      this.dialogRef.close({
-        event: 'Closed', data: resp
-      });
+      this.dialogRef.close({event:'Closed', data: resp})
     })
   }
 
