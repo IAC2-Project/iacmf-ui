@@ -28,13 +28,12 @@ import {RefinementPluginsComponent} from './refinement-plugins/refinement-plugin
 import { MatChipsModule } from "@angular/material/chips";
 import {MatOptionModule} from "@angular/material/core";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
-import {ComplianceIssuesComponent} from "./compliance-issues/compliance-issues.component";
+import {IssueFixingComponent} from "./issue-fixing/issue-fixing.component";
 import {ValidationPluginsComponent} from "./validation-plugins/validation-plugins.component";
 import {ReportingPluginsComponent} from "./reporting-plugins/reporting-plugins.component";
 import {ComplianceRulesComponent} from "./compliance-rules/compliance-rules.component";
 import { ConfigureRefinementPluginComponent } from './refinement-plugins/configure-refinement-plugin/configure-refinement-plugin.component';
-import {ConfigureComplianceRuleComponent} from "./compliance-rules/configure-compliance-rule/configure-compliance-rule.component";
-import {ConfigureComlianceIssueComponent} from "./compliance-issues/configure-compliance-issue/configure-compliance-issue.component";
+import {ConfigureComplianceRuleComponent} from "./compliance-rule-configuration/configure-compliance-rule/configure-compliance-rule.component";
 import {MatSelectModule} from "@angular/material/select";
 import { ConfigureValidationPluginComponent } from './validation-plugins/configure-validation-plugin/configure-validation-plugin.component';
 import { ConfigureReportingPluginComponent } from './reporting-plugins/configure-reporting-plugin/configure-reporting-plugin.component';
@@ -42,7 +41,6 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSliderModule} from "@angular/material/slider";
 import {MatDividerModule} from "@angular/material/divider";
 import { SelectProductionSytemComponent } from './production-systems/select-production-sytem/select-production-sytem.component';
-import { ConfigureFixingPluginComponent } from './compliance-issues/configure-fixing-plugin/configure-fixing-plugin.component';
 import {MatInputModule} from "@angular/material/input";
 import { CreateComplianceRuleComponent } from './compliance-rules/create-compliance-rule/create-compliance-rule.component';
 import { KvComponent } from './kv/kv.component';
@@ -52,6 +50,7 @@ import { ExecutionComponent } from './execution/execution.component';
 import { CreateExecutionComponent } from './execution/create-execution/create-execution.component';
 import { ReadablePipe } from './utils/pipes/readable.pipe';
 import { PluginUsageConfigurationDialogComponent } from './plugin-usage/plugin-usage-configuration-dialog/plugin-usage-configuration-dialog.component';
+import { ComplianceRuleConfigurationComponent } from './compliance-rule-configuration/compliance-rule-configuration.component';
 
 @NgModule({
   declarations: [
@@ -62,17 +61,15 @@ import { PluginUsageConfigurationDialogComponent } from './plugin-usage/plugin-u
     ComplianceJobsComponent,
     CreateCompliancejobDialogComponent,
     RefinementPluginsComponent,
-    ComplianceIssuesComponent,
+    IssueFixingComponent,
     ValidationPluginsComponent,
     ReportingPluginsComponent,
     ComplianceRulesComponent,
     ConfigureRefinementPluginComponent,
     ConfigureComplianceRuleComponent,
-    ConfigureComlianceIssueComponent,
     ConfigureValidationPluginComponent,
     ConfigureReportingPluginComponent,
     SelectProductionSytemComponent,
-    ConfigureFixingPluginComponent,
     CreateComplianceRuleComponent,
     KvComponent,
     ConfigureProductionSystemDialogComponent,
@@ -80,7 +77,8 @@ import { PluginUsageConfigurationDialogComponent } from './plugin-usage/plugin-u
     ExecutionComponent,
     CreateExecutionComponent,
     ReadablePipe,
-    PluginUsageConfigurationDialogComponent
+    PluginUsageConfigurationDialogComponent,
+    ComplianceRuleConfigurationComponent
   ],
   imports: [
     BrowserModule,

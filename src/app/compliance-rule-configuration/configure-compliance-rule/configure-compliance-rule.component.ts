@@ -28,7 +28,9 @@ export class ConfigureComplianceRuleComponent implements OnInit {
   complianceRuleParameterAssignments: EntityModelComplianceRuleParameterAssignmentEntity[] = []
   @Output("createdComplianceRuleConfiguration") complianceRuleConfigurationEmitter = new EventEmitter();
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: EntityModelComplianceRuleEntity,
+  issueType: string = ""
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: EntityModelComplianceRuleConfigurationEntity,
               public testData : TestData,
               public complianceRulesConfigurationService: ComplianceRuleConfigurationService,
               public complianceRuleParameterAssigmentService: ComplianceRuleParameterAssignmentService, public utils: Utils, public dialog: MatDialog, public complianceRuleService: ComplianceRulesService, public pluginService: PluginService) {
@@ -54,16 +56,19 @@ export class ConfigureComplianceRuleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.complianceRuleService.followPropertyReferenceComplianceruleentityGet1(String(this.utils.getId(this.data))).subscribe(resp => {
-      resp._embedded?.complianceRuleParameterEntities?.forEach(param => {
-        this.complianceRuleParameters.push(param)
-        this.complianceRuleParameterAssignments.push({
-          name: param.name,
-          type: param.type,
-          value: ""
+    this.complianceRulesConfigurationService.followPropertyReferenceComplianceruleconfigurationentityGet31(String(this.utils.getId(this.data))).subscribe(assigns => {
+      assigns._embedded?.complianceRuleParameterAssignmentEntities?.forEach(assign => {
+        this.complianceRuleParameterAssignments.push(assign)
+      })
+    })
+    this.complianceRulesConfigurationService.followPropertyReferenceComplianceruleconfigurationentityGet21(String(this.utils.getId(this.data))).subscribe(comRule => {
+      this.complianceRuleService.followPropertyReferenceComplianceruleentityGet1(String(this.utils.getId(comRule))).subscribe(resp => {
+        resp._embedded?.complianceRuleParameterEntities?.forEach(param => {
+          this.complianceRuleParameters.push(param)
         })
       })
     })
+
   }
 
 
@@ -74,39 +79,32 @@ export class ConfigureComplianceRuleComponent implements OnInit {
     return this.complianceRuleParameters.filter(param => param.name.includes(assignmentName))[0]
   }
 
-
-
   emitComplianceRuleConfiguration( conf : EntityModelComplianceRuleConfigurationEntity) {
     this.complianceRuleConfigurationEmitter.emit(conf);
   }
 
   storeComplianceRuleConfiguration() {
-    this.complianceRulesConfigurationService.postCollectionResourceComplianceruleconfigurationentityPost({
-      id: -1,
-      issueType: this.data.type,
-      complianceRule: this.utils.getLink("self", this.data),
-    }).subscribe(resp => {
       this.complianceRuleParameterAssignments.forEach(ass => {
         this.complianceRuleParameterAssigmentService.postCollectionResourceComplianceruleparameterassignmententityPost({
           id: -1,
           name: ass.name,
           type: ass.type,
           value: ass.value,
-          complianceRuleConfiguration: this.utils.getLink("self", resp),
+          complianceRuleConfiguration: this.utils.getLink("self", this.data),
           parameter: this.utils.getLink("self", this.findComplianceRuleParameter(ass.name))
         }).subscribe(assResp => {
           let body = {
             _links: {
               "complianceRuleConfiguration": {
-                href: this.utils.getLink("self", resp)
+                href: this.utils.getLink("self", this.data)
               }
             }
           }
           this.complianceRuleParameterAssigmentService.createPropertyReferenceComplianceruleparameterassignmententityPut(String(this.utils.getId(assResp)), body).subscribe(resp2 => {
-            this.emitComplianceRuleConfiguration(resp);
+            this.emitComplianceRuleConfiguration(this.data);
           })
         })
       })
-    })
+
   }
 }

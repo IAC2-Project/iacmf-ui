@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {
   ComplianceJobService,
-  ComplianceRuleEntity,
+  ComplianceRuleEntity, EntityModelComplianceRuleConfigurationEntity,
   EntityModelComplianceRuleEntity, EntityModelPluginConfigurationEntity,
   EntityModelPluginUsageEntity
 } from "iacmf-client";
@@ -19,7 +19,7 @@ import {MatDialogRef} from "@angular/material/dialog";
 export class CreateCompliancejobDialogComponent implements OnInit {
 
   selectedProductionSystem = -1;
-  selectedComplianceRules: EntityModelComplianceRuleEntity[] = [];
+  selectedComplianceRules: EntityModelComplianceRuleConfigurationEntity[] = [];
   checkingPluginConfiguration: EntityModelPluginUsageEntity | undefined;
   refinementPluginUsages = new Array<EntityModelPluginUsageEntity>();
 
@@ -82,7 +82,7 @@ export class CreateCompliancejobDialogComponent implements OnInit {
         id: -1,
         productionSystem: this.utils.getLink("self", resp),
         checkingPluginUsage: this.utils.getLink("self", plugin),
-        complianceRuleConfigurations: this.selectedComplianceRules.map((cr: EntityModelComplianceRuleEntity) =>this.utils.getLink("self", cr))
+        complianceRuleConfigurations: this.selectedComplianceRules.map((cr: EntityModelComplianceRuleConfigurationEntity) =>this.utils.getLink("self", cr))
       }).subscribe(resp => {
         console.log(resp);
         this.dialogRef.close({event:'Closed', data: resp});

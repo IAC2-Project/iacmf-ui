@@ -9,13 +9,13 @@
       <app-refinement-plugins (pluginAdded)="refinementPluginAdded($event)" (pluginRemoved)="refinementPluginRemoved($event)"></app-refinement-plugins>
     </mat-step>
     <mat-step  label="Compliance Rules">
-      <app-compliance-rules [allowCreate]="false" [allowSelection]="true" [showAllRules]="false" (selectedComplianceRules)="complianceRulesSelected($event)" ></app-compliance-rules>
+      <app-compliance-rule-configuration (selectedComplianceRuleConfigurations)="complianceRulesSelected($event)"></app-compliance-rule-configuration>
     </mat-step>
     <mat-step label="Checking">
       <app-plugin-usage [pluginType]="'ISSUE_CHECKING'" (selectedPluginIdentifierEvent)="saveCheckingPluginConfiguration($event)"></app-plugin-usage>
     </mat-step>
     <mat-step  label="Compliance Issue Fixing">
-      <app-compliance-issues></app-compliance-issues>
+      <app-issue-fixing></app-issue-fixing>
     </mat-step>
     <mat-step  label="Validation">
       <app-validation-plugins></app-validation-plugins>

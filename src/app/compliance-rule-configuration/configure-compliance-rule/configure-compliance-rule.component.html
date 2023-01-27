@@ -4,8 +4,8 @@
     <button mat-button (click)="fillInTestData()">Create Test Data</button>
 
     <h4>Compliance Rule {{this.utils.getId(data)}}</h4>
-    <h5>Description:</h5>
-    <p>{{data.description}}</p>
+    <h5>Issue Type:</h5>
+    <input matInput type="text" value="{{this.issueType}}">
     <div *ngIf="this.complianceRuleParameters.length > 0">
     <h5>Parameter Assignment:</h5>
 
