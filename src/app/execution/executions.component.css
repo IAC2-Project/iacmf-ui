@@ -1,0 +1,21 @@
+.executions {
+  margin-top: 1em;
+}
+
+#create {
+  margin: 0.5em 0 0 0;
+}
+
+.buttonToLink {
+  background: none;
+  border: none;
+  color: blue;
+  margin: 0;
+  padding: 0;
+}
+
+.buttonToLink:hover {
+  background: none;
+  text-decoration: underline;
+  cursor: pointer;
+}

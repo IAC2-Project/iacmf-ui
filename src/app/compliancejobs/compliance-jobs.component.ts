@@ -10,6 +10,7 @@ import {
 } from "iacmf-client";
 import {CreateCompliancejobDialogComponent} from "./create-compliancejob-dialog/create-compliancejob-dialog.component";
 import {Utils} from "../utils/utils";
+import * as util from 'util';
 
 @Component({
   selector: 'app-compliancejobs',
@@ -48,5 +49,8 @@ export class ComplianceJobsComponent implements OnInit {
       this.refreshComplianceJobs()
     })
   }
-  
+
+  getId(complianceJob: EntityModelComplianceJobEntity): number {
+    return Number(this.utils.getId(complianceJob));
+  }
 }

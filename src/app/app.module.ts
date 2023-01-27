@@ -48,8 +48,7 @@ import { CreateComplianceRuleComponent } from './compliance-rules/create-complia
 import { KvComponent } from './kv/kv.component';
 import { ConfigureProductionSystemDialogComponent } from './production-systems/configure-production-system-dialog/configure-production-system-dialog.component';
 import { PluginUsageComponent } from './plugin-usage/plugin-usage.component';
-import { ExecutionComponent } from './execution/execution.component';
-import { CreateExecutionComponent } from './execution/create-execution/create-execution.component';
+import { ExecutionsComponent } from './execution/executions.component';
 import { ReadablePipe } from './utils/pipes/readable.pipe';
 import { PluginUsageConfigurationDialogComponent } from './plugin-usage/plugin-usage-configuration-dialog/plugin-usage-configuration-dialog.component';
 
@@ -77,8 +76,7 @@ import { PluginUsageConfigurationDialogComponent } from './plugin-usage/plugin-u
     KvComponent,
     ConfigureProductionSystemDialogComponent,
     PluginUsageComponent,
-    ExecutionComponent,
-    CreateExecutionComponent,
+    ExecutionsComponent,
     ReadablePipe,
     PluginUsageConfigurationDialogComponent
   ],
