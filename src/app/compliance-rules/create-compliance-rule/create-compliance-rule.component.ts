@@ -83,7 +83,7 @@ export class CreateComplianceRuleComponent implements OnInit {
           id: -1,
           name: param.name,
           type: param.type,
-          complianceRule: this.utils.getLink("self", resp)
+          complianceRule: String(this.utils.getLink("self", resp))
         }).subscribe(resp => {
           let body = {
             _links: {
