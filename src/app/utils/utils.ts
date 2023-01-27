@@ -34,7 +34,7 @@ export class Utils {
           let deleteRequests = configurations._embedded?.pluginConfigurationEntities?.map((configuration: EntityModelPluginConfigurationEntity) =>
             this.pluginConfigurationService.deleteItemResourcePluginconfigurationentityDelete(String(this.getId(configuration))));
           // if we do have requests, execute them all, and wait until all are done, then remove the plugin usage
-          if (deleteRequests != undefined) {
+          if (deleteRequests != undefined && deleteRequests.length > 0) {
             console.info("removing attached plugin configurations...");
             forkJoin(deleteRequests).subscribe(() => this.pluginUsage.deleteItemResourcePluginusageentityDelete(pluginUsageId).subscribe(() => {
               observer.complete();
