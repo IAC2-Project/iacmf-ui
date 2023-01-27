@@ -87,16 +87,25 @@ export class CreateCompliancejobDialogComponent implements OnInit {
           console.debug(requestBody);
           this.complianceJobService.postCollectionResourceCompliancejobentityPost(requestBody).subscribe(resp => {
             console.log(resp);
-            let strategyLinks:any[] = [];
+            const complianceJobUrl = this.utils.getLink("self", resp);
+            let requests: any[] = this.refinementPluginUsages.map(usage => {
+              let body = {
+                _links: {
+                  "complianceJobRefinement": {
+                    href: complianceJobUrl
+                  }
+                }
+              };
 
-            this.refinementPluginUsages.forEach((usage, index) => {
-              strategyLinks.push(this.utils.getLink("self", usage));
+              return this.pluginUsageService.createPropertyReferencePluginusageentityPut1(String(this.utils.getId(usage)), body);
             });
 
-            if (strategyLinks.length > 0) {
-              this.complianceJobService.createPropertyReferenceCompliancejobentityPut3(String(this.utils.getId(resp)), {
-                _links: strategyLinks
-              })
+            if (requests.length > 0) {
+              console.log("Creating associations between the %d refinement plugin usages and the compliance job", requests.length);
+              forkJoin(requests).subscribe(() => {
+                console.log("Finished creating associations between the refinement plugin usages and the compliance job!");
+                this.dialogRef.close({ event: 'Closed', data: resp });
+              });
             } else {
               this.dialogRef.close({ event: 'Closed', data: resp });
             }
