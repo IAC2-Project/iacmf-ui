@@ -1,0 +1,112 @@
+<button id="create" mat-raised-button color="primary" (click)="executeComplianceJob()">Start Execution</button>
+
+<div class="executions">
+  <span *ngIf="executions.length === 0">No executions exist yet!</span>
+  <mat-expansion-panel #executionsPanel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Previous and Current Executions
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-accordion *ngIf="executions.length > 0">
+      <mat-expansion-panel *ngFor="let execution of executions; let i = index" [expanded]="false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>Execution: {{execution.id}}</mat-panel-title>
+          <mat-panel-description>
+            <span style="margin-right: 1em">State: </span>
+            <span *ngIf="execution.status.includes('EXCEPTION')" class="property-value"
+                  style="color: darkred">{{execution.status}}</span>
+            <span *ngIf="execution.status.includes('SUCCESS')" class="property-value"
+                  style="color: green">{{execution.status}}</span>
+            <span *ngIf="!execution.status.includes('EXCEPTION') && !execution.status.includes('SUCCESS')"
+                  style="color: orange" class="property-value">{{execution.status}}</span>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="property">
+          <div class="property-label">Description:</div>
+          <span class="property-value">{{execution.description}}</span>
+        </div>
+        <div class="property">
+          <div class="property-label">State:</div>
+          <span *ngIf="execution.status.includes('EXCEPTION')" class="property-value"
+                style="color: darkred">{{execution.status}}</span>
+          <span *ngIf="execution.status.includes('SUCCESS')" class="property-value"
+                style="color: green">{{execution.status}}</span>
+          <span *ngIf="!execution.status.includes('EXCEPTION') && !execution.status.includes('SUCCESS')"
+                style="color: orange" class="property-value">{{execution.status}}</span>
+        </div>
+
+
+        <div *ngIf="!execution.currentStep.includes('END')" class="property">
+          <div class="property-label">Current Step:</div>
+          <span class="property-value">{{execution.currentStep}}</span>
+        </div>
+
+        <div class="property">
+          <div class="property-label">Instance Model:</div>
+          <span *ngIf="!execution.instanceModel" class="property-value">Not available!</span>
+          <button *ngIf="execution.instanceModel" type="button" class="buttonToLink property-value"
+                  (click)="downloadInstanceModel(execution.instanceModel, 'instanceModel_' + execution.id + '.yaml')">
+            Click
+            here to download
+          </button>
+        </div>
+
+        <div class="property">
+          <div class="property-label">Compliance Violations:</div>
+          <span *ngIf="execution.violationsDetected" class="property-value"> Violations were detected</span>
+          <span *ngIf="!execution.violationsDetected" class="property-value"> No violations were detected</span>
+        </div>
+
+        <div class="property">
+          <div class="property-label"> Started:</div>
+          <span class="property-value">{{execution.startTime}}</span>
+        </div>
+
+        <div *ngIf="execution.endTime" class="property">
+          <div class="property-label"> Ended:</div>
+          <span class="property-value">{{execution.endTime}}</span>
+        </div>
+
+        <div *ngIf="execution.complianceIssueEntities && execution.complianceIssueEntities.length > 0">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Detected Compliance Issues</mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngFor="let issue of execution.complianceIssueEntities">
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title>Issue: {{issue.id}}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <div class="property">
+                    <div class="property-label">Type:</div>
+                    <span class="property-value">{{issue.type}}</span>
+                  </div>
+                  <div *ngIf="issue.fixingReports && issue.fixingReports.length > 0">
+                    <div class="property">
+                      <div class="property-label"> Reports:</div>
+                      <div *ngFor="let report of issue.fixingReports">
+                        Id: {{report.id}}
+                        Description: {{report.description}}
+                        Fixing:
+                        <div *ngIf="report.isSuccessful" style="color: green"> Successful</div>
+                        <div *ngIf="!report.isSuccessful" style="color: darkred"> Failed</div>
+                      </div>
+                    </div>
+                  </div>
+
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </mat-expansion-panel>
+        </div>
+
+      </mat-expansion-panel>
+
+    </mat-accordion>
+  </mat-expansion-panel>
+</div>
+
