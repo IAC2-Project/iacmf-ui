@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import {
   ComplianceJobService,
   EntityModelComplianceRuleEntity,
-  EntityModelPluginUsageEntity
+  EntityModelPluginUsageEntity, PluginUsageService
 } from "iacmf-client";
 import { ProductionSystemService } from "iacmf-client";
 
 import { Utils } from "../../utils/utils";
 import { MatDialogRef } from "@angular/material/dialog";
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-create-compliancejob-dialog',
@@ -24,7 +25,7 @@ export class CreateCompliancejobDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  constructor(public dialogRef: MatDialogRef<CreateCompliancejobDialogComponent>, public complianceJobService: ComplianceJobService, public productionSystemService: ProductionSystemService, public utils: Utils) {
+  constructor(private dialogRef: MatDialogRef<CreateCompliancejobDialogComponent>, private complianceJobService: ComplianceJobService, private productionSystemService: ProductionSystemService, private pluginUsageService: PluginUsageService, private utils: Utils) {
   }
 
   productionSystemSelected($event: any) {
@@ -85,9 +86,20 @@ export class CreateCompliancejobDialogComponent implements OnInit {
           };
           console.debug(requestBody);
           this.complianceJobService.postCollectionResourceCompliancejobentityPost(requestBody).subscribe(resp => {
-
             console.log(resp);
-            this.dialogRef.close({ event: 'Closed', data: resp });
+            let strategyLinks:any[] = [];
+
+            this.refinementPluginUsages.forEach((usage, index) => {
+              strategyLinks.push(this.utils.getLink("self", usage));
+            });
+
+            if (strategyLinks.length > 0) {
+              this.complianceJobService.createPropertyReferenceCompliancejobentityPut3(String(this.utils.getId(resp)), {
+                _links: strategyLinks
+              })
+            } else {
+              this.dialogRef.close({ event: 'Closed', data: resp });
+            }
           });
         });
     });
