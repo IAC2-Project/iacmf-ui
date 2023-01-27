@@ -84,25 +84,31 @@ export class RefinementPluginsComponent implements OnInit {
     const index = this.addedRefinementPlugins.indexOf(refinementPluginPojo);
 
     if (index >= 0) {
-      let pluginUsage = this.addedPluginUsages[index];
+      const toRemovePluginUsage = this.addedPluginUsages[index];
       this.addedPluginUsages.splice(index, 1);
       this.addedRefinementPlugins.splice(index, 1);
-      const pluginUsageId = String(this.utils.getId(pluginUsage));
-      this.utils.removePluginUsage(pluginUsageId).subscribe(() => this.pluginRemovedEventEmitter.emit(pluginUsage));
+      const pluginUsageId = String(this.utils.getId(toRemovePluginUsage));
+      this.utils.removePluginUsage(pluginUsageId).subscribe(() => this.pluginRemovedEventEmitter.emit(toRemovePluginUsage));
 
       // update the order
       let requests = [];
       for (let i = index; i < this.addedPluginUsages.length; i++) {
-        pluginUsage = this.addedPluginUsages[i];
+        let currentPluginUsage = this.addedPluginUsages[i];
 
-        requests.push(this.pluginUsageService.patchItemResourcePluginusageentityPatch(String(this.utils.getId(pluginUsage)), {
-          pluginIdentifier: pluginUsage.pluginIdentifier,
-          id: Number(this.utils.getId(pluginUsage)),
+        requests.push(this.pluginUsageService.patchItemResourcePluginusageentityPatch(String(this.utils.getId(currentPluginUsage)), {
+          pluginIdentifier: currentPluginUsage.pluginIdentifier,
+          id: Number(this.utils.getId(currentPluginUsage)),
           refinementPluginIndexInComplianceJob: i
         }));
       }
 
-      forkJoin(requests).subscribe();
+      if (requests.length > 0) {
+        forkJoin(requests).subscribe(() => {
+          this.pluginRemovedEventEmitter?.emit(toRemovePluginUsage);
+        });
+      } else {
+        this.pluginRemovedEventEmitter?.emit(toRemovePluginUsage);
+      }
     }
   }
 }

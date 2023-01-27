@@ -40,10 +40,11 @@ export class CreateCompliancejobDialogComponent implements OnInit {
   }
 
   refinementPluginRemoved($event: EntityModelPluginUsageEntity) {
+    console.debug($event);
     if ($event != undefined && $event.pluginIdentifier) {
-      let toRemove = this.refinementPluginUsages.filter(usage => usage.pluginIdentifier === $event.pluginIdentifier)[0];
+      let toRemove = this.refinementPluginUsages.filter(usage => this.utils.getId(usage) === this.utils.getId($event))[0];
       let index = this.refinementPluginUsages.indexOf(toRemove);
-      this.refinementPluginUsages.slice(index, 1);
+      this.refinementPluginUsages.splice(index, 1);
     }
   }
 
@@ -70,11 +71,6 @@ export class CreateCompliancejobDialogComponent implements OnInit {
     }
 
     let plugin = this.checkingPluginConfiguration;
-    let refinementStrategy: any[] = [];
-
-    if (this.refinementPluginUsages && this.refinementPluginUsages.length > 0) {
-      refinementStrategy = this.refinementPluginUsages.map((usage) => this.utils.getLink("self", usage));
-    }
 
     this.productionSystemService.getCollectionResourceProductionsystementityGet1().subscribe(resp => {
       resp._embedded?.productionSystemEntities
@@ -86,10 +82,10 @@ export class CreateCompliancejobDialogComponent implements OnInit {
             productionSystem: this.utils.getLink("self", resp),
             checkingPluginUsage: this.utils.getLink("self", plugin),
             complianceRuleConfigurations: this.selectedComplianceRules.map((cr: EntityModelComplianceRuleEntity) => this.utils.getLink("self", cr)),
-            modelRefinementStrategy: refinementStrategy
           };
           console.debug(requestBody);
           this.complianceJobService.postCollectionResourceCompliancejobentityPost(requestBody).subscribe(resp => {
+
             console.log(resp);
             this.dialogRef.close({ event: 'Closed', data: resp });
           });
