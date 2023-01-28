@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {
   ComplianceJobService,
-  ComplianceRuleEntity, EntityModelComplianceRuleConfigurationEntity, EntityModelPluginConfigurationEntity,
-  EntityModelComplianceRuleEntity,
+  EntityModelComplianceRuleConfigurationEntity,
   EntityModelPluginUsageEntity, PluginUsageService
 } from "iacmf-client";
 import { ProductionSystemService } from "iacmf-client";
@@ -83,7 +82,7 @@ export class CreateCompliancejobDialogComponent implements OnInit {
             id: -1,
             productionSystem: this.utils.getLink("self", resp),
             checkingPluginUsage: this.utils.getLink("self", plugin),
-            complianceRuleConfigurations: this.selectedComplianceRules.map((cr: EntityModelComplianceRuleConfigurationEntity) =>this.utils.getLink("self", cr))
+            complianceRuleConfigurations: this.selectedComplianceRules.map((cr: EntityModelComplianceRuleConfigurationEntity) => this.utils.getLink("self", cr))
           };
           console.debug(requestBody);
           this.complianceJobService.postCollectionResourceCompliancejobentityPost(requestBody).subscribe(resp => {
