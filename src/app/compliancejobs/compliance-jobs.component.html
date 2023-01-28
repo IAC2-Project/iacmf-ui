@@ -1,5 +1,5 @@
-<button mat-raised-button id="create" (click)="openNewJobDialog('0ms', '0ms')">Create new Compliance Job</button>
-<div class="jobs" *ngIf="dataSource && dataSource.length > 0">
+<button mat-raised-button id="create" class="addToListButton" (click)="openNewJobDialog('0ms', '0ms')">Create new Compliance Job</button>
+<div class="listContainer" *ngIf="dataSource && dataSource.length > 0">
   <mat-accordion>
     <mat-expansion-panel *ngFor="let complianceJob of dataSource; let i = index">
       <mat-expansion-panel-header>

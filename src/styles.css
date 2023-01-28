@@ -14,3 +14,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .property {
   margin-bottom: 1em;
 }
+
+.addToListButton {
+  margin: 1em 0 0 0.5em;
+}
+
+.listContainer {
+  margin-top: 2em;
+}

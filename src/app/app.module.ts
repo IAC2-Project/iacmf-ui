@@ -18,7 +18,7 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTableModule} from "@angular/material/table";
 import {MatDialogModule} from "@angular/material/dialog";
-import {CreateProductionSystemDialogComponent} from './production-systems/create-production-system-dialog/create-production-system-dialog.component';
+import {ProductionSystemDialogComponent} from './production-systems/production-system-dialog/production-system-dialog.component';
 import {ComplianceJobsComponent} from './compliancejobs/compliance-jobs.component';
 import {CreateCompliancejobDialogComponent} from './compliancejobs/create-compliancejob-dialog/create-compliancejob-dialog.component';
 import {MatStepperModule} from "@angular/material/stepper";
@@ -32,7 +32,6 @@ import {ComplianceIssuesComponent} from "./compliance-issues/compliance-issues.c
 import {ValidationPluginsComponent} from "./validation-plugins/validation-plugins.component";
 import {ReportingPluginsComponent} from "./reporting-plugins/reporting-plugins.component";
 import {ComplianceRulesComponent} from "./compliance-rules/compliance-rules.component";
-import { ConfigureRefinementPluginComponent } from './refinement-plugins/configure-refinement-plugin/configure-refinement-plugin.component';
 import {ConfigureComplianceRuleComponent} from "./compliance-rules/configure-compliance-rule/configure-compliance-rule.component";
 import {ConfigureComlianceIssueComponent} from "./compliance-issues/configure-compliance-issue/configure-compliance-issue.component";
 import {MatSelectModule} from "@angular/material/select";
@@ -46,7 +45,6 @@ import { ConfigureFixingPluginComponent } from './compliance-issues/configure-fi
 import {MatInputModule} from "@angular/material/input";
 import { CreateComplianceRuleComponent } from './compliance-rules/create-compliance-rule/create-compliance-rule.component';
 import { KvComponent } from './kv/kv.component';
-import { ConfigureProductionSystemDialogComponent } from './production-systems/configure-production-system-dialog/configure-production-system-dialog.component';
 import { PluginUsageComponent } from './plugin-usage/plugin-usage.component';
 import { ExecutionsComponent } from './execution/executions.component';
 import { ReadablePipe } from './utils/pipes/readable.pipe';
@@ -57,7 +55,7 @@ import { PluginUsageConfigurationDialogComponent } from './plugin-usage/plugin-u
     AppComponent,
     ProductionSystemsComponent,
     TriggersComponent,
-    CreateProductionSystemDialogComponent,
+    ProductionSystemDialogComponent,
     ComplianceJobsComponent,
     CreateCompliancejobDialogComponent,
     RefinementPluginsComponent,
@@ -65,7 +63,6 @@ import { PluginUsageConfigurationDialogComponent } from './plugin-usage/plugin-u
     ValidationPluginsComponent,
     ReportingPluginsComponent,
     ComplianceRulesComponent,
-    ConfigureRefinementPluginComponent,
     ConfigureComplianceRuleComponent,
     ConfigureComlianceIssueComponent,
     ConfigureValidationPluginComponent,
@@ -74,7 +71,6 @@ import { PluginUsageConfigurationDialogComponent } from './plugin-usage/plugin-u
     ConfigureFixingPluginComponent,
     CreateComplianceRuleComponent,
     KvComponent,
-    ConfigureProductionSystemDialogComponent,
     PluginUsageComponent,
     ExecutionsComponent,
     ReadablePipe,

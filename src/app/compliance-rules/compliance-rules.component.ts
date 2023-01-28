@@ -1,13 +1,6 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {COMMA, ENTER} from "@angular/cdk/keycodes";
-import { FormControl } from '@angular/forms';
-import {Observable} from "rxjs";
-import {MatChipInputEvent} from "@angular/material/chips";
-import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
-import {map, startWith} from 'rxjs/operators';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {async} from "rxjs";
-import {ConfigureRefinementPluginComponent} from "../refinement-plugins/configure-refinement-plugin/configure-refinement-plugin.component";
-import {ComplianceRuleEntity, ComplianceRulesService, EntityModelComplianceRuleEntity} from "iacmf-client";
+import {ComplianceRulesService, EntityModelComplianceRuleEntity} from "iacmf-client";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfigureComplianceRuleComponent} from "./configure-compliance-rule/configure-compliance-rule.component";
 import {CreateComplianceRuleComponent} from "./create-compliance-rule/create-compliance-rule.component";

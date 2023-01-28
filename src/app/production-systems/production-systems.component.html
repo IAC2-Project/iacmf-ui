@@ -1,5 +1,5 @@
-<button mat-raised-button (click)="openCreateSystemDialog('0ms', '0ms')">Add Production System</button>
-<div *ngFor="let productionSystem of productionSystemEntities; let i = index">
+<button mat-raised-button class="addToListButton" (click)="openCreateSystemDialog('0ms', '0ms')">Add Production System</button>
+<div *ngFor="let productionSystem of productionSystemEntities; let i = index" class="listContainer">
   <mat-card>
     <mat-card-header>
       <mat-card-title>ProductionSystemId: {{this.utils.getId(productionSystem)}}</mat-card-title>
