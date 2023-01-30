@@ -1,6 +1,8 @@
-<div>
-  <button mat-raised-button (click)="openCreateComplianceRuleDialog('0ms', '0ms')">CREATE</button>
-  <div>
+<div class="content">
+  <button mat-raised-button color="primary" (click)="openCreateComplianceRuleDialog('0ms', '0ms')">
+    Add Compliance Rule
+  </button>
+  <div class="listContainer">
     <div *ngFor="let complianceRule of complianceRules">
       <mat-card *ngIf="this.utils.getId(complianceRule) != undefined">
         <mat-card-header>

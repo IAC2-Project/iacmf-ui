@@ -1,6 +1,6 @@
 <div>
-  <mat-form-field appearance="fill">
-    <mat-label>Select a Production System: </mat-label>
+  <mat-form-field appearance="fill" class="compliance-job-item-selector">
+    <mat-label>Select a Production System</mat-label>
     <mat-select [(value)]="this.selected">
       <mat-option *ngFor="let productionSystem of productionSystemEntities" value="{{this.utils.getId(productionSystem)}}" (click)="emitProductionSystem()">
         {{this.utils.getId(productionSystem)}}

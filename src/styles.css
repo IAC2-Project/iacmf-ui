@@ -24,3 +24,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin: 2em 0 0 0.5em;
   padding-bottom: 1em;
 }
+
+.compliance-job-item-selector  {
+  width: 25%;
+}
+

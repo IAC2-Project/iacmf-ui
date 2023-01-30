@@ -1,6 +1,6 @@
 <div>
-  <mat-form-field appearance="fill">
-    <mat-label>Select an option</mat-label>
+  <mat-form-field appearance="fill" class="compliance-job-item-selector">
+    <mat-label>Select a Refinement Plugin</mat-label>
     <mat-select [(value)]="selected">
       <mat-option *ngFor="let refinementPlugin of allPlugins" value="{{refinementPlugin.identifier}}">
         {{refinementPlugin.identifier}}

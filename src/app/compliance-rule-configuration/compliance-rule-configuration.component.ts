@@ -1,19 +1,21 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   ComplianceRuleParameterAssignmentService,
   ComplianceRulesService,
   EntityModelComplianceRuleEntity
 } from "iacmf-client/index";
-import {MatDialog} from "@angular/material/dialog";
-import {Utils} from "../utils/utils";
-import {ConfigureComplianceRuleComponent} from "./configure-compliance-rule/configure-compliance-rule.component";
-import {CreateComplianceRuleComponent} from "../compliance-rules/create-compliance-rule/create-compliance-rule.component";
+import { MatDialog } from "@angular/material/dialog";
+import { Utils } from "../utils/utils";
+import { ConfigureComplianceRuleComponent } from "./configure-compliance-rule/configure-compliance-rule.component";
+import {
+  CreateComplianceRuleComponent
+} from "../compliance-rules/create-compliance-rule/create-compliance-rule.component";
 import {
   ComplianceRuleConfigurationService,
   ComplianceRuleParameterEntity,
   EntityModelComplianceRuleConfigurationEntity, EntityModelComplianceRuleParameterEntity
 } from "iacmf-client";
-import {interval} from "rxjs";
+import { forkJoin, interval } from "rxjs";
 
 @Component({
   selector: 'app-compliance-rule-configuration',
@@ -22,27 +24,22 @@ import {interval} from "rxjs";
 })
 export class ComplianceRuleConfigurationComponent implements OnInit {
 
-  POLLING_INTERVAL_MILLIS = 15000;
-
   ngOnInit(): void {
     this.complianceRulesService.getCollectionResourceComplianceruleentityGet1().subscribe(resp =>
       resp._embedded?.complianceRuleEntities?.forEach(compRule => {
-        this.complianceRules.push(compRule)
-      }))
+        this.complianceRules.push(compRule);
+      }));
     this.complianceRuleConfigurationService.getCollectionResourceComplianceruleconfigurationentityGet1().subscribe(resp => {
       resp._embedded?.complianceRuleConfigurationEntities?.forEach(compConf => {
-        this.complianceRuleConfigurations.push(compConf)
-      })
-    })
+        this.complianceRuleConfigurations.push(compConf);
+      });
+    });
   }
 
-  addedComplianceRuleConfigurations: EntityModelComplianceRuleConfigurationEntity[] = [];
-
-  // TODO here we need to load the actual data from the API
+  addedComplianceRuleConfigurations = new Map<string, EntityModelComplianceRuleConfigurationEntity>();
   complianceRules: EntityModelComplianceRuleEntity[] = [];
   complianceRuleConfigurations: EntityModelComplianceRuleConfigurationEntity[] = [];
 
-  issueType: string | undefined
   selectedRule = undefined
 
   @Output("selectedComplianceRuleConfigurations") selectedComplianceRuleConfigurations = new EventEmitter();
@@ -53,56 +50,52 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
   }
 
   createComplianceRuleConfiguration(complianceRule: number | undefined) {
-    let rule = this._filter(complianceRule)[0]
+    let rule = this._filter(complianceRule)[0];
 
-    if (this.issueType == undefined) {
-      throw new Error("Please give an issueType")
-    }
-
+    // create a cr configuration
     this.complianceRuleConfigurationService.postCollectionResourceComplianceruleconfigurationentityPost({
       complianceRule: this.utils.getLink("self", rule),
       id: -1,
-      issueType: this.issueType
+      issueType: ''
     }).subscribe(resp => {
-      this.addedComplianceRuleConfigurations.push(resp)
+      // retrieve the parameters of the original rule
       this.complianceRulesService.followPropertyReferenceComplianceruleentityGet1(String(this.utils.getId(rule))).subscribe(params => {
-        params._embedded?.complianceRuleParameterEntities?.forEach(param => {
-          this.complianceRulesService.followPropertyReferenceComplianceruleentityGet1(String(this.utils.getId(rule))).subscribe(param1 => {
-            this.complianceRuleParameterAssigmentService.postCollectionResourceComplianceruleparameterassignmententityPost({
-              id: -1,
-              name: param.name,
-              type: param.type,
-              value: "",
-              complianceRuleConfiguration: this.utils.getLink("self", resp),
-              parameter: this.utils.getLink("self", (param as EntityModelComplianceRuleParameterEntity))
-            }).subscribe(assResp => {
-              let body = {
-                _links: {
-                  "complianceRuleConfiguration": {
-                    href: this.utils.getLink("self", resp)
-                  }
-                }
-              }
-              this.complianceRuleParameterAssigmentService.createPropertyReferenceComplianceruleparameterassignmententityPut(String(this.utils.getId(assResp)), body).subscribe(resp2 => {
-              })
-            })
-          })
+        // for each parameter create and add a parameter assignment entity
+        let createAssignmentRequests = params._embedded?.complianceRuleParameterEntities?.map(param => {
+          let body = {
+            id: -1,
+            name: param.name,
+            type: param.type,
+            value: "",
+            complianceRuleConfiguration: this.utils.getLink("self", resp),
+            parameter: this.utils.getLink("self", (param as EntityModelComplianceRuleParameterEntity))
+          };
+          console.debug(body);
+          return this.complianceRuleParameterAssigmentService.postCollectionResourceComplianceruleparameterassignmententityPost(body);
+        });
 
-        })
-      })
-      this.emitSelectedComplianceRules()
-    })
-
+        if (createAssignmentRequests && createAssignmentRequests.length > 0) {
+          forkJoin(createAssignmentRequests).subscribe(() => {
+            this.emitSelectedComplianceRules();
+            this.addedComplianceRuleConfigurations.set(rule.name, resp);
+          });
+        } else {
+          this.emitSelectedComplianceRules();
+          this.addedComplianceRuleConfigurations.set(rule.name, resp);
+        }
+      });
+    });
   }
 
-  removeComplianceRuleConfiguration(complianceRule: EntityModelComplianceRuleConfigurationEntity) {
-    const index = this.addedComplianceRuleConfigurations.indexOf(complianceRule);
-
-    if (index >= 0) {
-      this.addedComplianceRuleConfigurations.splice(index, 1).forEach(compConf => {
-        this.complianceRuleConfigurationService.deleteItemResourceComplianceruleconfigurationentityDelete(String(this.utils.getId(compConf)))
-      });
+  removeComplianceRuleConfiguration(ruleOfConfiguration: string, complianceRuleConfiguration: EntityModelComplianceRuleConfigurationEntity) {
+    if (ruleOfConfiguration != undefined) {
+      this.addedComplianceRuleConfigurations.delete(ruleOfConfiguration);
+      this.complianceRuleConfigurationService.deleteItemResourceComplianceruleconfigurationentityDelete(String(this.utils.getId(complianceRuleConfiguration)));
     }
+  }
+
+  getRuleByName(ruleName: string) {
+    return this.complianceRules.filter(r => r.name === ruleName)[0];
   }
 
   private _filter(value: number | undefined): EntityModelComplianceRuleEntity[] {
@@ -118,22 +111,34 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
       data: complianceRuleConfigurationEntity,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.refreshSelectedList()
+    dialogRef.afterClosed().subscribe(() => {
+      this.refreshSelectedList();
     });
   }
 
   refreshSelectedList() {
-    let updatedComplianceRuleConfs: EntityModelComplianceRuleConfigurationEntity[] = [];
-    let oldComplianceRuleConfs = this.addedComplianceRuleConfigurations;
-    this.addedComplianceRuleConfigurations = []
-    oldComplianceRuleConfs.forEach(conf => {
-      this.complianceRulesConfigurationService.getItemResourceComplianceruleconfigurationentityGet(String(this.utils.getId(conf))).subscribe(updConf => {
-        updatedComplianceRuleConfs.push(updConf)
-      })
-    })
-    this.addedComplianceRuleConfigurations = updatedComplianceRuleConfs;
-    this.emitSelectedComplianceRules();
+    if (this.addedComplianceRuleConfigurations.size > 0) {
+      let updatedComplianceRuleConfs = new Map<string, EntityModelComplianceRuleConfigurationEntity>()
+      let requests = new Map<string, any>;
+      let ruleNames = Array.from(this.addedComplianceRuleConfigurations.keys());
+
+      for (let key of ruleNames) {
+        let conf = this.addedComplianceRuleConfigurations.get(key);
+        if (conf) {
+          requests.set(key, this.complianceRulesConfigurationService.getItemResourceComplianceruleconfigurationentityGet(String(this.utils.getId(conf))));
+        }
+      }
+
+      forkJoin(Array.from(requests.values())).subscribe(newConfs => {
+        for (let i = 0; i < newConfs.length; i++) {
+          updatedComplianceRuleConfs.set(ruleNames[i], newConfs[i]);
+        }
+        this.addedComplianceRuleConfigurations = updatedComplianceRuleConfs;
+        this.emitSelectedComplianceRules();
+      });
+    } else {
+      this.emitSelectedComplianceRules();
+    }
   }
 
   emitSelectedComplianceRules() {
