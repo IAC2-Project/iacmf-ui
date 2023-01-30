@@ -34,11 +34,6 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
         this.complianceRuleConfigurations.push(compConf)
       })
     })
-
-    // somehow the list doesn't properly update the issue type in the mat card element, I have no idea why, but this helps...
-    interval(this.POLLING_INTERVAL_MILLIS).subscribe(() => {
-      this.refreshSelectedList()
-    })
   }
 
   addedComplianceRuleConfigurations: EntityModelComplianceRuleConfigurationEntity[] = [];

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {
   ComplianceIssueEntity, ComplianceRuleConfigurationService,
   ComplianceRuleEntity, ComplianceRuleParameterAssignmentService,
@@ -26,6 +26,7 @@ export class ConfigureComplianceRuleComponent implements OnInit {
   issueType: string = ""
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: EntityModelComplianceRuleConfigurationEntity,
+              public dialogRef: MatDialogRef<ConfigureComplianceRuleComponent>,
               public testData: TestData,
               public complianceRulesConfigurationService: ComplianceRuleConfigurationService,
               public complianceRuleParameterAssigmentService: ComplianceRuleParameterAssignmentService, public utils: Utils, public dialog: MatDialog, public complianceRuleService: ComplianceRulesService, public pluginService: PluginService) {
@@ -60,24 +61,25 @@ export class ConfigureComplianceRuleComponent implements OnInit {
   }
 
   storeComplianceRuleConfiguration() {
-    this.complianceRuleParameterAssignments.forEach(paramAssignment => {
-      let req = {
-        id: Number(this.utils.getId(paramAssignment)),
-        value: paramAssignment.value,
-        type: paramAssignment.type,
-        complianceRuleConfiguration: this.utils.getLink("self", this.data),
-        name: paramAssignment.name,
-        parameter: this.utils.getLink("complianceRuleParameterAssignmentEntity", paramAssignment)
-      }
-      this.complianceRuleParameterAssigmentService.putItemResourceComplianceruleparameterassignmententityPut(String(this.utils.getId(paramAssignment)), req).subscribe(resp => {
-        console.log(resp)
-      })
-    })
+
     this.complianceRulesConfigurationService.putItemResourceComplianceruleconfigurationentityPut(String(this.utils.getId(this.data)), {
       id: Number(this.utils.getId(this.data)),
       issueType: this.issueType
     }).subscribe(resp => {
-      console.log(resp)
+      this.complianceRuleParameterAssignments.forEach(paramAssignment => {
+        let req = {
+          id: Number(this.utils.getId(paramAssignment)),
+          value: paramAssignment.value,
+          type: paramAssignment.type,
+          complianceRuleConfiguration: this.utils.getLink("self", this.data),
+          name: paramAssignment.name,
+          parameter: this.utils.getLink("complianceRuleParameterAssignmentEntity", paramAssignment)
+        }
+        this.complianceRuleParameterAssigmentService.putItemResourceComplianceruleparameterassignmententityPut(String(this.utils.getId(paramAssignment)), req).subscribe(resp => {
+          console.log(resp)
+        })
+      })
+      this.dialogRef.close({event:'Closed', data: this.data});
     })
   }
 }
