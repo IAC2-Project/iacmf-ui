@@ -3,27 +3,29 @@
   <div>
     <button mat-button (click)="fillInTestData()">Create Test Data</button>
 
-    <h4>Compliance Rule {{this.utils.getId(data)}}</h4>
-    <h5>Issue Type:</h5>
-    <input matInput type="text" value="{{this.issueType}}">
-    <div *ngIf="this.complianceRuleParameters.length > 0">
-    <h5>Parameter Assignment:</h5>
+    <h4>Compliance Rule Configuration {{this.utils.getId(this.data)}}</h4>
+    <form>
+      <mat-form-field appearance="fill">
+        <mat-label>Issue Type:</mat-label>
+        <input matInput [(ngModel)]="this.issueType" [ngModelOptions]="{standalone: true}"/>
+      </mat-form-field>
+    </form>
 
-      <div *ngFor="let parameter of this.complianceRuleParameterAssignments">
-          Name:{{parameter.name}} Type: {{parameter.type}}
-        <br>
-         <input matInput type="text" value="{{parameter.value}}">
-        <br>
-      </div>
-
+    <h5>Parameter Assignments:</h5>
+    <div *ngIf="this.complianceRuleParameterAssignments.length > 0">
+      <form>
+        <mat-form-field *ngFor="let parameter of this.complianceRuleParameterAssignments" appearance="fill">
+          <mat-label>{{parameter.name}}:</mat-label>
+          <input matInput [(ngModel)]="parameter.value" [ngModelOptions]="{standalone: true}"/>
+        </mat-form-field>
+      </form>
     </div>
   </div>
   <div>
 
 
-
-</div>
-<div mat-dialog-actions>
-  <button mat-button mat-dialog-close>No</button>
-  <button mat-button mat-dialog-close cdkFocusInitial (click)="storeComplianceRuleConfiguration()">Ok</button>
-</div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close>No</button>
+    <button mat-button mat-dialog-close cdkFocusInitial (click)="storeComplianceRuleConfiguration()">Ok</button>
+  </div>
