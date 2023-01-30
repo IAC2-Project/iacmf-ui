@@ -1,0 +1,72 @@
+<h1 *ngIf="creationMode" mat-dialog-title>Register Production System</h1>
+<h1 *ngIf="!creationMode" mat-dialog-title>Configure Production System</h1>
+<div style="margin-bottom: 10px" mat-dialog-content>
+
+  <button mat-button (click)="fillTestData()" *ngIf="creationMode">Create Test Data</button>
+
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Basic Information</mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-form-field>
+        <mat-label>
+          Name
+        </mat-label>
+        <input matInput type="text" [(ngModel)]="name" name="productionSystemName"/>
+      </mat-form-field>
+      <br/>
+      <mat-form-field>
+        <mat-label>
+          IaC Technology
+        </mat-label>
+        <input matInput type="text" [(ngModel)]="iacTechnologyName" name="iacTechnologyName"/>
+      </mat-form-field>
+      <br/>
+      <mat-form-field>
+        <mat-label>
+          Description
+        </mat-label>
+        <textarea matInput type="text" [(ngModel)]="description" name="description"></textarea>
+      </mat-form-field>
+
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title *ngIf="creationMode">Select Creation Plugin</mat-panel-title>
+        <mat-panel-title *ngIf="!creationMode">Configure Creation Plugin</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <app-plugin-usage #pluginUsage (selectedPluginIdentifierEvent)="updatePluginUsage($event)"
+                        [pluginType]="'MODEL_CREATION'"
+                        [showHeader]="false"
+                        [canChangeIdentifier]="true"
+                        [pluginUsageIdentifierSub]="this.shareNewPluginUsageEvents.asObservable()" *ngIf="creationMode"></app-plugin-usage>
+      <app-plugin-usage #pluginUsage (selectedPluginIdentifierEvent)="updatePluginUsage($event)"
+                        [pluginType]="'MODEL_CREATION'"
+                        [showHeader]="false"
+                        [canChangeIdentifier]="false"
+                        [productionSystem]="productionSystem"
+                        [pluginUsageIdentifierSub]="this.shareNewPluginUsageEvents.asObservable()" *ngIf="!creationMode"></app-plugin-usage>
+
+    </mat-expansion-panel>
+    <mat-expansion-panel style="margin-bottom: 2em">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Production System Properties</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <app-kv (keyValueEntities)="updateKeyValueEntities($event)"
+              [keyValueOnSubCreation]="this.shareNewKVEvents.asObservable()" *ngIf="creationMode"></app-kv>
+      <app-kv (keyValueEntities)="updateKeyValueEntities($event)"
+              [productionSystem]="productionSystem"
+               *ngIf="!creationMode"></app-kv>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+
+<div class="footer" mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button cdkFocusInitial (click)="closeDialog()">OK</button>
+</div>
+

@@ -1,0 +1,14 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.toolbar {
+  height: 3em;
+}
+
+mat-toolbar a img {
+  display: block;
+  margin: auto;
+  height: 2.5em;
+}
+
