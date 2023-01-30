@@ -32,8 +32,6 @@ import {IssueFixingComponent} from "./issue-fixing/issue-fixing.component";
 import {ValidationPluginsComponent} from "./validation-plugins/validation-plugins.component";
 import {ReportingPluginsComponent} from "./reporting-plugins/reporting-plugins.component";
 import {ComplianceRulesComponent} from "./compliance-rules/compliance-rules.component";
-import {ConfigureComplianceRuleComponent} from "./compliance-rules/configure-compliance-rule/configure-compliance-rule.component";
-import {ConfigureComlianceIssueComponent} from "./compliance-issues/configure-compliance-issue/configure-compliance-issue.component";
 import {MatSelectModule} from "@angular/material/select";
 import { ConfigureValidationPluginComponent } from './validation-plugins/configure-validation-plugin/configure-validation-plugin.component';
 import { ConfigureReportingPluginComponent } from './reporting-plugins/configure-reporting-plugin/configure-reporting-plugin.component';
@@ -45,11 +43,16 @@ import {MatInputModule} from "@angular/material/input";
 import { CreateComplianceRuleComponent } from './compliance-rules/create-compliance-rule/create-compliance-rule.component';
 import { KvComponent } from './kv/kv.component';
 import { PluginUsageComponent } from './plugin-usage/plugin-usage.component';
+import { ComplianceRuleConfigurationComponent } from './compliance-rule-configuration/compliance-rule-configuration.component';
+
+import {
+  ConfigureComplianceRuleComponent
+} from './compliance-rule-configuration/configure-compliance-rule/configure-compliance-rule.component';
 import { ExecutionsComponent } from './execution/executions.component';
 import { ReadablePipe } from './utils/pipes/readable.pipe';
-import { PluginUsageConfigurationDialogComponent } from './plugin-usage/plugin-usage-configuration-dialog/plugin-usage-configuration-dialog.component';
-import { ComplianceRuleConfigurationComponent } from './compliance-rule-configuration/compliance-rule-configuration.component';
-import { MatTabNavBarHarness } from '@angular/material/tabs/testing';
+import {
+  PluginUsageConfigurationDialogComponent
+} from './plugin-usage/plugin-usage-configuration-dialog/plugin-usage-configuration-dialog.component';
 
 @NgModule({
   declarations: [
