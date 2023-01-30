@@ -1,4 +1,4 @@
-<button id="create" mat-raised-button color="primary" (click)="executeComplianceJob()">Start Execution</button>
+<button id="create" mat-raised-button color="accent" (click)="executeComplianceJob()">Start Execution</button>
 
 <div class="executions">
   <span *ngIf="executions.length === 0">No executions exist yet!</span>
@@ -9,8 +9,8 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <mat-accordion *ngIf="executions.length > 0">
-      <mat-expansion-panel *ngFor="let execution of executions; let i = index" [expanded]="false">
+    <mat-accordion *ngIf="executions.length > 0 ">
+      <mat-expansion-panel *ngFor="let execution of executions; let i = index;" [expanded]="!execution.currentStep.includes('END')">
         <mat-expansion-panel-header>
           <mat-panel-title>Execution: {{execution.id}}</mat-panel-title>
           <mat-panel-description>
@@ -49,8 +49,7 @@
           <span *ngIf="!execution.instanceModel" class="property-value">Not available!</span>
           <button *ngIf="execution.instanceModel" type="button" class="buttonToLink property-value"
                   (click)="downloadInstanceModel(execution.instanceModel, 'instanceModel_' + execution.id + '.yaml')">
-            Click
-            here to download
+            Click here to download
           </button>
         </div>
 

@@ -1,18 +1,37 @@
-<button mat-raised-button (click)="openCreateSystemDialog('0ms', '0ms')">Add Production System</button>
-<div *ngFor="let productionSystem of productionSystemEntities; let i = index">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>ProductionSystemId: {{this.utils.getId(productionSystem)}}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <h4>Description:</h4>
-      <p>{{productionSystem.description}}</p>
-      <h4>IaC Technology:</h4>
-      <p>{{productionSystem.iacTechnologyName}}</p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-button (click)="openConfigureProductionSystemDialog(productionSystem,'0ms', '0ms')">CONFIGURE</button>
-    </mat-card-actions>
-  </mat-card>
-  <br>
+<div class="content">
+  <button mat-raised-button color="primary" (click)="openCreateSystemDialog('0ms', '0ms')">Add Production System
+  </button>
+  <div class="listContainer" *ngIf="productionSystemEntities && productionSystemEntities.length > 0">
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let productionSystem of productionSystemEntities; let i = index; first as isFirst" [expanded]="isFirst">
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{productionSystem.name}} (id: {{this.utils.getId(productionSystem)}})</mat-panel-title>
+          <mat-panel-description>{{productionSystem.description}}</mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="property">
+          <div class="property-label">Name:</div>
+          <span class="property-value">{{productionSystem.name}}</span>
+        </div>
+        <div class="property">
+          <div class="property-label">ID:</div>
+          <span class="property-value">{{this.utils.getId(productionSystem)}}</span>
+        </div>
+        <div class="property">
+          <div class="property-label">Description:</div>
+          <span class="property-value">{{productionSystem.description}}</span>
+        </div>
+        <div class="property">
+          <div class="property-label">IaC Technology:</div>
+          <span class="property-value">{{productionSystem.iacTechnologyName}}</span>
+        </div>
+        <button mat-raised-button color="accent"
+                (click)="openConfigureProductionSystemDialog(productionSystem,'0ms', '0ms')">
+          CONFIGURE
+        </button>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="listContainer" *ngIf="!productionSystemEntities || productionSystemEntities.length == 0">
+    <span>No production systems are created yet!</span>
+  </div>
 </div>

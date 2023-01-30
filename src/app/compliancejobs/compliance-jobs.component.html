@@ -1,27 +1,34 @@
-<button mat-raised-button id="create" (click)="openNewJobDialog('0ms', '0ms')">Create new Compliance Job</button>
-<div class="jobs" *ngIf="dataSource && dataSource.length > 0">
-  <mat-accordion>
-    <mat-expansion-panel *ngFor="let complianceJob of dataSource; let i = index">
-      <mat-expansion-panel-header>
-        <mat-panel-title>ComplianceJob Id: {{this.getId(complianceJob)}}</mat-panel-title>
-      </mat-expansion-panel-header>
+<div class="content">
+  <button mat-raised-button color="primary" (click)="openNewJobDialog('0ms', '0ms')">Create new
+    Compliance Job
+  </button>
+  <div class="listContainer" *ngIf="dataSource && dataSource.length > 0">
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let complianceJob of dataSource; let i = index; first as isFirst" [expanded]="isFirst">
+        <mat-expansion-panel-header>
+          <mat-panel-title>ComplianceJob Id: {{this.getId(complianceJob)}}</mat-panel-title>
+        </mat-expansion-panel-header>
 
-      <div class="property">
-        <div class="property-label">Name:</div>
-        <span class="property-value">{{complianceJob.name}}</span>
-      </div>
-      <div class="property">
-        <div class="property-label">Description:</div>
-        <span *ngIf="complianceJob.description" class="property-value">{{complianceJob.description}}</span>
-        <span *ngIf="!complianceJob.description" class="property-value"> No description provided!</span>
-      </div>
-      <div class="property">
-        <div class="property-label">Execution: </div>
-        <app-executions [complianceJob]="getId(complianceJob)"></app-executions>
-      </div>
+        <div class="property">
+          <div class="property-label">Name:</div>
+          <span class="property-value">{{complianceJob.name}}</span>
+        </div>
+        <div class="property">
+          <div class="property-label">Description:</div>
+          <span *ngIf="complianceJob.description" class="property-value">{{complianceJob.description}}</span>
+          <span *ngIf="!complianceJob.description" class="property-value"> No description provided!</span>
+        </div>
+        <div class="property">
+          <div class="property-label">Execution:</div>
+          <app-executions [complianceJob]="getId(complianceJob)"></app-executions>
+        </div>
 
-    </mat-expansion-panel>
-  </mat-accordion>
-  <br>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <br>
+  </div>
+  <div class="listContainer" *ngIf="!dataSource || dataSource.length == 0">
+    <span>No compliance jobs exist yet!</span>
+  </div>
 </div>
 
