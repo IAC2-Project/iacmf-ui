@@ -49,6 +49,7 @@ import { PluginUsageComponent } from './plugin-usage/plugin-usage.component';
 import { ExecutionsComponent } from './execution/executions.component';
 import { ReadablePipe } from './utils/pipes/readable.pipe';
 import { PluginUsageConfigurationDialogComponent } from './plugin-usage/plugin-usage-configuration-dialog/plugin-usage-configuration-dialog.component';
+import { MatTabNavBarHarness } from '@angular/material/tabs/testing';
 
 @NgModule({
   declarations: [
@@ -103,6 +104,7 @@ import { PluginUsageConfigurationDialogComponent } from './plugin-usage/plugin-u
     LayoutModule,
     ApiModule,
     MatDialogModule,
+    MatToolbarModule,
     HttpClientModule
   ],
   providers: [
