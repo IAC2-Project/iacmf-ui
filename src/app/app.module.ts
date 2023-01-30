@@ -18,7 +18,7 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTableModule} from "@angular/material/table";
 import {MatDialogModule} from "@angular/material/dialog";
-import {CreateProductionSystemDialogComponent} from './production-systems/create-production-system-dialog/create-production-system-dialog.component';
+import {ProductionSystemDialogComponent} from './production-systems/production-system-dialog/production-system-dialog.component';
 import {ComplianceJobsComponent} from './compliancejobs/compliance-jobs.component';
 import {CreateCompliancejobDialogComponent} from './compliancejobs/create-compliancejob-dialog/create-compliancejob-dialog.component';
 import {MatStepperModule} from "@angular/material/stepper";
@@ -32,8 +32,6 @@ import {IssueFixingComponent} from "./issue-fixing/issue-fixing.component";
 import {ValidationPluginsComponent} from "./validation-plugins/validation-plugins.component";
 import {ReportingPluginsComponent} from "./reporting-plugins/reporting-plugins.component";
 import {ComplianceRulesComponent} from "./compliance-rules/compliance-rules.component";
-import { ConfigureRefinementPluginComponent } from './refinement-plugins/configure-refinement-plugin/configure-refinement-plugin.component';
-import {ConfigureComplianceRuleComponent} from "./compliance-rule-configuration/configure-compliance-rule/configure-compliance-rule.component";
 import {MatSelectModule} from "@angular/material/select";
 import { ConfigureValidationPluginComponent } from './validation-plugins/configure-validation-plugin/configure-validation-plugin.component';
 import { ConfigureReportingPluginComponent } from './reporting-plugins/configure-reporting-plugin/configure-reporting-plugin.component';
@@ -44,19 +42,24 @@ import { SelectProductionSytemComponent } from './production-systems/select-prod
 import {MatInputModule} from "@angular/material/input";
 import { CreateComplianceRuleComponent } from './compliance-rules/create-compliance-rule/create-compliance-rule.component';
 import { KvComponent } from './kv/kv.component';
-import { ConfigureProductionSystemDialogComponent } from './production-systems/configure-production-system-dialog/configure-production-system-dialog.component';
 import { PluginUsageComponent } from './plugin-usage/plugin-usage.component';
+import { ComplianceRuleConfigurationComponent } from './compliance-rule-configuration/compliance-rule-configuration.component';
+
+import {
+  ConfigureComplianceRuleComponent
+} from './compliance-rule-configuration/configure-compliance-rule/configure-compliance-rule.component';
 import { ExecutionsComponent } from './execution/executions.component';
 import { ReadablePipe } from './utils/pipes/readable.pipe';
-import { PluginUsageConfigurationDialogComponent } from './plugin-usage/plugin-usage-configuration-dialog/plugin-usage-configuration-dialog.component';
-import { ComplianceRuleConfigurationComponent } from './compliance-rule-configuration/compliance-rule-configuration.component';
+import {
+  PluginUsageConfigurationDialogComponent
+} from './plugin-usage/plugin-usage-configuration-dialog/plugin-usage-configuration-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductionSystemsComponent,
     TriggersComponent,
-    CreateProductionSystemDialogComponent,
+    ProductionSystemDialogComponent,
     ComplianceJobsComponent,
     CreateCompliancejobDialogComponent,
     RefinementPluginsComponent,
@@ -64,14 +67,12 @@ import { ComplianceRuleConfigurationComponent } from './compliance-rule-configur
     ValidationPluginsComponent,
     ReportingPluginsComponent,
     ComplianceRulesComponent,
-    ConfigureRefinementPluginComponent,
     ConfigureComplianceRuleComponent,
     ConfigureValidationPluginComponent,
     ConfigureReportingPluginComponent,
     SelectProductionSytemComponent,
     CreateComplianceRuleComponent,
     KvComponent,
-    ConfigureProductionSystemDialogComponent,
     PluginUsageComponent,
     ExecutionsComponent,
     ReadablePipe,
@@ -105,6 +106,7 @@ import { ComplianceRuleConfigurationComponent } from './compliance-rule-configur
     LayoutModule,
     ApiModule,
     MatDialogModule,
+    MatToolbarModule,
     HttpClientModule
   ],
   providers: [

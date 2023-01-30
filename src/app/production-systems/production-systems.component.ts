@@ -1,20 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import {
   EntityModelProductionSystemEntity, KeyValueService,
   PluginUsageService,
   ProductionSystemService
 } from "iacmf-client";
-import { MatTable } from "@angular/material/table";
-import { Observable } from "rxjs";
-import {
-  ConfigureProductionSystemDialogComponent
-} from "./configure-production-system-dialog/configure-production-system-dialog.component";
-import { KvComponent } from "../kv/kv.component";
 import { Utils } from "../utils/utils";
 import {
-  CreateProductionSystemDialogComponent
-} from './create-production-system-dialog/create-production-system-dialog.component';
+  ProductionSystemDialogComponent
+} from './production-system-dialog/production-system-dialog.component';
 
 @Component({
   selector: 'app-production-systems',
@@ -50,22 +44,23 @@ export class ProductionSystemsComponent implements OnInit {
     matDialogConfig.width = "70%";
     matDialogConfig.enterAnimationDuration = enterAnimationDuration;
     matDialogConfig.exitAnimationDuration = exitAnimationDuration;
-    const dialogRef = this.dialog.open(CreateProductionSystemDialogComponent, matDialogConfig);
+    const dialogRef = this.dialog.open(ProductionSystemDialogComponent, matDialogConfig);
 
     dialogRef.afterClosed().subscribe(() => {
-      this.refreshProductionSystems()
+      this.refreshProductionSystems();
     });
   }
 
   openConfigureProductionSystemDialog(productionSystem: EntityModelProductionSystemEntity, enterAnimationDuration: string, exitAnimationDuration: string): void {
-    const dialogRef = this.dialog.open(ConfigureProductionSystemDialogComponent, {
-      enterAnimationDuration,
-      exitAnimationDuration,
-      data: productionSystem
-    });
+    const matDialogConfig = new MatDialogConfig();
+    matDialogConfig.width = "70%";
+    matDialogConfig.enterAnimationDuration = enterAnimationDuration;
+    matDialogConfig.exitAnimationDuration = exitAnimationDuration;
+    matDialogConfig.data = productionSystem;
+    const dialogRef = this.dialog.open(ProductionSystemDialogComponent, matDialogConfig);
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.refreshProductionSystems()
+    dialogRef.afterClosed().subscribe(() => {
+      this.refreshProductionSystems();
     });
   }
 }
