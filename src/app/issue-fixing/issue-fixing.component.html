@@ -1,7 +1,28 @@
+<form>
+  <mat-form-field appearance="fill">
+    <mat-label>Select Issue Type:</mat-label>
+    <mat-select [(value)]="selectedIssueType">
+      <mat-option *ngFor="let issueType of issueTypes" [value]="issueType">
+        {{issueType}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Select Fixing Plugin:</mat-label>
+    <mat-select [(value)]="selectedPluginId">
+      <mat-option *ngFor="let pluginId of this.getPluginsByIssueType(this.selectedIssueType)" [value]="pluginId">
+        {{pluginId}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-button (click)="createIssueFixingConfiguration();">ADD</button>
+</form>
+
 <div *ngFor="let fixingConfiguration of issueFixingConfigurations; let i = index">
+  <div *ngIf="fixingConfiguration.pluginUsage != undefined && fixingConfiguration.pluginUsage.pluginIdentifier != undefined">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Fixing Configuration {{this.utils.getId(fixingConfiguration)}} Type: {{fixingConfiguration.issueType}}</mat-card-title>
+      <mat-card-title>Fixing Configuration for Issue Type: {{fixingConfiguration.issueType}}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <mat-accordion>
@@ -10,11 +31,12 @@
             Fixing Plugin Configuration
           </mat-expansion-panel-header>
 
-          <app-plugin-usage [pluginType]="'ISSUE_FIXING'" (selectedPluginIdentifierEvent)="this.savePluginConfiguration($event)"></app-plugin-usage>
+          <app-plugin-usage [pluginIdentifier]="fixingConfiguration.pluginUsage.pluginIdentifier" [canChangeIdentifier]="false" [pluginType]="'ISSUE_FIXING'" (selectedPluginIdentifierEvent)="this.savePluginConfiguration($event, fixingConfiguration)"></app-plugin-usage>
 
         </mat-expansion-panel>
       </mat-accordion>
     </mat-card-content>
   </mat-card>
   <br>
+  </div>
 </div>

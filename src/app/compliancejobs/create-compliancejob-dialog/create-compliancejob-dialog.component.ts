@@ -8,7 +8,7 @@ import { ProductionSystemService } from "iacmf-client";
 
 import { Utils } from "../../utils/utils";
 import { MatDialogRef } from "@angular/material/dialog";
-import { forkJoin } from 'rxjs';
+import {forkJoin, Subject} from 'rxjs';
 
 @Component({
   selector: 'app-create-compliancejob-dialog',
@@ -21,6 +21,8 @@ export class CreateCompliancejobDialogComponent implements OnInit {
   selectedComplianceRules: EntityModelComplianceRuleConfigurationEntity[] = [];
   checkingPluginConfiguration: EntityModelPluginUsageEntity | undefined;
   refinementPluginUsages = new Array<EntityModelPluginUsageEntity>();
+  shareNewComplianceRuleConfigurationEvents: Subject<EntityModelComplianceRuleConfigurationEntity> = new Subject<EntityModelComplianceRuleConfigurationEntity>();
+
 
   ngOnInit(): void {
   }
@@ -32,8 +34,9 @@ export class CreateCompliancejobDialogComponent implements OnInit {
     this.selectedProductionSystem = $event;
   }
 
-  complianceRulesSelected($event: any) {
+  complianceRulesSelected($event: EntityModelComplianceRuleConfigurationEntity[]) {
     this.selectedComplianceRules = $event;
+    $event.forEach(conf => this.shareNewComplianceRuleConfigurationEvents.next(conf))
   }
 
   refinementPluginAdded($event: EntityModelPluginUsageEntity) {
