@@ -30,6 +30,7 @@ export class PluginUsageComponent implements OnInit {
   @Input("canChangeIdentifier") canChangeIdentifier: boolean = true;
   @Input("showHeader") showHeader: boolean = true;
   @Input("pluginUsageId") pluginUsageId: number = -1;
+  @Input("pluginIdentifier") pluginIdentifier: string | undefined;
   @Input("pluginType") pluginType = "";
   // for model creation plugin
   @Input("productionSystem") productionSystem: EntityModelProductionSystemEntity | undefined;
@@ -64,6 +65,11 @@ export class PluginUsageComponent implements OnInit {
         this.selectedPluginIdentifier = data.pluginIdentifier
         this.pluginChanged()
       });
+    }
+
+    if (this.pluginIdentifier != undefined && this.pluginIdentifier.length != 0) {
+      this.selectedPluginIdentifier = this.pluginIdentifier
+      this.pluginChanged()
     }
 
     if (this.pluginUsageId != -1) {
