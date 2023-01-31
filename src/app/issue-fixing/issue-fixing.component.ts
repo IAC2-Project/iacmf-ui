@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import { FormControl } from '@angular/forms';
 import {Observable, Subscription} from "rxjs";
@@ -46,6 +46,8 @@ export class IssueFixingComponent implements OnInit {
 
   @Input("complianceRuleConfigurationsSub") complianceRuleConfSub: Observable<EntityModelComplianceRuleConfigurationEntity> | undefined;
   private complianceRuleConfSubscription: Subscription | undefined;
+
+  @Output("issueFixingConfigurationsToCreate") issueFixingConfigurationsToCreateEmitter = new EventEmitter();
 
   issueTypes: string[] = []
   selectedIssueType = undefined
@@ -110,9 +112,9 @@ export class IssueFixingComponent implements OnInit {
         pluginIdentifier: this.selectedPluginId
       }
     })
+
+    this.issueFixingConfigurationsToCreateEmitter.emit(this.issueFixingConfigurations)
   }
-
-
 
   savePluginConfiguration($event : EntityModelPluginUsageEntity, fixingConfiguration: IssueFixingConfigurationEntity) {
     fixingConfiguration.pluginUsage = {

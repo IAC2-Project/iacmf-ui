@@ -15,7 +15,7 @@
       <app-plugin-usage [pluginType]="'ISSUE_CHECKING'" (selectedPluginIdentifierEvent)="saveCheckingPluginConfiguration($event)"></app-plugin-usage>
     </mat-step>
     <mat-step  label="Compliance Issue Fixing">
-      <app-issue-fixing [complianceRuleConfigurationsSub]="this.shareNewComplianceRuleConfigurationEvents.asObservable()"></app-issue-fixing>
+      <app-issue-fixing (issueFixingConfigurationsToCreate)="this.saveIssueFixingConfigurations($event)" [complianceRuleConfigurationsSub]="this.shareNewComplianceRuleConfigurationEvents.asObservable()"></app-issue-fixing>
     </mat-step>
     <mat-step  label="Validation">
       <app-validation-plugins></app-validation-plugins>

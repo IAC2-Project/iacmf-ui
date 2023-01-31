@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {
   ComplianceJobService,
   EntityModelComplianceRuleConfigurationEntity,
-  EntityModelPluginUsageEntity, PluginUsageService
+  EntityModelPluginUsageEntity, IssueFixingConfigurationEntity, IssueFixingConfigurationService, PluginUsageService
 } from "iacmf-client";
 import { ProductionSystemService } from "iacmf-client";
 
@@ -23,11 +23,18 @@ export class CreateCompliancejobDialogComponent implements OnInit {
   refinementPluginUsages = new Array<EntityModelPluginUsageEntity>();
   shareNewComplianceRuleConfigurationEvents: Subject<EntityModelComplianceRuleConfigurationEntity> = new Subject<EntityModelComplianceRuleConfigurationEntity>();
 
+  issueFixingConfigurationsToCreate: IssueFixingConfigurationEntity[] = []
+
 
   ngOnInit(): void {
   }
 
-  constructor(private dialogRef: MatDialogRef<CreateCompliancejobDialogComponent>, private complianceJobService: ComplianceJobService, private productionSystemService: ProductionSystemService, private pluginUsageService: PluginUsageService, private utils: Utils) {
+  constructor(private dialogRef: MatDialogRef<CreateCompliancejobDialogComponent>,
+              private complianceJobService: ComplianceJobService,
+              private productionSystemService: ProductionSystemService,
+              private pluginUsageService: PluginUsageService,
+              private utils: Utils,
+              private issueFixingConfigurationService: IssueFixingConfigurationService) {
   }
 
   productionSystemSelected($event: any) {
@@ -56,6 +63,10 @@ export class CreateCompliancejobDialogComponent implements OnInit {
     this.checkingPluginConfiguration = $event;
   }
 
+  saveIssueFixingConfigurations($event: IssueFixingConfigurationEntity[]) {
+    this.issueFixingConfigurationsToCreate = $event
+  }
+
   storeComplianceJob() {
 
     if (this.selectedProductionSystem == -1) {
@@ -65,13 +76,17 @@ export class CreateCompliancejobDialogComponent implements OnInit {
     }
 
     if (this.selectedComplianceRules.length == 0) {
-      console.log("Select atleast one compliance rule to check")
+      console.log("Select at least one compliance rule to check")
       return;
     }
 
     if (this.checkingPluginConfiguration == undefined) {
       console.log("Select checking plugin")
       return;
+    }
+
+    if (this.issueFixingConfigurationsToCreate.length == 0) {
+      console.log("Configure at least one issue fixing configuration")
     }
 
     let plugin = this.checkingPluginConfiguration;
@@ -102,6 +117,23 @@ export class CreateCompliancejobDialogComponent implements OnInit {
 
               return this.pluginUsageService.createPropertyReferencePluginusageentityPut1(String(this.utils.getId(usage)), body);
             });
+
+            this.issueFixingConfigurationsToCreate.forEach(conf => {
+              if (conf.pluginUsage?.id != undefined) {
+                this.pluginUsageService.getItemResourcePluginusageentityGet(String(conf.pluginUsage?.id)).subscribe(pluginUsage => {
+                  this.issueFixingConfigurationService.postCollectionResourceIssuefixingconfigurationentityPost({
+                    id: -1,
+                    complianceJob: complianceJobUrl,
+                    issueType: conf.issueType,
+                    pluginUsage: this.utils.getLink("self", pluginUsage)
+                  }).subscribe(resp => {
+                    console.log(resp)
+                  })
+                })
+              }
+
+            })
+
 
             if (requests.length > 0) {
               console.log("Creating associations between the %d refinement plugin usages and the compliance job", requests.length);
