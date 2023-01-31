@@ -13,7 +13,8 @@ import {
 import {
   ComplianceRuleConfigurationService,
   ComplianceRuleParameterEntity,
-  EntityModelComplianceRuleConfigurationEntity, EntityModelComplianceRuleParameterEntity
+  EntityModelComplianceRuleConfigurationEntity, EntityModelComplianceRuleParameterAssignmentEntity,
+  EntityModelComplianceRuleParameterEntity
 } from "iacmf-client";
 import { forkJoin, interval } from "rxjs";
 
@@ -70,18 +71,17 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
             complianceRuleConfiguration: this.utils.getLink("self", resp),
             parameter: this.utils.getLink("self", (param as EntityModelComplianceRuleParameterEntity))
           };
-          console.debug(body);
           return this.complianceRuleParameterAssigmentService.postCollectionResourceComplianceruleparameterassignmententityPost(body);
         });
 
         if (createAssignmentRequests && createAssignmentRequests.length > 0) {
           forkJoin(createAssignmentRequests).subscribe(() => {
-            this.emitSelectedComplianceRules();
             this.addedComplianceRuleConfigurations.set(rule.name, resp);
+            this.emitSelectedComplianceRules();
           });
         } else {
-          this.emitSelectedComplianceRules();
           this.addedComplianceRuleConfigurations.set(rule.name, resp);
+          this.emitSelectedComplianceRules();
         }
       });
     });
@@ -89,8 +89,32 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
 
   removeComplianceRuleConfiguration(ruleOfConfiguration: string, complianceRuleConfiguration: EntityModelComplianceRuleConfigurationEntity) {
     if (ruleOfConfiguration != undefined) {
-      this.addedComplianceRuleConfigurations.delete(ruleOfConfiguration);
-      this.complianceRuleConfigurationService.deleteItemResourceComplianceruleconfigurationentityDelete(String(this.utils.getId(complianceRuleConfiguration)));
+      // first we remove associated parameter assignments, then the configuration entity.
+      this.complianceRuleConfigurationService.followPropertyReferenceComplianceruleconfigurationentityGet31(String(this.utils.getId(complianceRuleConfiguration))).subscribe(result => {
+        console.log("%d assignments where detected!", result._embedded?.complianceRuleParameterAssignmentEntities?.length);
+        let requests = result._embedded?.complianceRuleParameterAssignmentEntities
+          ?.map(assignment => (assignment as EntityModelComplianceRuleParameterAssignmentEntity))
+          .map(assignment => this.complianceRuleParameterAssigmentService.deleteItemResourceComplianceruleparameterassignmententityDelete(String(this.utils.getId(assignment))));
+
+        if (requests && requests.length > 0) {
+          forkJoin(requests).subscribe(() => {
+            this.complianceRuleConfigurationService.deleteItemResourceComplianceruleconfigurationentityDelete(String(this.utils.getId(complianceRuleConfiguration)))
+              .subscribe(() => {
+                this.addedComplianceRuleConfigurations.delete(ruleOfConfiguration);
+                // don't forget to inform the parent dialog
+                this.emitSelectedComplianceRules();
+              });
+          });
+        } else {
+          this.complianceRuleConfigurationService.deleteItemResourceComplianceruleconfigurationentityDelete(String(this.utils.getId(complianceRuleConfiguration)))
+            .subscribe(() => {
+              this.addedComplianceRuleConfigurations.delete(ruleOfConfiguration);
+              // don't forget to inform the parent dialog
+              this.emitSelectedComplianceRules();
+            });
+        }
+
+      });
     }
   }
 
