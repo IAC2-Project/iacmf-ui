@@ -1,19 +1,16 @@
-import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import {
-  ComplianceIssueEntity, ComplianceRuleConfigurationService,
-  ComplianceRuleEntity, ComplianceRuleParameterAssignmentService,
-  ComplianceRuleParameterService,
-  ComplianceRulesService, EntityModelComplianceRuleConfigurationEntity,
-  EntityModelComplianceRuleEntity,
+  ComplianceRuleConfigurationService,
+  ComplianceRuleParameterAssignmentService,
+  ComplianceRulesService,
+  EntityModelComplianceRuleConfigurationEntity, EntityModelComplianceRuleEntity,
   EntityModelComplianceRuleParameterAssignmentEntity,
-  EntityModelComplianceRuleParameterEntity, EntityModelPluginConfigurationEntity, EntityModelPluginUsageEntity,
-  PluginPojo,
-  PluginService
-} from "iacmf-client";
-import {Utils} from "../../utils/utils";
-import {TestData} from "../../utils/tests/TestData";
 
+} from "iacmf-client";
+import { Utils } from "../../utils/utils";
+import { TestData } from "../../utils/tests/TestData";
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-compliance-rule-plugin',
@@ -22,21 +19,23 @@ import {TestData} from "../../utils/tests/TestData";
 })
 export class ConfigureComplianceRuleComponent implements OnInit {
 
-  complianceRuleParameterAssignments: EntityModelComplianceRuleParameterAssignmentEntity[] = []
+  complianceRuleParameterAssignments: EntityModelComplianceRuleParameterAssignmentEntity[] = [];
+  complianceRule: EntityModelComplianceRuleEntity;
   issueType: string = ""
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: EntityModelComplianceRuleConfigurationEntity,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: [EntityModelComplianceRuleEntity, EntityModelComplianceRuleConfigurationEntity],
               public dialogRef: MatDialogRef<ConfigureComplianceRuleComponent>,
               public testData: TestData,
               public complianceRulesConfigurationService: ComplianceRuleConfigurationService,
-              public complianceRuleParameterAssigmentService: ComplianceRuleParameterAssignmentService, public utils: Utils, public dialog: MatDialog, public complianceRuleService: ComplianceRulesService, public pluginService: PluginService) {
-
+              public complianceRuleParameterAssigmentService: ComplianceRuleParameterAssignmentService,
+              public utils: Utils,
+              public dialog: MatDialog) {
+    this.complianceRule = data[0];
   }
-
-  selected = undefined;
 
   fillInTestData() {
     let complianceRule = this.testData.createUseCaseComplianceRules()[0];
+    this.issueType = complianceRule.issueType;
     complianceRule.complianceRuleParameterAssignments?.forEach(paramAssignment => {
       this.complianceRuleParameterAssignments.filter(param => {
         if (paramAssignment.name != undefined) {
@@ -52,34 +51,39 @@ export class ConfigureComplianceRuleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.complianceRulesConfigurationService.followPropertyReferenceComplianceruleconfigurationentityGet31(String(this.utils.getId(this.data))).subscribe(assigns => {
-      assigns._embedded?.complianceRuleParameterAssignmentEntities?.forEach(assign => {
-        this.complianceRuleParameterAssignments.push(assign)
+    this.complianceRulesConfigurationService.followPropertyReferenceComplianceruleconfigurationentityGet31(String(this.utils.getId(this.data[1])))
+      .subscribe(assigns => {
+        assigns._embedded?.complianceRuleParameterAssignmentEntities?.forEach(assign => {
+          this.complianceRuleParameterAssignments.push(assign);
+        })
       })
-    })
-    this.issueType = this.data.issueType
+    this.issueType = this.data[1].issueType
   }
 
   storeComplianceRuleConfiguration() {
-
-    this.complianceRulesConfigurationService.putItemResourceComplianceruleconfigurationentityPut(String(this.utils.getId(this.data)), {
-      id: Number(this.utils.getId(this.data)),
+    this.complianceRulesConfigurationService.putItemResourceComplianceruleconfigurationentityPut(String(this.utils.getId(this.data[1])), {
+      id: Number(this.utils.getId(this.data[1])),
       issueType: this.issueType
     }).subscribe(resp => {
-      this.complianceRuleParameterAssignments.forEach(paramAssignment => {
+      let requests = this.complianceRuleParameterAssignments.map(paramAssignment => {
         let req = {
           id: Number(this.utils.getId(paramAssignment)),
           value: paramAssignment.value,
           type: paramAssignment.type,
-          complianceRuleConfiguration: this.utils.getLink("self", this.data),
+          complianceRuleConfiguration: this.utils.getLink("self", this.data[1]),
           name: paramAssignment.name,
           parameter: this.utils.getLink("complianceRuleParameterAssignmentEntity", paramAssignment)
         }
-        this.complianceRuleParameterAssigmentService.putItemResourceComplianceruleparameterassignmententityPut(String(this.utils.getId(paramAssignment)), req).subscribe(resp => {
-          console.log(resp)
-        })
-      })
-      this.dialogRef.close({event:'Closed', data: this.data});
+        return this.complianceRuleParameterAssigmentService.putItemResourceComplianceruleparameterassignmententityPut(String(this.utils.getId(paramAssignment)), req);
+      });
+
+      if (requests && requests.length > 0) {
+        forkJoin(requests).subscribe(() => {
+          this.dialogRef.close({ event: 'Closed', data: this.data });
+        });
+      } else {
+        this.dialogRef.close({ event: 'Closed', data: this.data });
+      }
     })
   }
 }

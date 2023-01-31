@@ -11,6 +11,7 @@ import {
   CreateComplianceRuleComponent
 } from "../compliance-rules/create-compliance-rule/create-compliance-rule.component";
 import {
+  ComplianceRuleConfigurationEntity,
   ComplianceRuleConfigurationService,
   ComplianceRuleParameterEntity,
   EntityModelComplianceRuleConfigurationEntity, EntityModelComplianceRuleParameterAssignmentEntity,
@@ -37,7 +38,8 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
     });
   }
 
-  addedComplianceRuleConfigurations = new Map<string, EntityModelComplianceRuleConfigurationEntity>();
+  addedComplianceRuleConfigurations: EntityModelComplianceRuleConfigurationEntity[] = [];
+  rulesOfAddedRuleConfigurations: EntityModelComplianceRuleEntity[] = [];
   complianceRules: EntityModelComplianceRuleEntity[] = [];
   complianceRuleConfigurations: EntityModelComplianceRuleConfigurationEntity[] = [];
 
@@ -76,19 +78,21 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
 
         if (createAssignmentRequests && createAssignmentRequests.length > 0) {
           forkJoin(createAssignmentRequests).subscribe(() => {
-            this.addedComplianceRuleConfigurations.set(rule.name, resp);
+            this.addedComplianceRuleConfigurations.push(resp);
+            this.rulesOfAddedRuleConfigurations.push(rule);
             this.emitSelectedComplianceRules();
           });
         } else {
-          this.addedComplianceRuleConfigurations.set(rule.name, resp);
+          this.addedComplianceRuleConfigurations.push(resp);
+          this.rulesOfAddedRuleConfigurations.push(rule);
           this.emitSelectedComplianceRules();
         }
       });
     });
   }
 
-  removeComplianceRuleConfiguration(ruleOfConfiguration: string, complianceRuleConfiguration: EntityModelComplianceRuleConfigurationEntity) {
-    if (ruleOfConfiguration != undefined) {
+  removeComplianceRuleConfiguration(complianceRuleConfiguration: EntityModelComplianceRuleConfigurationEntity) {
+    if (complianceRuleConfiguration != undefined) {
       // first we remove associated parameter assignments, then the configuration entity.
       this.complianceRuleConfigurationService.followPropertyReferenceComplianceruleconfigurationentityGet31(String(this.utils.getId(complianceRuleConfiguration))).subscribe(result => {
         console.log("%d assignments where detected!", result._embedded?.complianceRuleParameterAssignmentEntities?.length);
@@ -100,7 +104,9 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
           forkJoin(requests).subscribe(() => {
             this.complianceRuleConfigurationService.deleteItemResourceComplianceruleconfigurationentityDelete(String(this.utils.getId(complianceRuleConfiguration)))
               .subscribe(() => {
-                this.addedComplianceRuleConfigurations.delete(ruleOfConfiguration);
+                let index = this.addedComplianceRuleConfigurations.indexOf(complianceRuleConfiguration);
+                this.addedComplianceRuleConfigurations.splice(index, 1);
+                this.rulesOfAddedRuleConfigurations.splice(index, 1);
                 // don't forget to inform the parent dialog
                 this.emitSelectedComplianceRules();
               });
@@ -108,7 +114,9 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
         } else {
           this.complianceRuleConfigurationService.deleteItemResourceComplianceruleconfigurationentityDelete(String(this.utils.getId(complianceRuleConfiguration)))
             .subscribe(() => {
-              this.addedComplianceRuleConfigurations.delete(ruleOfConfiguration);
+              let index = this.addedComplianceRuleConfigurations.indexOf(complianceRuleConfiguration);
+              this.addedComplianceRuleConfigurations.splice(index, 1);
+              this.rulesOfAddedRuleConfigurations.splice(index, 1);
               // don't forget to inform the parent dialog
               this.emitSelectedComplianceRules();
             });
@@ -118,21 +126,21 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
     }
   }
 
-  getRuleByName(ruleName: string) {
-    return this.complianceRules.filter(r => r.name === ruleName)[0];
-  }
 
   private _filter(value: number | undefined): EntityModelComplianceRuleEntity[] {
     return this.complianceRules.filter(complianceRule => this.utils.getId(complianceRule) != undefined).filter(complianceRule => Number(this.utils.getId(complianceRule)) == value);
   }
 
-  openConfigureComplianceRuleDialog(complianceRuleConfigurationEntity: EntityModelComplianceRuleConfigurationEntity, enterAnimationDuration: string, exitAnimationDuration: string): void {
+  openConfigureComplianceRuleDialog(complianceRuleConfigurationEntity: EntityModelComplianceRuleConfigurationEntity,
+                                    complianceRule: EntityModelComplianceRuleEntity,
+                                    enterAnimationDuration: string,
+                                    exitAnimationDuration: string): void {
     const dialogRef = this.dialog.open(ConfigureComplianceRuleComponent, {
       width: '80%',
       height: '80%',
       enterAnimationDuration,
       exitAnimationDuration,
-      data: complianceRuleConfigurationEntity,
+      data: [complianceRule, complianceRuleConfigurationEntity],
     });
 
     dialogRef.afterClosed().subscribe(() => {
@@ -141,22 +149,20 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
   }
 
   refreshSelectedList() {
-    if (this.addedComplianceRuleConfigurations.size > 0) {
-      let updatedComplianceRuleConfs = new Map<string, EntityModelComplianceRuleConfigurationEntity>()
-      let requests = new Map<string, any>;
-      let ruleNames = Array.from(this.addedComplianceRuleConfigurations.keys());
+    if (this.addedComplianceRuleConfigurations.length > 0) {
+      let updatedComplianceRuleConfs: Array<ComplianceRuleConfigurationEntity> = [];
+      let requests = new Map<EntityModelComplianceRuleEntity, any>;
 
-      for (let key of ruleNames) {
-        let conf = this.addedComplianceRuleConfigurations.get(key);
-        if (conf) {
-          requests.set(key, this.complianceRulesConfigurationService.getItemResourceComplianceruleconfigurationentityGet(String(this.utils.getId(conf))));
-        }
+      for (let i = 0; i < this.rulesOfAddedRuleConfigurations.length; i++) {
+        let conf = this.addedComplianceRuleConfigurations[i];
+        let rule = this.rulesOfAddedRuleConfigurations[i];
+        requests.set(rule, this.complianceRulesConfigurationService.getItemResourceComplianceruleconfigurationentityGet(String(this.utils.getId(conf))));
       }
 
       forkJoin(Array.from(requests.values())).subscribe(newConfs => {
-        for (let i = 0; i < newConfs.length; i++) {
-          updatedComplianceRuleConfs.set(ruleNames[i], newConfs[i]);
-        }
+        newConfs.forEach(conf => {
+          updatedComplianceRuleConfs.push(conf);
+        });
         this.addedComplianceRuleConfigurations = updatedComplianceRuleConfs;
         this.emitSelectedComplianceRules();
       });

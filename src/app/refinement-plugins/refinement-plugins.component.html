@@ -19,9 +19,9 @@
         </p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button (click)="openConfigureRefinementPluginDialog(i,'0ms', '0ms')">CONFIGURE
+        <button mat-raised-button  (click)="openConfigureRefinementPluginDialog(i,'0ms', '0ms')">CONFIGURE
         </button>
-        <button mat-button (click)="removeRefinementPlugin(refinementPlugin)">DELETE</button>
+        <button mat-raised-button color="warn" (click)="removeRefinementPlugin(refinementPlugin)">DELETE</button>
       </mat-card-actions>
     </mat-card>
     <br>
