@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import "https://fonts.googleapis.com/icon?family=Material+Icons";
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -27,5 +28,21 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .compliance-job-item-selector  {
   width: 25%;
+}
+
+.expansion-panel-buttons {
+  margin-top: 3em;
+}
+
+.expansion-panel-buttons button:not(:first-of-type) {
+  margin-left: 1em;
+}
+
+.form-field-container {
+  widht: 100%;
+}
+
+.form-field-container mat-form-field {
+  width: 50%;
 }
 

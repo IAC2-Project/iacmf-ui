@@ -65,8 +65,18 @@ export class CreateComplianceRuleComponent implements OnInit {
     this.complianceRuleParameters.push({
       name: this.newComplianceRuleParameterName,
       type: this.newType
-    })
+    });
 
+    this.newComplianceRuleParameterName = "";
+    this.type = "STRING";
+  }
+
+  deleteParameter(parameter: EntityModelComplianceRuleParameterEntity) {
+    let index = this.complianceRuleParameters.indexOf(parameter);
+    this.complianceRuleParameters.splice(index, 1);
+  }
+  doesParameterNameExist() {
+    return this.complianceRuleParameters.filter(p => p.name === this.newComplianceRuleParameterName).length > 0;
   }
 
   closeDialog(){

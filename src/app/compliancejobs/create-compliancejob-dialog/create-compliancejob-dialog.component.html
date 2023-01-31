@@ -1,41 +1,57 @@
 <h1 mat-dialog-title>Create Compliance Job</h1>
-<div mat-dialog-content>
-
-  <mat-stepper  #stepper>
+<mat-dialog-content>
+  <mat-stepper labelPosition="bottom" #stepper>
     <mat-step label="Production System">
-      <app-select-production-sytem (selectedProductionSystem)="productionSystemSelected($event)"></app-select-production-sytem>
+      <div class="step">
+        <app-select-production-sytem
+          (selectedProductionSystem)="productionSystemSelected($event)"></app-select-production-sytem>
+      </div>
     </mat-step>
     <mat-step label="Refinement">
-      <app-refinement-plugins (pluginAdded)="refinementPluginAdded($event)" (pluginRemoved)="refinementPluginRemoved($event)"></app-refinement-plugins>
+      <div class="step">
+        <app-refinement-plugins (pluginAdded)="refinementPluginAdded($event)"
+                                (pluginRemoved)="refinementPluginRemoved($event)"></app-refinement-plugins>
+      </div>
     </mat-step>
-    <mat-step  label="Compliance Rules">
-      <app-compliance-rule-configuration (selectedComplianceRuleConfigurations)="complianceRulesSelected($event)"></app-compliance-rule-configuration>
+    <mat-step label="Compliance Rules">
+      <div class="step">
+        <app-compliance-rule-configuration
+          (selectedComplianceRuleConfigurations)="complianceRulesSelected($event)"></app-compliance-rule-configuration>
+      </div>
     </mat-step>
     <mat-step label="Checking">
-      <app-plugin-usage [pluginType]="'ISSUE_CHECKING'" (selectedPluginIdentifierEvent)="saveCheckingPluginConfiguration($event)"></app-plugin-usage>
+      <div class="step">
+        <app-plugin-usage [pluginType]="'ISSUE_CHECKING'"
+                          (selectedPluginIdentifierEvent)="saveCheckingPluginConfiguration($event)"></app-plugin-usage>
+      </div>
     </mat-step>
-    <mat-step  label="Compliance Issue Fixing">
-      <app-issue-fixing></app-issue-fixing>
+    <mat-step label="Compliance Issue Fixing">
+      <div class="step">
+        <app-issue-fixing></app-issue-fixing>
+      </div>
     </mat-step>
-    <mat-step  label="Validation">
-      <app-validation-plugins></app-validation-plugins>
+    <mat-step label="Validation">
+      <div class="step">
+        <app-validation-plugins></app-validation-plugins>
+      </div>
     </mat-step>
-    <mat-step  label="Reporting">
-      <app-reporting-plugins></app-reporting-plugins>
-    </mat-step>
-    <mat-step  label="Execution">
-
+    <mat-step label="Reporting">
+      <div class="step">
+        <app-reporting-plugins></app-reporting-plugins>
+      </div>
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel>Done</ng-template>
-      <p>You are now done.</p>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="stepper.reset()">Reset</button>
+      <div class="step">
+        <ng-template matStepLabel>Done</ng-template>
+        <p>You are now done.</p>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="stepper.reset()">Reset</button>
+        </div>
       </div>
     </mat-step>
   </mat-stepper>
-</div>
+</mat-dialog-content>
 <div mat-dialog-actions>
   <button mat-raised-button mat-dialog-close>Cancel</button>
   <button mat-raised-button color="primary" cdkFocusInitial (click)="storeComplianceJob()">OK</button>

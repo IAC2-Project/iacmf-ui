@@ -2,24 +2,30 @@
   <mat-form-field appearance="fill" class="compliance-job-item-selector">
     <mat-label>Select a Production System</mat-label>
     <mat-select [(value)]="this.selected">
-      <mat-option *ngFor="let productionSystem of productionSystemEntities" value="{{this.utils.getId(productionSystem)}}" (click)="emitProductionSystem()">
+      <mat-option *ngFor="let productionSystem of productionSystemEntities"
+                  value="{{this.utils.getId(productionSystem)}}" (click)="emitProductionSystem()">
         {{this.utils.getId(productionSystem)}}
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <div *ngFor="let productionSystem of this._filter(this.selected)">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>ProductionSystemId: {{this.utils.getId(productionSystem)}}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <h4>Description:</h4>
-        <p>{{productionSystem.description}}</p>
-        <h4>IaC Technology:</h4>
-        <p>{{productionSystem.iacTechnologyName}}</p>
-      </mat-card-content>
-    </mat-card>
-    <br>
+  <div *ngIf="this.selected >= 0">
+    <div *ngFor="let productionSystem of this._filter(this.selected)">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>ProductionSystemId: {{this.utils.getId(productionSystem)}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <h4>Description:</h4>
+          <p>{{productionSystem.description}}</p>
+          <h4>IaC Technology:</h4>
+          <p>{{productionSystem.iacTechnologyName}}</p>
+        </mat-card-content>
+      </mat-card>
+      <br>
+    </div>
+  </div>
+  <div *ngIf="this.selected == -1">
+    <span style="color: red">No production system is selected yet! Please select one...</span>
   </div>
 </div>
 

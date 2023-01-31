@@ -28,7 +28,7 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
 
   ngOnInit(): void {
     this.complianceRulesService.getCollectionResourceComplianceruleentityGet1().subscribe(resp =>
-      resp._embedded?.complianceRuleEntities?.forEach(compRule => {
+      resp._embedded?.complianceRuleEntities?.filter(r => !r.isDeleted).forEach(compRule => {
         this.complianceRules.push(compRule);
       }));
     this.complianceRuleConfigurationService.getCollectionResourceComplianceruleconfigurationentityGet1().subscribe(resp => {
@@ -128,7 +128,9 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
 
 
   private _filter(value: number | undefined): EntityModelComplianceRuleEntity[] {
-    return this.complianceRules.filter(complianceRule => this.utils.getId(complianceRule) != undefined).filter(complianceRule => Number(this.utils.getId(complianceRule)) == value);
+    return this.complianceRules
+      .filter(complianceRule => this.utils.getId(complianceRule) != undefined)
+      .filter(complianceRule => Number(this.utils.getId(complianceRule)) == value);
   }
 
   openConfigureComplianceRuleDialog(complianceRuleConfigurationEntity: EntityModelComplianceRuleConfigurationEntity,
