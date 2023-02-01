@@ -4,10 +4,11 @@ import {
   ComplianceRulesService,
   EntityModelComplianceRuleParameterEntity
 } from "iacmf-client";
-import {KVEntity} from "iacmf-client";
-import {MatDialogRef} from "@angular/material/dialog";
-import {Utils} from "../../utils/utils";
-import {TestData} from "../../utils/tests/TestData";
+import { KVEntity } from "iacmf-client";
+import { MatDialogRef } from "@angular/material/dialog";
+import { Utils } from "../../utils/utils";
+import { TestData } from "../../utils/tests/TestData";
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-create-compliance-rule',
@@ -21,12 +22,12 @@ export class CreateComplianceRuleComponent implements OnInit {
   location = "";
   description = "";
   newComplianceRuleParameterName = "";
-  newType:EntityModelComplianceRuleParameterEntity.TypeEnum = "STRING";
+  newType: EntityModelComplianceRuleParameterEntity.TypeEnum = "STRING";
 
   complianceRuleParameters = new Array<EntityModelComplianceRuleParameterEntity>()
 
   constructor(public dialogRef: MatDialogRef<CreateComplianceRuleComponent>,
-              public testData: TestData, public utils: Utils, public complianceRuleService : ComplianceRulesService, public complianceRuleParameterService : ComplianceRuleParameterService) {
+              public testData: TestData, public utils: Utils, public complianceRuleService: ComplianceRulesService, public complianceRuleParameterService: ComplianceRuleParameterService) {
 
   }
 
@@ -75,11 +76,12 @@ export class CreateComplianceRuleComponent implements OnInit {
     let index = this.complianceRuleParameters.indexOf(parameter);
     this.complianceRuleParameters.splice(index, 1);
   }
+
   doesParameterNameExist() {
     return this.complianceRuleParameters.filter(p => p.name === this.newComplianceRuleParameterName).length > 0;
   }
 
-  closeDialog(){
+  closeDialog() {
     this.complianceRuleService.postCollectionResourceComplianceruleentityPost({
       id: -1,
       name: this.name,
@@ -88,31 +90,22 @@ export class CreateComplianceRuleComponent implements OnInit {
       description: this.description,
       type: this.type,
     }).subscribe(resp => {
-      this.complianceRuleParameters.forEach(param =>{
-        this.complianceRuleParameterService.postCollectionResourceComplianceruleparameterentityPost({
+      let requests = this.complianceRuleParameters.map(param => {
+        return this.complianceRuleParameterService.postCollectionResourceComplianceruleparameterentityPost({
           id: -1,
           name: param.name,
           type: param.type,
           complianceRule: String(this.utils.getLink("self", resp))
-        }).subscribe(resp => {
-          let body = {
-            _links: {
-              "complianceRule": {
-                href: this.utils.getLink("self", resp)
-              }
-            }
-          }
-          this.complianceRuleParameterService.createPropertyReferenceComplianceruleparameterentityPut(String(this.utils.getId(param)), body)
         })
-      })
-      this.dialogRef.close({event:'Closed', data: {
-          name: this.name,
-          location: this.location,
-          isDeleted: false,
-          description: this.description,
-          type: this.type,
-          complianceRuleParameterEntities: this.complianceRuleParameters
-        }});
-    })
+      });
+      if (requests && requests.length > 0) {
+        forkJoin(requests).subscribe(() => {
+          this.dialogRef.close({ event: 'Closed', data: {} });
+        });
+      } else {
+        this.dialogRef.close({ event: 'Closed', data: {} });
+      }
+
+    });
   }
 }

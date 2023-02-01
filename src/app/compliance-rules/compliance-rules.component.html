@@ -4,10 +4,11 @@
   </button>
   <div class="listContainer">
     <mat-accordion>
-      <mat-expansion-panel *ngFor="let complianceRule of complianceRules; first as isFirst" [expanded]="isFirst">
+      <mat-expansion-panel *ngFor="let complianceRule of complianceRules; first as isFirst; index as i"
+                           [expanded]="isFirst">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            {{complianceRule.name}} ({{this.utils.getId(complianceRule)}})
+            {{complianceRule.name}} (id: {{this.utils.getId(complianceRule)}})
           </mat-panel-title>
           <mat-panel-description>{{complianceRule.description}}</mat-panel-description>
         </mat-expansion-panel-header>
@@ -33,7 +34,7 @@
           <div class="property-label">
             Location:
           </div>
-          <span class="property-value">{{complianceRule.location}}</span>
+          <a href="{{complianceRule.location}}" class="property-value" target="_blank">{{complianceRule.location}}</a>
         </div>
         <div class="property">
           <div class="property-label">
@@ -41,8 +42,21 @@
           </div>
           <p class="property-value">{{complianceRule.description}}</p>
         </div>
+        <div class="property">
+          <div class="property-label">
+            Parameters:
+          </div>
+          <ul class="property-value" *ngIf="this.complianceRuleParameters[i].length > 0">
+            <li *ngFor="let complianceRuleParameter of this.complianceRuleParameters[i]">
+              <span>{{complianceRuleParameter.name + ': '}}{{complianceRuleParameter.type}}</span>
+            </li>
+          </ul>
+          <span class="property-value" *ngIf="this.complianceRuleParameters[i].length === 0">
+            No parameters are associated with this compliance rule.
+          </span>
+        </div>
+
         <div class="expansion-panel-buttons">
-          <button mat-raised-button>CONFIGURE</button>
           <button mat-raised-button color="warn" (click)="deleteComplianceRule(complianceRule)">DELETE</button>
         </div>
 
