@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  ComplianceJobService,
-  EntityModelComplianceRuleEntity,
+  ComplianceJobService, ComplianceRuleConfigurationService,
+  EntityModelComplianceRuleConfigurationEntity,
   EntityModelPluginUsageEntity, PluginUsageService
 } from "iacmf-client";
 import { ProductionSystemService } from "iacmf-client";
@@ -18,14 +18,19 @@ import { forkJoin } from 'rxjs';
 export class CreateCompliancejobDialogComponent implements OnInit {
 
   selectedProductionSystem = -1;
-  selectedComplianceRules: EntityModelComplianceRuleEntity[] = [];
+  selectedComplianceRules: EntityModelComplianceRuleConfigurationEntity[] = [];
   checkingPluginConfiguration: EntityModelPluginUsageEntity | undefined;
   refinementPluginUsages = new Array<EntityModelPluginUsageEntity>();
 
   ngOnInit(): void {
   }
 
-  constructor(private dialogRef: MatDialogRef<CreateCompliancejobDialogComponent>, private complianceJobService: ComplianceJobService, private productionSystemService: ProductionSystemService, private pluginUsageService: PluginUsageService, private utils: Utils) {
+  constructor(private dialogRef: MatDialogRef<CreateCompliancejobDialogComponent>,
+              private complianceJobService: ComplianceJobService,
+              private productionSystemService: ProductionSystemService,
+              private pluginUsageService: PluginUsageService,
+              private complianceRuleConfigurationService: ComplianceRuleConfigurationService,
+              public utils: Utils) {
   }
 
   productionSystemSelected($event: any) {
@@ -82,11 +87,10 @@ export class CreateCompliancejobDialogComponent implements OnInit {
             id: -1,
             productionSystem: this.utils.getLink("self", resp),
             checkingPluginUsage: this.utils.getLink("self", plugin),
-            complianceRuleConfigurations: this.selectedComplianceRules.map((cr: EntityModelComplianceRuleEntity) => this.utils.getLink("self", cr)),
+            complianceRuleConfigurations: this.selectedComplianceRules.map((cr: EntityModelComplianceRuleConfigurationEntity) => this.utils.getLink("self", cr))
           };
           console.debug(requestBody);
           this.complianceJobService.postCollectionResourceCompliancejobentityPost(requestBody).subscribe(resp => {
-            console.log(resp);
             const complianceJobUrl = this.utils.getLink("self", resp);
             let requests: any[] = this.refinementPluginUsages.map(usage => {
               let body = {
@@ -100,10 +104,22 @@ export class CreateCompliancejobDialogComponent implements OnInit {
               return this.pluginUsageService.createPropertyReferencePluginusageentityPut1(String(this.utils.getId(usage)), body);
             });
 
+            requests.push(...this.selectedComplianceRules.map(ruleConfiguration => {
+              let body = {
+                _links: {
+                  "complianceJob": {
+                    href: complianceJobUrl
+                  }
+                }
+              };
+
+              return this.complianceRuleConfigurationService.createPropertyReferenceComplianceruleconfigurationentityPut(String(this.utils.getId(ruleConfiguration)), body);
+            }));
+
             if (requests.length > 0) {
-              console.log("Creating associations between the %d refinement plugin usages and the compliance job", requests.length);
+              console.log("Creating associations between the %d refinement plugin usages and compliance rule configurations, and the compliance job.", requests.length);
               forkJoin(requests).subscribe(() => {
-                console.log("Finished creating associations between the refinement plugin usages and the compliance job!");
+                console.log("Finished creating associations with the compliance job!");
                 this.dialogRef.close({ event: 'Closed', data: resp });
               });
             } else {

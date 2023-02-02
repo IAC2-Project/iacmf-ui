@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" class="toolbar">
+<mat-toolbar color="primary" class="toolbar mat-elevation-z3">
   <a href="https://www.iaas.uni-stuttgart.de/forschung/projekte/iacc/"><img src="../assets/images/logo.png" alt="logo"></a>
   <span>Management Framework</span>
   <span class="spacer"></span>
@@ -10,7 +10,7 @@
     <app-production-systems></app-production-systems>
   </mat-tab>
   <mat-tab label="Compliance Rules">
-    <app-compliance-rules [allowCreate]="true" [allowSelection]="false" [showAllRules]="true"></app-compliance-rules>
+    <app-compliance-rules></app-compliance-rules>
   </mat-tab>
   <mat-tab label="Compliance Jobs">
     <app-compliancejobs></app-compliancejobs>

@@ -1,0 +1,94 @@
+<h1 mat-dialog-title>Configure Compliance Rule</h1>
+<mat-dialog-content>
+  <button mat-button (click)="fillInTestData()">Create Test Data</button>
+  <form>
+    <mat-accordion>
+      <mat-expansion-panel expanded="false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>Basic Info</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="form-field-container">
+          <mat-form-field appearance="standard">
+            <mat-label>
+              Rule Configuration ID
+            </mat-label>
+            <input matInput type="text" readonly [ngModel]="this.utils.getId(this.data[1])"
+                   [ngModelOptions]="{standalone: true}">
+          </mat-form-field>
+        </div>
+        <div class="form-field-container">
+          <mat-form-field appearance="standard">
+            <mat-label>
+              Rule ID
+            </mat-label>
+            <input matInput type="text" readonly [ngModel]="this.utils.getId(this.complianceRule)"
+                   [ngModelOptions]="{standalone: true}">
+          </mat-form-field>
+        </div>
+        <div class="form-field-container">
+          <mat-form-field appearance="standard">
+            <mat-label>
+              Rule Name
+            </mat-label>
+            <input matInput type="text" readonly [ngModel]="this.complianceRule.name"
+                   [ngModelOptions]="{standalone: true}">
+          </mat-form-field>
+        </div>
+        <div class="form-field-container">
+          <mat-form-field appearance="standard">
+            <mat-label>
+              Rule Type
+            </mat-label>
+            <input readonly matInput type="text" [ngModel]="this.complianceRule.type"
+                   [ngModelOptions]="{standalone: true}">
+          </mat-form-field>
+        </div>
+        <div class="form-field-container">
+          <mat-form-field appearance="standard">
+            <mat-label>
+              Rule Description
+            </mat-label>
+            <textarea matInput readonly [ngModel]="this.complianceRule.description"
+                      [ngModelOptions]="{standalone: true}"></textarea>
+
+          </mat-form-field>
+        </div>
+      </mat-expansion-panel>
+
+
+      <mat-expansion-panel expanded="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>Configuration</mat-panel-title>
+        </mat-expansion-panel-header>
+        <h5>Issue Type:</h5>
+        <p>
+          Please specify the issue type that will be reported if this compliance rule is found to be violated by the
+          production system.
+        </p>
+        <div class="form-field-container">
+          <mat-form-field appearance="fill">
+            <mat-label>Issue Type:</mat-label>
+            <input matInput [(ngModel)]="this.issueType" [ngModelOptions]="{standalone: true}" required/>
+          </mat-form-field>
+        </div>
+
+        <h5>Parameter Assignments:</h5>
+        <p>
+          Please give values to the parameters specified by the compliance rule.
+        </p>
+        <div *ngIf="this.complianceRuleParameterAssignments.length > 0">
+          <div class="form-field-container" *ngFor="let parameter of this.complianceRuleParameterAssignments">
+            <mat-form-field appearance="fill">
+              <mat-label>{{parameter.name}}:</mat-label>
+              <input matInput [(ngModel)]="parameter.value" [ngModelOptions]="{standalone: true}"/>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</mat-dialog-content>
+<div mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" cdkFocusInitial (click)="storeComplianceRuleConfiguration()">OK</button>
+</div>

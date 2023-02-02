@@ -1,10 +1,18 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {async} from "rxjs";
-import {ComplianceRulesService, EntityModelComplianceRuleEntity} from "iacmf-client";
-import {MatDialog} from "@angular/material/dialog";
-import {ConfigureComplianceRuleComponent} from "./configure-compliance-rule/configure-compliance-rule.component";
-import {CreateComplianceRuleComponent} from "./create-compliance-rule/create-compliance-rule.component";
-import {Utils} from "../utils/utils";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { async, forkJoin } from "rxjs";
+import {
+  ComplianceRuleParameterService,
+  ComplianceRulesService, EntityModelComplianceRuleEntity, EntityModelComplianceRuleParameterEntity
+} from "iacmf-client";
+import { MatDialog } from "@angular/material/dialog";
+import {
+  ConfigureComplianceRuleComponent
+} from "../compliance-rule-configuration/configure-compliance-rule/configure-compliance-rule.component";
+import { CreateComplianceRuleComponent } from "./create-compliance-rule/create-compliance-rule.component";
+import { Utils } from "../utils/utils";
+import {
+  CollectionModelComplianceRuleParameterEntity
+} from 'iacmf-client/model/collectionModelComplianceRuleParameterEntity';
 
 @Component({
   selector: 'app-compliance-rules',
@@ -13,67 +21,56 @@ import {Utils} from "../utils/utils";
 })
 export class ComplianceRulesComponent implements OnInit {
 
-
   ngOnInit(): void {
+    this.updateComplianceRulesList();
   }
 
-  addedComplianceRules: EntityModelComplianceRuleEntity[] = [];
-
-  // TODO here we need to load the actual data from the API
   complianceRules: EntityModelComplianceRuleEntity[] = [];
+  complianceRuleParameters: EntityModelComplianceRuleParameterEntity[][] = [];
 
-  selected = undefined;
+  constructor(private dialog: MatDialog, private complianceRulesService: ComplianceRulesService, public utils: Utils) {
 
-  @Input("allowCreate") allowCreate: boolean = false;
-  @Input("allowSelection") allowSelection: boolean = false;
-  @Input("showAllRules") showAllRules: boolean = false;
-
-  @Output("selectedComplianceRules") selectedComplianceRules = new EventEmitter();
-
-  constructor(public dialog: MatDialog, public complianceRulesService : ComplianceRulesService, public utils: Utils) {
-    this.complianceRulesService.getCollectionResourceComplianceruleentityGet1().subscribe(resp =>
-    resp._embedded?.complianceRuleEntities?.forEach(compRule => {
-      this.complianceRules.push(compRule)
-    }))
   }
 
   updateComplianceRulesList() {
-    this.complianceRules = []
-    this.complianceRulesService.getCollectionResourceComplianceruleentityGet1().subscribe(resp =>
-      resp._embedded?.complianceRuleEntities?.forEach(compRule => {
-        this.complianceRules.push(compRule)
-      }))
-  }
+    this.complianceRules = [];
+    this.complianceRulesService.getCollectionResourceComplianceruleentityGet1().subscribe(resp => {
+      let requests: any[] = [];
+      resp._embedded?.complianceRuleEntities?.filter(e => !e.isDeleted).forEach(compRule => {
+        this.complianceRules.push(compRule);
+        requests.push(this.complianceRulesService.followPropertyReferenceComplianceruleentityGet1(String(this.utils.getId(compRule))));
+      });
 
-  addComplianceRule(complianceRule: number | undefined) {
-    this.addedComplianceRules.push(this._filter(complianceRule)[0]);
+      if (requests.length > 0) {
+        forkJoin(requests).subscribe(parameterGroups => {
+          parameterGroups.forEach((collection: CollectionModelComplianceRuleParameterEntity) => {
+            let parameters = collection._embedded?.complianceRuleParameterEntities;
+
+            if (parameters === undefined) {
+              parameters = [];
+            }
+
+            this.complianceRuleParameters.push(parameters);
+          });
+        });
+      }
+    });
   }
 
   deleteComplianceRule(complianceRule: EntityModelComplianceRuleEntity) {
-    /// TODO THIS SHOULD DELETE THE RULE IN THE DATABASE
+    let body = {
+      id: Number(this.utils.getId(complianceRule)),
+      name: complianceRule.name,
+      type: complianceRule.type,
+      location: complianceRule.location,
+      isDeleted: true
+    };
 
-  }
+    this.complianceRulesService.patchItemResourceComplianceruleentityPatch(String(this.utils.getId(complianceRule)), body)
+      .subscribe(() => {
+        this.updateComplianceRulesList();
+      });
 
-  removeComplianceRule(complianceRule: EntityModelComplianceRuleEntity) {
-    const index = this.addedComplianceRules.indexOf(complianceRule);
-
-    if (index >= 0) {
-      this.addedComplianceRules.splice(index, 1);
-    }
-  }
-
-  private _filter(value: number | undefined): EntityModelComplianceRuleEntity[] {
-    return this.complianceRules.filter(complianceRule => this.utils.getId(complianceRule) != undefined).filter(complianceRule => Number(this.utils.getId(complianceRule)) == value);
-  }
-
-  openConfigureComplianceRuleDialog(complianceRuleEntity: EntityModelComplianceRuleEntity, enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(ConfigureComplianceRuleComponent, {
-      width: '80%',
-      height: '80%',
-      enterAnimationDuration,
-      exitAnimationDuration,
-      data: complianceRuleEntity,
-    });
   }
 
   openCreateComplianceRuleDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
@@ -84,13 +81,9 @@ export class ComplianceRulesComponent implements OnInit {
       exitAnimationDuration,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.updateComplianceRulesList()
+    dialogRef.afterClosed().subscribe(() => {
+      this.updateComplianceRulesList();
     });
-  }
-
-  emitSelectedComplianceRules() {
-    this.selectedComplianceRules.emit(this.addedComplianceRules);
   }
 
 }

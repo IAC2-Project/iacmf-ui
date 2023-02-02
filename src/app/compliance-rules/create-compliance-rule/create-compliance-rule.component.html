@@ -1,50 +1,100 @@
 <h1 mat-dialog-title>Create Compliance Rule</h1>
-<div mat-dialog-content>
-  <div>
+<mat-dialog-content>
 
+  <form>
     <button mat-button (click)="fillTestData()">Create Test Data</button>
 
+    <mat-accordion>
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Basic Information
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="form-field-container">
+          <mat-form-field appearance="fill">
+            <mat-label>
+              Name:
+            </mat-label>
+            <input matInput type="text" [(ngModel)]="name" [ngModelOptions]="{standalone: true}" required>
+          </mat-form-field>
+        </div>
+        <div class="form-field-container">
+          <mat-form-field appearance="fill">
+            <mat-label>
+              Type:
+            </mat-label>
+            <input matInput type="text" [(ngModel)]="type" [ngModelOptions]="{standalone: true}" required>
+          </mat-form-field>
+        </div>
+        <div class="form-field-container">
+          <mat-form-field appearance="fill">
+            <mat-label>
+              Location:
+            </mat-label>
+            <input matInput type="text" [(ngModel)]="location" [ngModelOptions]="{standalone: true}" required>
+          </mat-form-field>
+        </div>
+        <div class="form-field-container">
+          <mat-form-field appearance="fill">
+            <mat-label>
+              Description:
+            </mat-label>
+            <textarea matInput type="text" [(ngModel)]="description" [ngModelOptions]="{standalone: true}">
+          </textarea>
+          </mat-form-field>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Compliance Rule Parameters
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="form-field-container">
+          <mat-form-field appearance="fill">
+            <mat-label>
+              Parameter Name:
+            </mat-label>
+            <input matInput type="text" [(ngModel)]="newComplianceRuleParameterName"
+                   [ngModelOptions]="{standalone: true}" required>
+          </mat-form-field>
+        </div>
+        <div class="form-field-container">
+          <mat-form-field appearance="fill">
+            <mat-label>
+              Parameter Type:
+            </mat-label>
+            <mat-select [(value)]="this.newType" required>
+              <mat-option *ngFor="let possibleType of ['INT' , 'DECIMAL' , 'STRING' , 'STRING_LIST' , 'BOOLEAN']"
+                          value="{{possibleType}}">
+                {{possibleType}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <button mat-raised-button (click)="createNewProperty()"
+                disabled="{{newComplianceRuleParameterName == undefined || newComplianceRuleParameterName.length == 0 || doesParameterNameExist()}}">
+          Add Parameter
+        </button>
 
-    <h4>name:</h4>
-    <input matInput type="text" [(ngModel)]="name"/>
+        <div *ngIf="this.complianceRuleParameters.length > 0">
+          <h4>Parameters:</h4>
+          <ul>
+            <li *ngFor="let complianceRuleParameter of this.complianceRuleParameters">
+              <span>{{complianceRuleParameter.name + ': '}}{{complianceRuleParameter.type}}
+                <mat-icon style="vertical-align: middle;color: red; cursor: pointer;" (click)="deleteParameter(complianceRuleParameter)">delete</mat-icon>
+              </span>
 
-    <br>
+            </li>
+          </ul>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
 
-    <h4>Type:</h4>
-    <input matInput type="text" [(ngModel)]="type"/>
-
-    <br>
-
-    <h4>Location:</h4>
-    <input matInput type="text" [(ngModel)]="location"/>
-
-    <br>
-    <h4>Description:</h4>
-    <textarea matInput type="text" [(ngModel)]="description">
-    </textarea>
-
-    <br>
-
-    <h4>Add new Compliance Rule Parameter:</h4>
-    <input matInput type="text" [(ngModel)]="newComplianceRuleParameterName"/>
-    <mat-select [(value)]="this.newType">
-      <mat-option *ngFor="let possibleType of ['INT' , 'DECIMAL' , 'STRING' , 'STRING_LIST' , 'BOOLEAN']" value="{{possibleType}}">
-        {{possibleType}}
-      </mat-option>
-    </mat-select>
-    <button mat-button (click)="createNewProperty()" disabled="{{newComplianceRuleParameterName == undefined || newComplianceRuleParameterName.length == 0}}">
-      Add Parameter
-    </button>
-    <br>
-    <div *ngIf="this.complianceRuleParameters.length > 0">
-    <h4>Parameter:</h4>
-    <div *ngFor="let complianceRuleParameter of this.complianceRuleParameters">
-      {{complianceRuleParameter.name}}:{{complianceRuleParameter.type}}
-    </div>
-    </div>
-  </div>
-</div>
+</mat-dialog-content>
 <div mat-dialog-actions>
-  <button mat-button mat-dialog-close>No</button>
-  <button mat-button  cdkFocusInitial (click)="closeDialog()">Ok</button>
+  <button mat-raised-button color="basic" mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" cdkFocusInitial (click)="closeDialog()">OK</button>
 </div>

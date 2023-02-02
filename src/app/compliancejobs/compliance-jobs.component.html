@@ -1,6 +1,6 @@
 <div class="content">
-  <button mat-raised-button color="primary" (click)="openNewJobDialog('0ms', '0ms')">Create new
-    Compliance Job
+  <button mat-raised-button color="primary" (click)="openNewJobDialog('0ms', '0ms')">
+    Add Compliance Job
   </button>
   <div class="listContainer" *ngIf="dataSource && dataSource.length > 0">
     <mat-accordion>
@@ -28,7 +28,7 @@
     <br>
   </div>
   <div class="listContainer" *ngIf="!dataSource || dataSource.length == 0">
-    <span>No compliance jobs exist yet!</span>
+    <span>No compliance jobs are created yet!</span>
   </div>
 </div>
 

@@ -1,16 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from "@angular/material/dialog";
 import {
-  ComplianceJobEntity, ComplianceJobService,
-  ComplianceRuleParameterAssignmentEntity,
-  ComplianceRuleParameterEntity, EntityModelComplianceJobEntity,
-  ExecutionEntity,
-  KVEntity,
-  TriggerEntity
+  ComplianceJobService,
+  EntityModelComplianceJobEntity,
 } from "iacmf-client";
-import {CreateCompliancejobDialogComponent} from "./create-compliancejob-dialog/create-compliancejob-dialog.component";
-import {Utils} from "../utils/utils";
-import * as util from 'util';
+import {
+  CreateCompliancejobDialogComponent
+} from "./create-compliancejob-dialog/create-compliancejob-dialog.component";
+import { Utils } from "../utils/utils";
 
 @Component({
   selector: 'app-compliancejobs',
@@ -19,13 +16,14 @@ import * as util from 'util';
 })
 export class ComplianceJobsComponent implements OnInit {
 
-
   ngOnInit(): void {
     this.refreshComplianceJobs()
   }
+
   dataSource: EntityModelComplianceJobEntity[] = [];
 
-  constructor(public dialog: MatDialog, public complianceJobService : ComplianceJobService, public utils : Utils) {}
+  constructor(public dialog: MatDialog, public complianceJobService: ComplianceJobService, public utils: Utils) {
+  }
 
   refreshComplianceJobs() {
     this.dataSource = []
@@ -45,7 +43,7 @@ export class ComplianceJobsComponent implements OnInit {
       exitAnimationDuration,
     });
 
-    dialogRef.afterClosed().subscribe(result  => {
+    dialogRef.afterClosed().subscribe(result => {
       this.refreshComplianceJobs()
     })
   }

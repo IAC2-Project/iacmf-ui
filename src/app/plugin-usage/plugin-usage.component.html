@@ -31,7 +31,7 @@
           <mat-select
             *ngIf="pluginUsageConfigurationDescriptors[i].isRequired === true && pluginUsageConfigurationDescriptors[i].type===entryType.Boolean"
             [(ngModel)]="pluginConfiguration.value"
-            (keyup)="updateWhenStopped($event, pluginConfiguration)" name="{{pluginConfiguration.value}}" required>
+           name="{{pluginConfiguration.value}}" required>
 
             <mat-option [value]="'true'"> Yes</mat-option>
             <mat-option [value]="'false'"> No</mat-option>
@@ -39,7 +39,7 @@
           <mat-select
             *ngIf="pluginUsageConfigurationDescriptors[i].isRequired === false && pluginUsageConfigurationDescriptors[i].type===entryType.Boolean"
             [(ngModel)]="pluginConfiguration.value"
-            (keyup)="updateWhenStopped($event, pluginConfiguration)" name="{{pluginConfiguration.value}}">
+             name="{{pluginConfiguration.value}}">
 
             <mat-option [value]="'true'"> Yes</mat-option>
             <mat-option [value]="'false'"> No</mat-option>
@@ -48,48 +48,48 @@
           <input
             *ngIf="pluginUsageConfigurationDescriptors[i].isRequired === true && pluginUsageConfigurationDescriptors[i].type===entryType.Url"
             matInput type="url" [(ngModel)]="pluginConfiguration.value"
-            (keyup)="updateWhenStopped($event, pluginConfiguration)" name="{{pluginConfiguration.value}}" required>
+             name="{{pluginConfiguration.value}}" required>
 
 
           <input
             *ngIf="pluginUsageConfigurationDescriptors[i].isRequired === false && pluginUsageConfigurationDescriptors[i].type===entryType.Url"
             matInput type="url" [(ngModel)]="pluginConfiguration.value"
-            (keyup)="updateWhenStopped($event, pluginConfiguration)" name="{{pluginConfiguration.value}}"/>
+             name="{{pluginConfiguration.value}}"/>
           <!-- Number -->
           <input
             *ngIf="pluginUsageConfigurationDescriptors[i].isRequired === true && pluginUsageConfigurationDescriptors[i].type===entryType.Number"
             matInput type="number" [(ngModel)]="pluginConfiguration.value"
-            (keyup)="updateWhenStopped($event, pluginConfiguration)" name="{{pluginConfiguration.value}}" required>
+             name="{{pluginConfiguration.value}}" required>
 
 
           <input
             *ngIf="pluginUsageConfigurationDescriptors[i].isRequired === false && pluginUsageConfigurationDescriptors[i].type===entryType.Number"
             matInput type="number" [(ngModel)]="pluginConfiguration.value"
-            (keyup)="updateWhenStopped($event, pluginConfiguration)" name="{{pluginConfiguration.value}}"/>
+             name="{{pluginConfiguration.value}}"/>
 
           <!-- Multiline String -->
           <textarea
             *ngIf="pluginUsageConfigurationDescriptors[i].isRequired === true && pluginUsageConfigurationDescriptors[i].type===entryType.MultiLineString"
             matInput type="text" [(ngModel)]="pluginConfiguration.value"
-            (keyup)="updateWhenStopped($event, pluginConfiguration)" name="{{pluginConfiguration.value}}" required>
+             name="{{pluginConfiguration.value}}" required>
           </textarea>
 
           <textarea
             *ngIf="pluginUsageConfigurationDescriptors[i].isRequired === false && pluginUsageConfigurationDescriptors[i].type===entryType.MultiLineString"
             matInput type="text" [(ngModel)]="pluginConfiguration.value"
-            (keyup)="updateWhenStopped($event, pluginConfiguration)" name="{{pluginConfiguration.value}}">
+             name="{{pluginConfiguration.value}}">
           </textarea>
           <!-- Other -->
           <input
             *ngIf="pluginUsageConfigurationDescriptors[i].isRequired === true && (pluginUsageConfigurationDescriptors[i].type===entryType.String || pluginUsageConfigurationDescriptors[i].type===entryType.BashCommand || pluginUsageConfigurationDescriptors[i].type===entryType.FilePath)"
             matInput type="url" [(ngModel)]="pluginConfiguration.value"
-            (keyup)="updateWhenStopped($event, pluginConfiguration)" name="{{pluginConfiguration.value}}" required>
+             name="{{pluginConfiguration.value}}" required>
 
 
           <input
             *ngIf="pluginUsageConfigurationDescriptors[i].isRequired === false && (pluginUsageConfigurationDescriptors[i].type===entryType.String || pluginUsageConfigurationDescriptors[i].type===entryType.BashCommand || pluginUsageConfigurationDescriptors[i].type===entryType.FilePath)"
             matInput type="url" [(ngModel)]="pluginConfiguration.value"
-            (keyup)="updateWhenStopped($event, pluginConfiguration)" name="{{pluginConfiguration.value}}"/>
+             name="{{pluginConfiguration.value}}"/>
 
           <mat-hint
             *ngIf="pluginUsageConfigurationDescriptors && pluginUsageConfigurationDescriptors[i] && pluginUsageConfigurationDescriptors[i].description">

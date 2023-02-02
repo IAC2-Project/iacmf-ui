@@ -3,7 +3,8 @@
   </button>
   <div class="listContainer" *ngIf="productionSystemEntities && productionSystemEntities.length > 0">
     <mat-accordion>
-      <mat-expansion-panel *ngFor="let productionSystem of productionSystemEntities; let i = index; first as isFirst" [expanded]="isFirst">
+      <mat-expansion-panel *ngFor="let productionSystem of productionSystemEntities; let i = index; first as isFirst"
+                           [expanded]="isFirst">
         <mat-expansion-panel-header>
           <mat-panel-title>{{productionSystem.name}} (id: {{this.utils.getId(productionSystem)}})</mat-panel-title>
           <mat-panel-description>{{productionSystem.description}}</mat-panel-description>
@@ -24,10 +25,12 @@
           <div class="property-label">IaC Technology:</div>
           <span class="property-value">{{productionSystem.iacTechnologyName}}</span>
         </div>
-        <button mat-raised-button color="accent"
-                (click)="openConfigureProductionSystemDialog(productionSystem,'0ms', '0ms')">
-          CONFIGURE
-        </button>
+        <div class="expansion-panel-buttons">
+          <button mat-raised-button color="accent"
+                  (click)="openConfigureProductionSystemDialog(productionSystem,'0ms', '0ms')">
+            CONFIGURE
+          </button>
+        </div>
       </mat-expansion-panel>
     </mat-accordion>
   </div>
