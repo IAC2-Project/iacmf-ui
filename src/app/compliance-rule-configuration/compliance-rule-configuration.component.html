@@ -1,39 +1,77 @@
-<div>
+<form>
+  <mat-form-field appearance="fill" class="compliance-job-item-selector">
+    <mat-label>Select Compliance Rule</mat-label>
+    <mat-select [(value)]="selectedRule">
+      <mat-option *ngFor="let complianceRule of complianceRules" [value]="this.utils.getId(complianceRule)">
+        {{complianceRule.name}} (id: {{this.utils.getId(complianceRule)}})
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-button (click)="createComplianceRuleConfiguration(selectedRule);">ADD</button>
+</form>
 
-  <form>
-    <mat-form-field appearance="fill">
-      <mat-label>Create new Configuration from Rule:</mat-label>
-      <mat-select [(value)]="selectedRule">
-        <mat-option *ngFor="let complianceRule of complianceRules" [value]="this.utils.getId(complianceRule)">
-          Rule {{this.utils.getId(complianceRule)}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+<div *ngIf="addedComplianceRuleConfigurations && addedComplianceRuleConfigurations.length > 0">
+  <mat-accordion *ngIf="addedComplianceRuleConfigurations && addedComplianceRuleConfigurations.length > 0">
+    <mat-expansion-panel *ngFor="let complianceRuleConfiguration of addedComplianceRuleConfigurations; index as i">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{rulesOfAddedRuleConfigurations[i].name}}
+        </mat-panel-title>
+        <mat-panel-description>
+          <span *ngIf="!complianceRuleConfiguration.issueType || complianceRuleConfiguration.issueType.length == 0"
+                style="color: red">
+          Please configure the issue type!
+            </span>
+          <span *ngIf="complianceRuleConfiguration.issueType && complianceRuleConfiguration.issueType.length > 0">
+            (Issue Type: {{complianceRuleConfiguration.issueType}})
+            </span>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="property">
+        <div class="property-label">
+          Rule ID:
+        </div>
+        <span class="property-value">{{this.utils.getId(rulesOfAddedRuleConfigurations[i])}}</span>
+      </div>
+      <div class="property">
+        <div class="property-label">
+          Rule Configuration ID:
+        </div>
+        <span class="property-value">{{this.utils.getId(complianceRuleConfiguration)}}</span>
+      </div>
 
+      <div class="property">
+        <div class="property-label">
+          Rule Type
+        </div>
+        <span class="property-value">{{rulesOfAddedRuleConfigurations[i].type}}</span>
+      </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Issue Type:</mat-label>
-      <input matInput [(ngModel)]="this.issueType" [ngModelOptions]="{standalone: true}"/>
-    </mat-form-field>
-    <button mat-button (click)="createComplianceRuleConfiguration(selectedRule);">ADD</button>
-  </form>
-  <div *ngFor="let complianceRuleConfiguration of addedComplianceRuleConfigurations">
-    <mat-card *ngIf="this.utils.getId(complianceRuleConfiguration) != undefined">
-      <mat-card-header>
-        <mat-card-title>Compliance Rule Configuration {{this.utils.getId(complianceRuleConfiguration)}}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p>
-          IssueType: {{complianceRuleConfiguration.issueType}}
-        </p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button (click)="openConfigureComplianceRuleDialog(complianceRuleConfiguration,'0ms', '0ms')">
+      <div class="property">
+        <div class="property-label">
+          Issue Type
+        </div>
+        <span class="property-value" *ngIf="complianceRuleConfiguration.issueType.length > 0">
+            {{complianceRuleConfiguration.issueType}}
+          </span>
+        <span class="property-value" style="color: red" *ngIf="complianceRuleConfiguration.issueType.length == 0">
+            Empty. Please Specify!
+          </span>
+      </div>
+
+      <div class="expansion-panel-buttons">
+        <button mat-raised-button
+                (click)="openConfigureComplianceRuleDialog(complianceRuleConfiguration, rulesOfAddedRuleConfigurations[i],'0ms', '0ms')">
           CONFIGURE
         </button>
-        <button mat-button (click)="removeComplianceRuleConfiguration(complianceRuleConfiguration)">DELETE</button>
-      </mat-card-actions>
-    </mat-card>
-  </div>
-  <br>
+        <button mat-raised-button color="warn" (click)="removeComplianceRuleConfiguration(complianceRuleConfiguration)">
+          DELETE
+        </button>
+      </div>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+<div *ngIf="!addedComplianceRuleConfigurations || addedComplianceRuleConfigurations.length == 0" style="color: red">
+  No compliance rules have been selected yet! At least 1 compliance rule must be selected!
 </div>

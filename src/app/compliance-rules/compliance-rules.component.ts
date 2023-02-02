@@ -1,10 +1,18 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {async} from "rxjs";
-import {ComplianceRulesService, EntityModelComplianceRuleEntity} from "iacmf-client";
-import {MatDialog} from "@angular/material/dialog";
-import {ConfigureComplianceRuleComponent} from "../compliance-rule-configuration/configure-compliance-rule/configure-compliance-rule.component";
-import {CreateComplianceRuleComponent} from "./create-compliance-rule/create-compliance-rule.component";
-import {Utils} from "../utils/utils";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { async, forkJoin } from "rxjs";
+import {
+  ComplianceRuleParameterService,
+  ComplianceRulesService, EntityModelComplianceRuleEntity, EntityModelComplianceRuleParameterEntity
+} from "iacmf-client";
+import { MatDialog } from "@angular/material/dialog";
+import {
+  ConfigureComplianceRuleComponent
+} from "../compliance-rule-configuration/configure-compliance-rule/configure-compliance-rule.component";
+import { CreateComplianceRuleComponent } from "./create-compliance-rule/create-compliance-rule.component";
+import { Utils } from "../utils/utils";
+import {
+  CollectionModelComplianceRuleParameterEntity
+} from 'iacmf-client/model/collectionModelComplianceRuleParameterEntity';
 
 @Component({
   selector: 'app-compliance-rules',
@@ -13,30 +21,55 @@ import {Utils} from "../utils/utils";
 })
 export class ComplianceRulesComponent implements OnInit {
 
-
   ngOnInit(): void {
+    this.updateComplianceRulesList();
   }
 
-  // TODO here we need to load the actual data from the API
   complianceRules: EntityModelComplianceRuleEntity[] = [];
+  complianceRuleParameters: EntityModelComplianceRuleParameterEntity[][] = [];
 
-  constructor(public dialog: MatDialog, public complianceRulesService : ComplianceRulesService, public utils: Utils) {
-    this.complianceRulesService.getCollectionResourceComplianceruleentityGet1().subscribe(resp =>
-    resp._embedded?.complianceRuleEntities?.forEach(compRule => {
-      this.complianceRules.push(compRule)
-    }))
+  constructor(private dialog: MatDialog, private complianceRulesService: ComplianceRulesService, public utils: Utils) {
+
   }
 
   updateComplianceRulesList() {
-    this.complianceRules = []
-    this.complianceRulesService.getCollectionResourceComplianceruleentityGet1().subscribe(resp =>
-      resp._embedded?.complianceRuleEntities?.forEach(compRule => {
-        this.complianceRules.push(compRule)
-      }))
+    this.complianceRules = [];
+    this.complianceRulesService.getCollectionResourceComplianceruleentityGet1().subscribe(resp => {
+      let requests: any[] = [];
+      resp._embedded?.complianceRuleEntities?.filter(e => !e.isDeleted).forEach(compRule => {
+        this.complianceRules.push(compRule);
+        requests.push(this.complianceRulesService.followPropertyReferenceComplianceruleentityGet1(String(this.utils.getId(compRule))));
+      });
+
+      if (requests.length > 0) {
+        forkJoin(requests).subscribe(parameterGroups => {
+          parameterGroups.forEach((collection: CollectionModelComplianceRuleParameterEntity) => {
+            let parameters = collection._embedded?.complianceRuleParameterEntities;
+
+            if (parameters === undefined) {
+              parameters = [];
+            }
+
+            this.complianceRuleParameters.push(parameters);
+          });
+        });
+      }
+    });
   }
 
   deleteComplianceRule(complianceRule: EntityModelComplianceRuleEntity) {
-    /// TODO THIS SHOULD DELETE THE RULE IN THE DATABASE
+    let body = {
+      id: Number(this.utils.getId(complianceRule)),
+      name: complianceRule.name,
+      type: complianceRule.type,
+      location: complianceRule.location,
+      isDeleted: true
+    };
+
+    this.complianceRulesService.patchItemResourceComplianceruleentityPatch(String(this.utils.getId(complianceRule)), body)
+      .subscribe(() => {
+        this.updateComplianceRulesList();
+      });
 
   }
 
@@ -48,8 +81,8 @@ export class ComplianceRulesComponent implements OnInit {
       exitAnimationDuration,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.updateComplianceRulesList()
+    dialogRef.afterClosed().subscribe(() => {
+      this.updateComplianceRulesList();
     });
   }
 

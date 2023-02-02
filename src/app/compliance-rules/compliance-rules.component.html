@@ -1,23 +1,69 @@
-<div>
-  <button mat-raised-button (click)="openCreateComplianceRuleDialog('0ms', '0ms')">CREATE</button>
-  <div>
-    <div *ngFor="let complianceRule of complianceRules">
-      <mat-card *ngIf="this.utils.getId(complianceRule) != undefined">
-        <mat-card-header>
-          <mat-card-title>Compliance Rule {{this.utils.getId(complianceRule)}}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>
-            {{complianceRule.name}}
-          </p>
-          <p>
-            {{complianceRule.description}}
-          </p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-button (click)="deleteComplianceRule(complianceRule)">DELETE</button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
+<div class="content">
+  <button mat-raised-button color="primary" (click)="openCreateComplianceRuleDialog('0ms', '0ms')">
+    Add Compliance Rule
+  </button>
+  <div class="listContainer">
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let complianceRule of complianceRules; first as isFirst; index as i"
+                           [expanded]="isFirst">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{complianceRule.name}} (id: {{this.utils.getId(complianceRule)}})
+          </mat-panel-title>
+          <mat-panel-description>{{complianceRule.description}}</mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="property">
+          <div class="property-label">
+            ID:
+          </div>
+          <span class="property-value">{{this.utils.getId(complianceRule)}}</span>
+        </div>
+        <div class="property">
+          <div class="property-label">
+            Name:
+          </div>
+          <span class="property-value">{{complianceRule.name}}</span>
+        </div>
+        <div class="property">
+          <div class="property-label">
+            Type:
+          </div>
+          <span class="property-value">{{complianceRule.type}}</span>
+        </div>
+        <div class="property">
+          <div class="property-label">
+            Location:
+          </div>
+          <a href="{{complianceRule.location}}" class="property-value" target="_blank">{{complianceRule.location}}</a>
+        </div>
+        <div class="property">
+          <div class="property-label">
+            Description:
+          </div>
+          <p class="property-value">{{complianceRule.description}}</p>
+        </div>
+        <div class="property">
+          <div class="property-label">
+            Parameters:
+          </div>
+          <ul class="property-value" *ngIf="this.complianceRuleParameters[i].length > 0">
+            <li *ngFor="let complianceRuleParameter of this.complianceRuleParameters[i]">
+              <span>{{complianceRuleParameter.name + ': '}}{{complianceRuleParameter.type}}</span>
+            </li>
+          </ul>
+          <span class="property-value" *ngIf="this.complianceRuleParameters[i].length === 0">
+            No parameters are associated with this compliance rule.
+          </span>
+        </div>
+
+        <div class="expansion-panel-buttons">
+          <button mat-raised-button color="warn" (click)="deleteComplianceRule(complianceRule)">DELETE</button>
+        </div>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+    <span *ngIf="complianceRules.length == 0">
+      No compliance rules are created yet!
+    </span>
   </div>
 </div>
