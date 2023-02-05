@@ -13,6 +13,7 @@ import { Utils } from '../utils/utils';
 import {
   PluginUsageConfigurationDialogComponent
 } from '../plugin-usage/plugin-usage-configuration-dialog/plugin-usage-configuration-dialog.component';
+import PluginTypeEnum = PluginPojo.PluginTypeEnum;
 
 @Component({
   selector: 'app-refinement-plugins',
@@ -59,7 +60,7 @@ export class RefinementPluginsComponent implements OnInit {
         width: '80%',
         enterAnimationDuration,
         exitAnimationDuration,
-        data: Number(this.utils.getId(pluginUsage)),
+        data: {pluginId: Number(this.utils.getId(pluginUsage)), pluginType: PluginTypeEnum.ModelRefinement}
       });
     }
   }
@@ -75,7 +76,7 @@ export class RefinementPluginsComponent implements OnInit {
       }).subscribe(resp => {
         this.addedPluginUsages.push(resp);
         this.pluginAddedEventEmitter.emit(resp);
-      })
+      });
     }
   }
 

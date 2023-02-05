@@ -1,125 +1,129 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {COMMA, ENTER} from "@angular/cdk/keycodes";
-import { FormControl } from '@angular/forms';
-import {Observable, Subscription} from "rxjs";
-import {MatChipInputEvent} from "@angular/material/chips";
-import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
-import {map, startWith} from 'rxjs/operators';
+import { Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+import { forkJoin, Observable, Subscription } from "rxjs";
 import {
-  ComplianceIssueEntity, EntityModelComplianceRuleConfigurationEntity, EntityModelComplianceRuleEntity,
-  EntityModelIssueFixingConfigurationEntity, EntityModelPluginUsageEntity, IssueFixingConfigurationEntity,
+  EntityModelComplianceRuleConfigurationEntity, EntityModelIssueFixingConfigurationEntity,
+  EntityModelPluginUsageEntity, IssueFixingConfigurationEntity, IssueFixingConfigurationEntityRequestBody,
   IssueFixingConfigurationService, PluginPojo, PluginService, PluginUsageService
 } from "iacmf-client";
-import {MatDialog} from "@angular/material/dialog";
-import {Utils} from "../utils/utils";
+import { MatDialog } from "@angular/material/dialog";
+import { Utils } from "../utils/utils";
+import {
+  PluginUsageConfigurationDialogComponent
+} from '../plugin-usage/plugin-usage-configuration-dialog/plugin-usage-configuration-dialog.component';
+import PluginTypeEnum = PluginPojo.PluginTypeEnum;
+import { PluginUsageComponent } from '../plugin-usage/plugin-usage.component';
 
 @Component({
   selector: 'app-issue-fixing',
   templateUrl: './issue-fixing.component.html',
-  styleUrls: ['./issue-fixing.css']
+  styleUrls: ['./issue-fixing.component.css']
 })
 export class IssueFixingComponent implements OnInit {
+  issueFixingConfigurations: IssueFixingConfigurationEntityRequestBody[] = [];
+
+  selectedPluginUsages: EntityModelPluginUsageEntity[] = [];
+
+  selectedIssueType = undefined;
+  selectedPluginId = undefined;
+
+  issueTypeToPluginMap = new Map<string, string[]>();
+
+  private complianceRuleConfSubscription: Subscription | undefined;
+  @Input("complianceRuleConfigurationsSub") complianceRuleConfSub: Observable<EntityModelComplianceRuleConfigurationEntity[]> | undefined;
+
+  @Output("configurationsChanged") configurationChangedEmitter = new EventEmitter();
+
+  @ViewChildren('pluginUsages') components: QueryList<PluginUsageComponent> | undefined;
 
   ngOnInit(): void {
     if (this.complianceRuleConfSub != undefined) {
-      this.complianceRuleConfSubscription = this.complianceRuleConfSub.subscribe(conf => {
-        this.issueTypes.push(conf.issueType)
-        this.pluginService.getAllPlugins("ISSUE_FIXING", undefined, undefined, conf.issueType).subscribe(plugins => {
-          plugins.forEach(plugin => {
-            this.plugins.push(plugin)
-            if (plugin.identifier != undefined) {
-              if (this.isIssueTypeInMap(conf.issueType)) {
-                this.addToMap(conf.issueType, plugin.identifier)
-              } else {
-                this.addEmptyEntryToMap(conf.issueType)
-                this.addToMap(conf.issueType, plugin.identifier)
-              }
+      this.complianceRuleConfSubscription = this.complianceRuleConfSub.subscribe(crConfigurations => {
+        this.issueTypeToPluginMap.clear();
+
+        crConfigurations.forEach(conf => {
+          if (conf.issueType && conf.issueType.trim().length > 0) {
+            // avoid duplicates
+            if (!this.issueTypeToPluginMap.has(conf.issueType)) {
+              this.pluginService.getAllPlugins("ISSUE_FIXING", undefined, undefined, conf.issueType).subscribe(plugins => {
+                plugins.forEach(plugin => {
+                  if (plugin.identifier != undefined) {
+                    this.addToMap(conf.issueType, plugin.identifier);
+                  }
+                });
+              });
             }
-          })
-        })
-      })
+          }
+        });
+      });
     }
   }
 
-  complianceRuleConfigurationEntities: EntityModelComplianceRuleConfigurationEntity[] = [];
-  issueFixingConfigurations: IssueFixingConfigurationEntity[] = [];
-
-  @Input("complianceRuleConfigurationsSub") complianceRuleConfSub: Observable<EntityModelComplianceRuleConfigurationEntity> | undefined;
-  private complianceRuleConfSubscription: Subscription | undefined;
-
-  @Output("issueFixingConfigurationsToCreate") issueFixingConfigurationsToCreateEmitter = new EventEmitter();
-
-  issueTypes: string[] = []
-  selectedIssueType = undefined
-  selectedPluginId = undefined
-  plugins: PluginPojo[] = []
-  issueTypeToPluginMap = [{
-    issueType: "dummyType",
-    identifiers: ["dummyId1", "dummyId2"]
-  }]
-
-  constructor(public dialog: MatDialog, public issueFixingConfigurationService : IssueFixingConfigurationService, public utils : Utils, public pluginService: PluginService, public pluginUsageService: PluginUsageService) {
+  constructor(private dialog: MatDialog, public utils: Utils, private pluginService: PluginService) {
 
   }
 
-  getPluginsByIssueType(issueType: string | undefined) : string[] {
-    let result: string[] = []
-    if (issueType != undefined) {
-      for (let entry of this.issueTypeToPluginMap) {
-        if (entry.issueType.includes(issueType)) {
-          return entry.identifiers
-        }
+  getPluginsByIssueType(issueType: string | undefined): string[] {
+    if (issueType != undefined && this.issueTypeToPluginMap.has(issueType)) {
+      // @ts-ignore
+      return this.issueTypeToPluginMap.get(issueType);
+    }
+
+    return [];
+  }
+
+  addToMap(issueType: string, pluginId: string) {
+    if (!this.issueTypeToPluginMap.has(issueType)) {
+      this.issueTypeToPluginMap.set(issueType, [pluginId]);
+    } else {
+      let currentPlugins = this.issueTypeToPluginMap.get(issueType);
+
+      // @ts-ignore
+      if (currentPlugins.indexOf(pluginId) < 0) {
+        // @ts-ignore
+        currentPlugins.get(issueType).push(pluginId);
       }
     }
-    return result
-  }
-
-  addEmptyEntryToMap(issueType:string) {
-    this.issueTypeToPluginMap.push({
-      issueType: issueType,
-      identifiers: []
-    })
-  }
-
-  addToMap(issueType:string, pluginId:string) {
-    this.issueTypeToPluginMap.filter(entry => entry.issueType.includes(issueType)).forEach(entry => {
-      if (!entry.identifiers.includes(pluginId)) {
-        entry.identifiers.push(pluginId)
-      }
-    })
-  }
-
-  isIssueTypeInMap(issueType:string) : boolean {
-    for (let entry of this.issueTypeToPluginMap) {
-      if (entry.issueType.includes(issueType)) {
-        return true;
-      }
-    }
-    return false;
   }
 
   createIssueFixingConfiguration() {
-    if (this.selectedIssueType == null)
-      return
-    if (this.selectedPluginId == null)
-      return
+    if (!this.selectedIssueType || !this.selectedPluginId)
+      return;
 
     this.issueFixingConfigurations.push({
       id: -1,
-      issueType: this.selectedIssueType,
-      pluginUsage: {
-        id: -1,
-        pluginIdentifier: this.selectedPluginId
-      }
-    })
+      issueType: this.selectedIssueType
+    });
 
-    this.issueFixingConfigurationsToCreateEmitter.emit(this.issueFixingConfigurations)
+    this.selectedPluginUsages.push({
+      pluginIdentifier: this.selectedPluginId
+    });
   }
 
-  savePluginConfiguration($event : EntityModelPluginUsageEntity, fixingConfiguration: IssueFixingConfigurationEntity) {
-    fixingConfiguration.pluginUsage = {
-      id: Number(this.utils.getId($event)),
-      pluginIdentifier: $event.pluginIdentifier
+  pluginConfigurationCreated(resp: EntityModelPluginUsageEntity, index: number) {
+    this.issueFixingConfigurations[index].pluginUsage = this.utils.getLink("self", resp);
+    this.selectedPluginUsages[index] = resp;
+    this.configurationChangedEmitter.emit(this.issueFixingConfigurations);
+  }
+
+  removeFixingConfiguration(pluginIndex: number) {
+    if (pluginIndex >= 0) {
+      this.utils.removePluginUsage(this.utils.getId(this.selectedPluginUsages[pluginIndex])).subscribe(() => {
+        console.log("finished removing plugin identifier.");
+        this.selectedPluginUsages.splice(pluginIndex, 1);
+        this.issueFixingConfigurations.splice(pluginIndex, 1);
+        this.configurationChangedEmitter.emit(this.issueFixingConfigurations);
+      });
     }
   }
+
+  persistAssignments() {
+    let requests = this.components?.toArray().map(component=> {
+      return component.updateAllPluginConfigurations();
+    });
+
+    if(requests && requests.length > 0) {
+      forkJoin(requests).subscribe();
+    }
+  }
+
 }

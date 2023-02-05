@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Configure Refinement Plugin</h1>
 <div style="margin-bottom: 10px" mat-dialog-content>
-  <app-plugin-usage #pluginUsage (selectedPluginIdentifierEvent)="updatePluginUsage($event)" [pluginType]="'MODEL_REFINEMENT'"
-                    [showHeader]="false" [canChangeIdentifier]="false" [pluginUsageId]="data" ></app-plugin-usage>
+  <app-plugin-usage #pluginUsage (selectedPluginIdentifierEvent)="updatePluginUsage($event)" [pluginType]="data.pluginType"
+                    [showHeader]="false" [canChangeIdentifier]="false" [pluginUsageId]="data.pluginId" ></app-plugin-usage>
 </div>
 
 <div class="footer" mat-dialog-actions>

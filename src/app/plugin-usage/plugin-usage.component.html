@@ -4,7 +4,7 @@
     <mat-label>
       Select plugin
     </mat-label>
-    <mat-select [(value)]="this.selectedPluginIdentifier" (selectionChange)="pluginChanged()" name="pluginId">
+    <mat-select [(value)]="this.selectedPluginIdentifier" (selectionChange)="pluginIdentifierChanged()" name="pluginId">
       <mat-option *ngFor="let plugin of allPlugins" [value]="plugin.identifier">
         {{plugin.identifier}}
       </mat-option>

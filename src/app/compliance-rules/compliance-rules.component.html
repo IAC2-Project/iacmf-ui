@@ -46,12 +46,12 @@
           <div class="property-label">
             Parameters:
           </div>
-          <ul class="property-value" *ngIf="this.complianceRuleParameters[i].length > 0">
+          <ul class="property-value" *ngIf="this.complianceRuleParameters[i] && this.complianceRuleParameters[i].length > 0">
             <li *ngFor="let complianceRuleParameter of this.complianceRuleParameters[i]">
               <span>{{complianceRuleParameter.name + ': '}}{{complianceRuleParameter.type}}</span>
             </li>
           </ul>
-          <span class="property-value" *ngIf="this.complianceRuleParameters[i].length === 0">
+          <span class="property-value" *ngIf="!this.complianceRuleParameters[i] || this.complianceRuleParameters[i].length == 0">
             No parameters are associated with this compliance rule.
           </span>
         </div>

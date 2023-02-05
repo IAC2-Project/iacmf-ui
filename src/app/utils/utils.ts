@@ -1,14 +1,17 @@
-import { Inject, Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
 import {
   EntityModelKVEntity,
   EntityModelPluginUsageEntity,
   EntityModelProductionSystemEntity,
-  KeyValueService, PluginConfigurationService,
+  KeyValueService, PluginConfigurationEntity, PluginConfigurationEntryDescriptor, PluginConfigurationService,
+  PluginPojo, PluginService,
+  PluginUsageEntity,
   PluginUsageService,
   ProductionSystemService, RepresentationModelObject
 } from "iacmf-client";
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable, of, take } from 'rxjs';
 import { EntityModelPluginConfigurationEntity } from 'iacmf-client/model/entityModelPluginConfigurationEntity';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   // declares that this service should be created
@@ -17,7 +20,12 @@ import { EntityModelPluginConfigurationEntity } from 'iacmf-client/model/entityM
 })
 export class Utils {
 
-  constructor(private kvEntityService: KeyValueService, private productionSystemService: ProductionSystemService, private pluginUsage: PluginUsageService, private pluginConfigurationService: PluginConfigurationService) {
+
+  constructor(private kvEntityService: KeyValueService,
+              private productionSystemService: ProductionSystemService,
+              private pluginUsage: PluginUsageService,
+              private pluginConfigurationService: PluginConfigurationService,
+              private pluginService: PluginService) {
 
   }
 
@@ -37,11 +45,13 @@ export class Utils {
           if (deleteRequests != undefined && deleteRequests.length > 0) {
             console.info("removing attached plugin configurations...");
             forkJoin(deleteRequests).subscribe(() => this.pluginUsage.deleteItemResourcePluginusageentityDelete(pluginUsageId).subscribe(() => {
+              observer.next();
               observer.complete();
             }));
           } else {
             // no configurations exist. remove the plugin usage immediately.
             this.pluginUsage.deleteItemResourcePluginusageentityDelete(pluginUsageId).subscribe(() => {
+              observer.next();
               observer.complete();
             });
           }
@@ -95,7 +105,7 @@ export class Utils {
     return "";
   }
 
-  public getId(modelObject: RepresentationModelObject): String {
+  public getId(modelObject: RepresentationModelObject): string {
     return this.getLink("self", modelObject).split("/").slice(-1)[0];
   }
 }

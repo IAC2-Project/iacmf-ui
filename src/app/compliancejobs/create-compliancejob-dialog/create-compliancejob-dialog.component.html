@@ -26,7 +26,7 @@
       </div>
     </mat-step>
     <mat-step  label="Compliance Issue Fixing">
-      <app-issue-fixing (issueFixingConfigurationsToCreate)="this.saveIssueFixingConfigurations($event)" [complianceRuleConfigurationsSub]="this.shareNewComplianceRuleConfigurationEvents.asObservable()"></app-issue-fixing>
+      <app-issue-fixing #fixingComponent (configurationsChanged)="this.saveIssueFixingConfigurations($event)" [complianceRuleConfigurationsSub]="this.shareNewComplianceRuleConfigurationEvents.asObservable()"></app-issue-fixing>
     </mat-step>
     <mat-step label="Validation">
       <div class="step">
