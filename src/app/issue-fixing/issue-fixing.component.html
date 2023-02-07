@@ -15,19 +15,25 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <button mat-raised-button color="primary" (click)="createIssueFixingConfiguration();"
-          [disabled]="!selectedIssueType || !selectedPluginId">Create Fixing Configuration
+  <button mat-raised-button color="basic" (click)="createIssueFixingConfiguration();"
+          [disabled]="isAddButtonDisabled()">Create Fixing Configuration
   </button>
 </form>
 
 <div>
-  <mat-accordion>
-    <mat-expansion-panel *ngFor="let fixingConfiguration of issueFixingConfigurations; let i = index">
+  <span *ngIf="issueFixingConfigurations.length == 0">
+    No refinement plugins are selected yet.
+  </span>
+  <mat-accordion *ngIf="issueFixingConfigurations.length > 0">
+    <mat-expansion-panel *ngFor="let fixingConfiguration of issueFixingConfigurations; let i = index" [expanded]="i == 0">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Issue Fixing Configuration (Issue Type: {{fixingConfiguration.issueType}})
         </mat-panel-title>
       </mat-expansion-panel-header>
+      <div *ngIf="!issueTypeToPluginMap.has(fixingConfiguration.issueType)" class="warning">
+        <p>Warning! the specified issue type is not being produced by any of the included compliance jobs.</p>
+      </div>
       <app-plugin-usage #pluginUsages [pluginType]="'ISSUE_FIXING'" (selectedPluginIdentifierEvent)="pluginConfigurationCreated($event, i)"
                         [showHeader]="false" [canChangeIdentifier]="false" [pluginIdentifier]="selectedPluginUsages[i].pluginIdentifier" ></app-plugin-usage>
       <div class="expansion-panel-buttons">

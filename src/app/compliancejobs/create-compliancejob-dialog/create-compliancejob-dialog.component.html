@@ -9,7 +9,7 @@
     </mat-step>
     <mat-step label="Refinement">
       <div class="step">
-        <app-refinement-plugins (pluginAdded)="refinementPluginAdded($event)"
+        <app-refinement-plugins #refinementComponent (pluginAdded)="refinementPluginAdded($event)"
                                 (pluginRemoved)="refinementPluginRemoved($event)"></app-refinement-plugins>
       </div>
     </mat-step>

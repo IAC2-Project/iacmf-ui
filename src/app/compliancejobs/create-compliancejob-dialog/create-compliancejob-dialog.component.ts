@@ -12,6 +12,7 @@ import { MatDialogRef } from "@angular/material/dialog";
 import { forkJoin, Subject } from 'rxjs';
 import { PluginUsageComponent } from '../../plugin-usage/plugin-usage.component';
 import { IssueFixingComponent } from '../../issue-fixing/issue-fixing.component';
+import { RefinementPluginsComponent } from '../../refinement-plugins/refinement-plugins.component';
 
 @Component({
   selector: 'app-create-compliancejob-dialog',
@@ -29,6 +30,7 @@ export class CreateCompliancejobDialogComponent implements OnInit {
   issueFixingConfigurationsToCreate: IssueFixingConfigurationEntityRequestBody[] = [];
 
   @ViewChild('fixingComponent', { static: false }) fixingComponent: IssueFixingComponent | undefined;
+  @ViewChild('refinementComponent', {static: false}) refinementComponent: RefinementPluginsComponent | undefined;
 
   ngOnInit(): void {
   }
@@ -94,8 +96,9 @@ export class CreateCompliancejobDialogComponent implements OnInit {
       console.log("Configure at least one issue fixing configuration")
     }
 
-    // the configuration entries of the fixing plugins need to updated their values.
+    // the configuration entries of the fixing and refinement plugins need to updated their values.
     this.fixingComponent?.persistAssignments();
+    this.refinementComponent?.persistAssignments();
 
     let plugin = this.checkingPluginConfiguration;
 

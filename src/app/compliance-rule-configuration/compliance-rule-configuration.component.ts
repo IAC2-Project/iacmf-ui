@@ -126,7 +126,6 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
     }
   }
 
-
   private _filter(value: number | undefined): EntityModelComplianceRuleEntity[] {
     return this.complianceRules
       .filter(complianceRule => this.utils.getId(complianceRule) != undefined)
@@ -151,17 +150,13 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
   }
 
   refreshSelectedList() {
-    if (this.addedComplianceRuleConfigurations.length > 0) {
       let updatedComplianceRuleConfs: Array<ComplianceRuleConfigurationEntity> = [];
-      let requests = new Map<EntityModelComplianceRuleEntity, any>;
+      let requests: any[] = this.addedComplianceRuleConfigurations.map(config =>
+        this.complianceRulesConfigurationService.getItemResourceComplianceruleconfigurationentityGet(this.utils.getId(config)));
+      console.debug(requests);
 
-      for (let i = 0; i < this.rulesOfAddedRuleConfigurations.length; i++) {
-        let conf = this.addedComplianceRuleConfigurations[i];
-        let rule = this.rulesOfAddedRuleConfigurations[i];
-        requests.set(rule, this.complianceRulesConfigurationService.getItemResourceComplianceruleconfigurationentityGet(String(this.utils.getId(conf))));
-      }
-
-      forkJoin(Array.from(requests.values())).subscribe(newConfs => {
+    if (requests.length > 0) {
+      forkJoin(requests).subscribe(newConfs => {
         newConfs.forEach(conf => {
           updatedComplianceRuleConfs.push(conf);
         });

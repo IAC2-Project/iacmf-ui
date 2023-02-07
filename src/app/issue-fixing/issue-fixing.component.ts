@@ -126,4 +126,16 @@ export class IssueFixingComponent implements OnInit {
     }
   }
 
+  isAddButtonDisabled(): boolean {
+    if (!this.selectedIssueType || !this.selectedPluginId) {
+      return true;
+    }
+    let index = this.issueFixingConfigurations.map(c => c.issueType).indexOf(this.selectedIssueType);
+    if (index >= 0) {
+      return index == this.selectedPluginUsages.map(u => u.pluginIdentifier).indexOf(this.selectedPluginId);
+    }
+
+    return false;
+  }
+
 }
