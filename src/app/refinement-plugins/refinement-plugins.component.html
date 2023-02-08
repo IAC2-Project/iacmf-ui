@@ -7,26 +7,25 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <button mat-button (click)="addRefinementPlugin(selected)">ADD</button>
-  <div *ngFor="let refinementPlugin of addedRefinementPlugins; let i = index">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>{{refinementPlugin.identifier}}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p>
-          {{refinementPlugin.description}}
-        </p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button  (click)="openConfigureRefinementPluginDialog(i,'0ms', '0ms')">CONFIGURE
-        </button>
-        <button mat-raised-button color="warn" (click)="removeRefinementPlugin(refinementPlugin)">DELETE</button>
-      </mat-card-actions>
-    </mat-card>
-    <br>
-  </div>
+  <button mat-raised-button (click)="addRefinementPlugin(selected)">ADD</button>
+  <mat-accordion *ngIf="addedRefinementPlugins.length > 0">
+    <mat-expansion-panel *ngFor="let refinementPlugin of addedRefinementPlugins; let i = index" [expanded]="i == 0">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Refinement Plugin {{i + 1}}: {{refinementPlugin.identifier}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-plugin-usage #pluginUsages [pluginType]="'MODEL_REFINEMENT'" (selectedPluginIdentifierEvent)="pluginConfigurationCreated($event, i)"
+                        [showHeader]="false" [canChangeIdentifier]="false" [pluginIdentifier]="addedRefinementPlugins[i].identifier" ></app-plugin-usage>
+      <div class="expansion-panel-buttons">
+        <button mat-raised-button color="warn" (click)="removeRefinementPlugin(refinementPlugin, i)">DELETE</button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
   <div *ngIf="addedRefinementPlugins.length == 0">
     <span>No refinement plugins are selected yet.</span>
   </div>
+
+
 </div>

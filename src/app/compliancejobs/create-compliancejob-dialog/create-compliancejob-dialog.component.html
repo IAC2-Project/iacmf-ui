@@ -9,7 +9,7 @@
     </mat-step>
     <mat-step label="Refinement">
       <div class="step">
-        <app-refinement-plugins (pluginAdded)="refinementPluginAdded($event)"
+        <app-refinement-plugins #refinementComponent (pluginAdded)="refinementPluginAdded($event)"
                                 (pluginRemoved)="refinementPluginRemoved($event)"></app-refinement-plugins>
       </div>
     </mat-step>
@@ -25,10 +25,8 @@
                           (selectedPluginIdentifierEvent)="saveCheckingPluginConfiguration($event)"></app-plugin-usage>
       </div>
     </mat-step>
-    <mat-step label="Compliance Issue Fixing">
-      <div class="step">
-        <app-issue-fixing></app-issue-fixing>
-      </div>
+    <mat-step  label="Compliance Issue Fixing">
+      <app-issue-fixing #fixingComponent (configurationsChanged)="this.saveIssueFixingConfigurations($event)" [complianceRuleConfigurationsSub]="this.shareNewComplianceRuleConfigurationEvents.asObservable()"></app-issue-fixing>
     </mat-step>
     <mat-step label="Validation">
       <div class="step">

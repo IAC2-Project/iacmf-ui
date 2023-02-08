@@ -1,0 +1,9 @@
+mat-form-field {
+  margin-right: 1em;
+}
+
+.warning {
+  font-weight: bold;
+  color: chocolate;
+  margin-bottom: 2em;
+}

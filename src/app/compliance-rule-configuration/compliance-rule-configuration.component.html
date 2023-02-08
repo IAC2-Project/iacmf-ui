@@ -7,12 +7,12 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <button mat-button (click)="createComplianceRuleConfiguration(selectedRule);">ADD</button>
+  <button mat-raised-button (click)="createComplianceRuleConfiguration(selectedRule);">ADD</button>
 </form>
 
 <div *ngIf="addedComplianceRuleConfigurations && addedComplianceRuleConfigurations.length > 0">
   <mat-accordion *ngIf="addedComplianceRuleConfigurations && addedComplianceRuleConfigurations.length > 0">
-    <mat-expansion-panel *ngFor="let complianceRuleConfiguration of addedComplianceRuleConfigurations; index as i">
+    <mat-expansion-panel *ngFor="let complianceRuleConfiguration of addedComplianceRuleConfigurations; index as i" [expanded]="i == 0">
       <mat-expansion-panel-header>
         <mat-panel-title>
           {{rulesOfAddedRuleConfigurations[i].name}}

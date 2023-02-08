@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 
 import { async, forkJoin } from "rxjs";
 
@@ -13,6 +13,8 @@ import { Utils } from '../utils/utils';
 import {
   PluginUsageConfigurationDialogComponent
 } from '../plugin-usage/plugin-usage-configuration-dialog/plugin-usage-configuration-dialog.component';
+import PluginTypeEnum = PluginPojo.PluginTypeEnum;
+import { PluginUsageComponent } from '../plugin-usage/plugin-usage.component';
 
 @Component({
   selector: 'app-refinement-plugins',
@@ -23,6 +25,7 @@ export class RefinementPluginsComponent implements OnInit {
   @Output("pluginAdded") pluginAddedEventEmitter = new EventEmitter();
   @Output("pluginRemoved") pluginRemovedEventEmitter = new EventEmitter();
   @Output("pluginConfigured") pluginConfiguredEventEmitter = new EventEmitter();
+  @ViewChildren('pluginUsages') components: QueryList<PluginUsageComponent> | undefined;
 
   allPlugins = new Array<PluginPojo>();
   addedRefinementPlugins = new Array<PluginPojo>();
@@ -52,63 +55,58 @@ export class RefinementPluginsComponent implements OnInit {
     );
   }
 
-  openConfigureRefinementPluginDialog(pluginIndex: number, enterAnimationDuration: string, exitAnimationDuration: string): void {
-    if (pluginIndex >= 0) {
-      let pluginUsage = this.addedPluginUsages[pluginIndex];
-      this.dialog.open(PluginUsageConfigurationDialogComponent, {
-        width: '80%',
-        enterAnimationDuration,
-        exitAnimationDuration,
-        data: Number(this.utils.getId(pluginUsage)),
+  addRefinementPlugin(refinementPluginId: string | undefined) {
+    if (refinementPluginId != undefined) {
+      this.addedRefinementPlugins.push(this._filter(refinementPluginId)[0]);
+      this.addedPluginUsages.push({
+        pluginIdentifier: refinementPluginId
       });
     }
   }
 
-  addRefinementPlugin(refinementPluginId: string | undefined) {
-    if (refinementPluginId != undefined) {
-      this.addedRefinementPlugins.push(this._filter(refinementPluginId)[0]);
-
-      this.pluginUsageService.postCollectionResourcePluginusageentityPost({
-        pluginIdentifier: refinementPluginId,
-        refinementPluginIndexInComplianceJob: this.addedRefinementPlugins.length - 1,
-        id: -1
-      }).subscribe(resp => {
-        this.addedPluginUsages.push(resp);
-        this.pluginAddedEventEmitter.emit(resp);
-      })
-    }
+  pluginConfigurationCreated(resp: EntityModelPluginUsageEntity, index: number) {
+    this.addedPluginUsages[index] = resp;
+    this.pluginAddedEventEmitter.emit(resp);
   }
 
-  removeRefinementPlugin(refinementPluginPojo: PluginPojo) {
+  removeRefinementPlugin(refinementPluginPojo: PluginPojo, index: number) {
     // here we assume the array was originally ordered according to the index in the refinement strategy
-    const index = this.addedRefinementPlugins.indexOf(refinementPluginPojo);
-
     if (index >= 0) {
       const toRemovePluginUsage = this.addedPluginUsages[index];
       this.addedPluginUsages.splice(index, 1);
       this.addedRefinementPlugins.splice(index, 1);
-      const pluginUsageId = String(this.utils.getId(toRemovePluginUsage));
-      this.utils.removePluginUsage(pluginUsageId).subscribe(() => this.pluginRemovedEventEmitter.emit(toRemovePluginUsage));
+      const pluginUsageId = this.utils.getId(toRemovePluginUsage);
+      this.utils.removePluginUsage(pluginUsageId).subscribe(() => {
+        // update the order
+        let requests = [];
+        for (let i = index; i < this.addedPluginUsages.length; i++) {
+          let currentPluginUsage = this.addedPluginUsages[i];
 
-      // update the order
-      let requests = [];
-      for (let i = index; i < this.addedPluginUsages.length; i++) {
-        let currentPluginUsage = this.addedPluginUsages[i];
+          requests.push(this.pluginUsageService.patchItemResourcePluginusageentityPatch(String(this.utils.getId(currentPluginUsage)), {
+            pluginIdentifier: currentPluginUsage.pluginIdentifier,
+            id: Number(this.utils.getId(currentPluginUsage)),
+            refinementPluginIndexInComplianceJob: i
+          }));
+        }
 
-        requests.push(this.pluginUsageService.patchItemResourcePluginusageentityPatch(String(this.utils.getId(currentPluginUsage)), {
-          pluginIdentifier: currentPluginUsage.pluginIdentifier,
-          id: Number(this.utils.getId(currentPluginUsage)),
-          refinementPluginIndexInComplianceJob: i
-        }));
-      }
-
-      if (requests.length > 0) {
-        forkJoin(requests).subscribe(() => {
+        if (requests.length > 0) {
+          forkJoin(requests).subscribe(() => {
+            this.pluginRemovedEventEmitter?.emit(toRemovePluginUsage);
+          });
+        } else {
           this.pluginRemovedEventEmitter?.emit(toRemovePluginUsage);
-        });
-      } else {
-        this.pluginRemovedEventEmitter?.emit(toRemovePluginUsage);
-      }
+        }
+      });
+    }
+  }
+
+  persistAssignments() {
+    let requests = this.components?.toArray().map(component=> {
+      return component.updateAllPluginConfigurations();
+    });
+
+    if(requests && requests.length > 0) {
+      forkJoin(requests).subscribe();
     }
   }
 }

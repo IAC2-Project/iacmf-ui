@@ -1,20 +1,45 @@
-<div *ngFor="let fixingConfiguration of issueFixingConfigurations; let i = index">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Fixing Configuration {{this.utils.getId(fixingConfiguration)}} Type: {{fixingConfiguration.issueType}}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-accordion>
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            Fixing Plugin Configuration
-          </mat-expansion-panel-header>
+<form>
+  <mat-form-field appearance="fill">
+    <mat-label>Select Issue Type:</mat-label>
+    <mat-select [(value)]="selectedIssueType">
+      <mat-option *ngFor="let entry of issueTypeToPluginMap | keyvalue" [value]="entry.key">
+        {{entry.key}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Select Fixing Plugin:</mat-label>
+    <mat-select [(value)]="selectedPluginId">
+      <mat-option *ngFor="let pluginId of this.getPluginsByIssueType(this.selectedIssueType)" [value]="pluginId">
+        {{pluginId}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-raised-button color="basic" (click)="createIssueFixingConfiguration();"
+          [disabled]="isAddButtonDisabled()">Create Fixing Configuration
+  </button>
+</form>
 
-          <app-plugin-usage [pluginType]="'ISSUE_FIXING'" (selectedPluginIdentifierEvent)="this.savePluginConfiguration($event)"></app-plugin-usage>
+<div>
+  <span *ngIf="issueFixingConfigurations.length == 0">
+    No refinement plugins are selected yet.
+  </span>
+  <mat-accordion *ngIf="issueFixingConfigurations.length > 0">
+    <mat-expansion-panel *ngFor="let fixingConfiguration of issueFixingConfigurations; let i = index" [expanded]="i == 0">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Issue Fixing Configuration (Issue Type: {{fixingConfiguration.issueType}})
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div *ngIf="!issueTypeToPluginMap.has(fixingConfiguration.issueType)" class="warning">
+        <p>Warning! the specified issue type is not being produced by any of the included compliance jobs.</p>
+      </div>
+      <app-plugin-usage #pluginUsages [pluginType]="'ISSUE_FIXING'" (selectedPluginIdentifierEvent)="pluginConfigurationCreated($event, i)"
+                        [showHeader]="false" [canChangeIdentifier]="false" [pluginIdentifier]="selectedPluginUsages[i].pluginIdentifier" ></app-plugin-usage>
+      <div class="expansion-panel-buttons">
+        <button mat-raised-button color="warn" (click)="removeFixingConfiguration(i)">DELETE</button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
 
-        </mat-expansion-panel>
-      </mat-accordion>
-    </mat-card-content>
-  </mat-card>
-  <br>
 </div>

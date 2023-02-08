@@ -73,10 +73,13 @@
         </div>
 
         <h5>Parameter Assignments:</h5>
-        <p>
-          Please give values to the parameters specified by the compliance rule.
-        </p>
+        <span *ngIf="this.complianceRuleParameterAssignments.length == 0">
+          No parameters are specified for this compliance rule.
+        </span>
         <div *ngIf="this.complianceRuleParameterAssignments.length > 0">
+          <p>
+            Please give values to the parameters specified by the compliance rule.
+          </p>
           <div class="form-field-container" *ngFor="let parameter of this.complianceRuleParameterAssignments">
             <mat-form-field appearance="fill">
               <mat-label>{{parameter.name}}:</mat-label>

@@ -1,14 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   ComplianceJobService, ComplianceRuleConfigurationService,
   EntityModelComplianceRuleConfigurationEntity,
-  EntityModelPluginUsageEntity, PluginUsageService
+  EntityModelPluginUsageEntity, IssueFixingConfigurationEntityRequestBody,
+  IssueFixingConfigurationService, PluginUsageService
 } from "iacmf-client";
 import { ProductionSystemService } from "iacmf-client";
 
 import { Utils } from "../../utils/utils";
 import { MatDialogRef } from "@angular/material/dialog";
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
+import { PluginUsageComponent } from '../../plugin-usage/plugin-usage.component';
+import { IssueFixingComponent } from '../../issue-fixing/issue-fixing.component';
+import { RefinementPluginsComponent } from '../../refinement-plugins/refinement-plugins.component';
 
 @Component({
   selector: 'app-create-compliancejob-dialog',
@@ -21,6 +25,12 @@ export class CreateCompliancejobDialogComponent implements OnInit {
   selectedComplianceRules: EntityModelComplianceRuleConfigurationEntity[] = [];
   checkingPluginConfiguration: EntityModelPluginUsageEntity | undefined;
   refinementPluginUsages = new Array<EntityModelPluginUsageEntity>();
+  shareNewComplianceRuleConfigurationEvents: Subject<EntityModelComplianceRuleConfigurationEntity[]> = new Subject<EntityModelComplianceRuleConfigurationEntity[]>();
+
+  issueFixingConfigurationsToCreate: IssueFixingConfigurationEntityRequestBody[] = [];
+
+  @ViewChild('fixingComponent', { static: false }) fixingComponent: IssueFixingComponent | undefined;
+  @ViewChild('refinementComponent', {static: false}) refinementComponent: RefinementPluginsComponent | undefined;
 
   ngOnInit(): void {
   }
@@ -29,6 +39,7 @@ export class CreateCompliancejobDialogComponent implements OnInit {
               private complianceJobService: ComplianceJobService,
               private productionSystemService: ProductionSystemService,
               private pluginUsageService: PluginUsageService,
+              private issueFixingConfigurationService: IssueFixingConfigurationService,
               private complianceRuleConfigurationService: ComplianceRuleConfigurationService,
               public utils: Utils) {
   }
@@ -37,8 +48,9 @@ export class CreateCompliancejobDialogComponent implements OnInit {
     this.selectedProductionSystem = $event;
   }
 
-  complianceRulesSelected($event: any) {
+  complianceRulesSelected($event: EntityModelComplianceRuleConfigurationEntity[]) {
     this.selectedComplianceRules = $event;
+    this.shareNewComplianceRuleConfigurationEvents.next($event);
   }
 
   refinementPluginAdded($event: EntityModelPluginUsageEntity) {
@@ -58,6 +70,10 @@ export class CreateCompliancejobDialogComponent implements OnInit {
     this.checkingPluginConfiguration = $event;
   }
 
+  saveIssueFixingConfigurations($event: IssueFixingConfigurationEntityRequestBody[]) {
+    this.issueFixingConfigurationsToCreate = $event
+  }
+
   storeComplianceJob() {
 
     if (this.selectedProductionSystem == -1) {
@@ -67,7 +83,7 @@ export class CreateCompliancejobDialogComponent implements OnInit {
     }
 
     if (this.selectedComplianceRules.length == 0) {
-      console.log("Select atleast one compliance rule to check")
+      console.log("Select at least one compliance rule to check")
       return;
     }
 
@@ -75,6 +91,14 @@ export class CreateCompliancejobDialogComponent implements OnInit {
       console.log("Select checking plugin")
       return;
     }
+
+    if (this.issueFixingConfigurationsToCreate.length == 0) {
+      console.log("Configure at least one issue fixing configuration")
+    }
+
+    // the configuration entries of the fixing and refinement plugins need to updated their values.
+    this.fixingComponent?.persistAssignments();
+    this.refinementComponent?.persistAssignments();
 
     let plugin = this.checkingPluginConfiguration;
 
@@ -90,8 +114,8 @@ export class CreateCompliancejobDialogComponent implements OnInit {
             complianceRuleConfigurations: this.selectedComplianceRules.map((cr: EntityModelComplianceRuleConfigurationEntity) => this.utils.getLink("self", cr))
           };
           console.debug(requestBody);
-          this.complianceJobService.postCollectionResourceCompliancejobentityPost(requestBody).subscribe(resp => {
-            const complianceJobUrl = this.utils.getLink("self", resp);
+          this.complianceJobService.postCollectionResourceCompliancejobentityPost(requestBody).subscribe(complianceJob => {
+            const complianceJobUrl = this.utils.getLink("self", complianceJob);
             let requests: any[] = this.refinementPluginUsages.map(usage => {
               let body = {
                 _links: {
@@ -103,6 +127,13 @@ export class CreateCompliancejobDialogComponent implements OnInit {
 
               return this.pluginUsageService.createPropertyReferencePluginusageentityPut1(String(this.utils.getId(usage)), body);
             });
+
+            requests.push(...this.issueFixingConfigurationsToCreate.map(conf => {
+              conf.complianceJob = complianceJobUrl;
+              console.log("issue fixing configuration request");
+              console.debug(conf);
+              return this.issueFixingConfigurationService.postCollectionResourceIssuefixingconfigurationentityPost(conf);
+            }));
 
             requests.push(...this.selectedComplianceRules.map(ruleConfiguration => {
               let body = {
@@ -120,10 +151,10 @@ export class CreateCompliancejobDialogComponent implements OnInit {
               console.log("Creating associations between the %d refinement plugin usages and compliance rule configurations, and the compliance job.", requests.length);
               forkJoin(requests).subscribe(() => {
                 console.log("Finished creating associations with the compliance job!");
-                this.dialogRef.close({ event: 'Closed', data: resp });
+                this.dialogRef.close({ event: 'Closed', data: complianceJob });
               });
             } else {
-              this.dialogRef.close({ event: 'Closed', data: resp });
+              this.dialogRef.close({ event: 'Closed', data: complianceJob });
             }
           });
         });

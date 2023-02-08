@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import {
-  EntityModelPluginUsageEntity, PluginPojo
+  EntityModelPluginUsageEntity
 } from 'iacmf-client';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PluginUsageComponent } from '../plugin-usage.component';
@@ -14,7 +14,7 @@ export class PluginUsageConfigurationDialogComponent implements OnInit {
   @ViewChild('pluginUsage', { static: false }) pluginUsageComponent: PluginUsageComponent | undefined;
   selectedPluginUsage: EntityModelPluginUsageEntity | undefined;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: number, public dialogRef: MatDialogRef<PluginUsageConfigurationDialogComponent>) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { pluginId: number, pluginType: string }, public dialogRef: MatDialogRef<PluginUsageConfigurationDialogComponent>) {
     console.info("we are inside plugin-usage-configuration-dialog component!");
     console.debug(data);
   }

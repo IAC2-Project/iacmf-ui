@@ -30,6 +30,7 @@ export class PluginUsageComponent implements OnInit {
   @Input("canChangeIdentifier") canChangeIdentifier: boolean = true;
   @Input("showHeader") showHeader: boolean = true;
   @Input("pluginUsageId") pluginUsageId: number = -1;
+  @Input("pluginIdentifier") pluginIdentifier: string | undefined;
   @Input("pluginType") pluginType = "";
   // for model creation plugin
   @Input("productionSystem") productionSystem: EntityModelProductionSystemEntity | undefined;
@@ -62,7 +63,7 @@ export class PluginUsageComponent implements OnInit {
     if (this.pluginUsageIdentifierSub != undefined) {
       this.pluginUsageIdentifierCreateEventsSubscription = this.pluginUsageIdentifierSub.subscribe((data: EntityModelPluginUsageEntity) => {
         this.selectedPluginIdentifier = data.pluginIdentifier
-        this.pluginChanged()
+        this.pluginIdentifierChanged();
       });
     }
 
@@ -73,7 +74,10 @@ export class PluginUsageComponent implements OnInit {
         .subscribe(resp => {
           this.pluginUsageId = Number(this.utils.getId(resp));
           this.loadPluginUsage();
-        })
+        });
+    } else if(this.pluginIdentifier) {
+      this.selectedPluginIdentifier = this.pluginIdentifier;
+      this.createNewPluginUsage();
     }
 
   }
@@ -112,7 +116,7 @@ export class PluginUsageComponent implements OnInit {
   }
 
   emitPluginUsage() {
-    this.selectedPluginIdentifierEventEmitter.emit(this.pluginUsage)
+    this.selectedPluginIdentifierEventEmitter.emit(this.pluginUsage);
   }
 
   /**
@@ -146,7 +150,15 @@ export class PluginUsageComponent implements OnInit {
     }
   }
 
-  pluginChanged() {
+  pluginIdentifierChanged() {
+    if (this.getCurrentPlugin() != null) {
+      this.utils.removePluginUsage(this.pluginUsage.pluginIdentifier).subscribe();
+    }
+
+    this.createNewPluginUsage();
+  }
+
+  createNewPluginUsage() {
     this.pluginUsageService.postCollectionResourcePluginusageentityPost({
       pluginIdentifier: this.selectedPluginIdentifier,
       id: -1
@@ -160,8 +172,8 @@ export class PluginUsageComponent implements OnInit {
         this.selectedPluginDescription = currentPlugin.description;
         this.createEmptyPluginConfigurationEntities();
       }
-      this.emitPluginUsage()
-    })
+      this.emitPluginUsage();
+    });
   }
 
   public updateAllPluginConfigurations() {

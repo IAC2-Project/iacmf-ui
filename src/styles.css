@@ -46,3 +46,19 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   width: 50%;
 }
 
+.color-normal {
+  color: darkblue;
+}
+
+.color-success {
+  color: darkgreen;
+}
+
+.color-fail {
+  color: darkred;
+}
+
+.color-warn {
+  color: chocolate;
+}
+
