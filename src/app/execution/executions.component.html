@@ -40,7 +40,12 @@
           <span *ngIf="!execution.instanceModel" class="property-value">Not available!</span>
           <button *ngIf="execution.instanceModel" type="button" class="buttonToLink property-value"
                   (click)="downloadInstanceModel(execution.instanceModel, 'instanceModel_' + execution.id + '.yaml')">
-            Click here to download
+            (Click here to download)
+          </button>
+
+          <button *ngIf="execution.instanceModel" type="button" class="buttonToLink property-value"
+                  (click)="sendInstanceModelToWinery(execution.instanceModel, 'instanceModel_' + execution.id)">
+            (Click here to visualize)
           </button>
         </div>
 
