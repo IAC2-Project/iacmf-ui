@@ -5,3 +5,25 @@
 mat-dialog-content {
   height: 80%;
 }
+
+.navigation-buttons {
+  margin-top: 2em;
+}
+
+.navigation-buttons button {
+  margin-right: 1em;
+}
+
+.close-button{
+  float: right;
+  top: -2px;
+  right: -2px;
+}
+
+.close-icon {
+  transition: 1s ease-in-out;
+}
+
+.close-icon:hover {
+  transform: rotate(180deg);
+}

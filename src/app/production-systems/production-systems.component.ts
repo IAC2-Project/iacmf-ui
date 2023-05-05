@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import {Component, OnInit} from '@angular/core';
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {
   EntityModelProductionSystemEntity, KeyValueService,
   PluginUsageService,
   ProductionSystemService
 } from "iacmf-client";
-import { Utils } from "../utils/utils";
+import {Utils} from "../utils/utils";
 import {
   ProductionSystemDialogComponent
 } from './production-system-dialog/production-system-dialog.component';
@@ -28,9 +28,11 @@ export class ProductionSystemsComponent implements OnInit {
     this.productionSystemEntities = []
     this.prodToKVMap = {};
     this.productionSystemService.getCollectionResourceProductionsystementityGet1().subscribe(result => {
-        result._embedded?.productionSystemEntities?.forEach(data => {
-          this.productionSystemEntities.push(data)
-        })
+        result._embedded?.productionSystemEntities
+          ?.filter(data => !data.isDeleted)
+          .forEach(data => {
+            this.productionSystemEntities.push(data)
+          })
       }
     )
   }

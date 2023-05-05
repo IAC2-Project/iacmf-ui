@@ -1,10 +1,16 @@
+<button mat-icon-button class="close-button" [mat-dialog-close]="true">
+  <mat-icon class="close-icon" >close</mat-icon>
+</button>
 <h1 mat-dialog-title>Create Compliance Job</h1>
 <mat-dialog-content>
-  <mat-stepper labelPosition="bottom" #stepper>
+  <mat-stepper  linear="true" labelPosition="bottom" #stepper>
     <mat-step label="Production System">
       <div class="step">
         <app-select-production-sytem
           (selectedProductionSystem)="productionSystemSelected($event)"></app-select-production-sytem>
+      </div>
+      <div class="navigation-buttons">
+        <button mat-raised-button matStepperNext>Next</button>
       </div>
     </mat-step>
     <mat-step label="Refinement">
@@ -12,11 +18,19 @@
         <app-refinement-plugins #refinementComponent (pluginAdded)="refinementPluginAdded($event)"
                                 (pluginRemoved)="refinementPluginRemoved($event)"></app-refinement-plugins>
       </div>
+      <div class="navigation-buttons">
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <button mat-raised-button matStepperNext>Next</button>
+      </div>
     </mat-step>
     <mat-step label="Compliance Rules">
       <div class="step">
         <app-compliance-rule-configuration
           (selectedComplianceRuleConfigurations)="complianceRulesSelected($event)"></app-compliance-rule-configuration>
+      </div>
+      <div class="navigation-buttons">
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <button mat-raised-button matStepperNext>Next</button>
       </div>
     </mat-step>
     <mat-step label="Checking">
@@ -24,33 +38,35 @@
         <app-plugin-usage [pluginType]="'ISSUE_CHECKING'"
                           (selectedPluginIdentifierEvent)="saveCheckingPluginConfiguration($event)"></app-plugin-usage>
       </div>
+      <div class="navigation-buttons">
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <button mat-raised-button matStepperNext>Next</button>
+      </div>
     </mat-step>
     <mat-step  label="Compliance Issue Fixing">
       <app-issue-fixing #fixingComponent (configurationsChanged)="this.saveIssueFixingConfigurations($event)" [complianceRuleConfigurationsSub]="this.shareNewComplianceRuleConfigurationEvents.asObservable()"></app-issue-fixing>
+      <div class="navigation-buttons">
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <button mat-raised-button matStepperNext>Next</button>
+      </div>
     </mat-step>
     <mat-step label="Validation">
       <div class="step">
         <app-validation-plugins></app-validation-plugins>
+      </div>
+      <div class="navigation-buttons">
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <button mat-raised-button matStepperNext>Next</button>
       </div>
     </mat-step>
     <mat-step label="Reporting">
       <div class="step">
         <app-reporting-plugins></app-reporting-plugins>
       </div>
-    </mat-step>
-    <mat-step>
-      <div class="step">
-        <ng-template matStepLabel>Done</ng-template>
-        <p>You are now done.</p>
-        <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button (click)="stepper.reset()">Reset</button>
-        </div>
+      <div class="navigation-buttons">
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <button mat-raised-button color="primary" (click)="storeComplianceJob()">Done</button>
       </div>
     </mat-step>
   </mat-stepper>
 </mat-dialog-content>
-<div mat-dialog-actions>
-  <button mat-raised-button mat-dialog-close>Cancel</button>
-  <button mat-raised-button color="primary" cdkFocusInitial (click)="storeComplianceJob()">OK</button>
-</div>
