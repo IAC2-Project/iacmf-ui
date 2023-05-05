@@ -1,12 +1,14 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
-import { FormControl } from '@angular/forms';
+import {FormControl} from '@angular/forms';
 import {Observable} from "rxjs";
 import {MatChipInputEvent} from "@angular/material/chips";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {map, startWith} from 'rxjs/operators';
 import {async} from "rxjs";
-import {ConfigureComplianceRuleComponent} from "../compliance-rule-configuration/configure-compliance-rule/configure-compliance-rule.component";
+import {
+  ConfigureComplianceRuleComponent
+} from "../compliance-rule-configuration/configure-compliance-rule/configure-compliance-rule.component";
 import {ConfigureValidationPluginComponent} from "./configure-validation-plugin/configure-validation-plugin.component";
 import {MatDialog} from "@angular/material/dialog";
 import {PluginPojo} from "iacmf-client";
@@ -27,23 +29,10 @@ export class ValidationPluginsComponent implements OnInit {
 
 
   allValidationPlugins: PluginPojo[] = [{
-    identifier: "ValidationPlugin1",
+    identifier: "NOOP",
     pluginType: "VALIDATION",
-    configurationEntryNames: [
-      {name: "someKey"},
-      {name: "someValue"},
-      {name: "someKey2"}
-    ]
-  },
-    {
-      identifier: "ValidationPlugin2",
-      pluginType: "VALIDATION",
-      configurationEntryNames: [
-        {name: "someKey"},
-        {name: "someValue"},
-        {name: "someKey2"}
-      ]
-    }];
+    configurationEntryNames: []
+  }];
 
   selected = this.allValidationPlugins[0].identifier;
 

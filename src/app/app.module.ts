@@ -18,14 +18,18 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTableModule} from "@angular/material/table";
 import {MatDialogModule} from "@angular/material/dialog";
-import {ProductionSystemDialogComponent} from './production-systems/production-system-dialog/production-system-dialog.component';
+import {
+  ProductionSystemDialogComponent
+} from './production-systems/production-system-dialog/production-system-dialog.component';
 import {ComplianceJobsComponent} from './compliancejobs/compliance-jobs.component';
-import {CreateCompliancejobDialogComponent} from './compliancejobs/create-compliancejob-dialog/create-compliancejob-dialog.component';
+import {
+  CreateCompliancejobDialogComponent
+} from './compliancejobs/create-compliancejob-dialog/create-compliancejob-dialog.component';
 import {MatStepperModule} from "@angular/material/stepper";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {RefinementPluginsComponent} from './refinement-plugins/refinement-plugins.component';
-import { MatChipsModule } from "@angular/material/chips";
+import {MatChipsModule} from "@angular/material/chips";
 import {MatOptionModule} from "@angular/material/core";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {IssueFixingComponent} from "./issue-fixing/issue-fixing.component";
@@ -33,26 +37,37 @@ import {ValidationPluginsComponent} from "./validation-plugins/validation-plugin
 import {ReportingPluginsComponent} from "./reporting-plugins/reporting-plugins.component";
 import {ComplianceRulesComponent} from "./compliance-rules/compliance-rules.component";
 import {MatSelectModule} from "@angular/material/select";
-import { ConfigureValidationPluginComponent } from './validation-plugins/configure-validation-plugin/configure-validation-plugin.component';
-import { ConfigureReportingPluginComponent } from './reporting-plugins/configure-reporting-plugin/configure-reporting-plugin.component';
+import {
+  ConfigureValidationPluginComponent
+} from './validation-plugins/configure-validation-plugin/configure-validation-plugin.component';
+import {
+  ConfigureReportingPluginComponent
+} from './reporting-plugins/configure-reporting-plugin/configure-reporting-plugin.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSliderModule} from "@angular/material/slider";
 import {MatDividerModule} from "@angular/material/divider";
-import { SelectProductionSytemComponent } from './production-systems/select-production-sytem/select-production-sytem.component';
+import {
+  SelectProductionSytemComponent
+} from './production-systems/select-production-sytem/select-production-sytem.component';
 import {MatInputModule} from "@angular/material/input";
-import { CreateComplianceRuleComponent } from './compliance-rules/create-compliance-rule/create-compliance-rule.component';
-import { KvComponent } from './kv/kv.component';
-import { PluginUsageComponent } from './plugin-usage/plugin-usage.component';
-import { ComplianceRuleConfigurationComponent } from './compliance-rule-configuration/compliance-rule-configuration.component';
+import {
+  CreateComplianceRuleComponent
+} from './compliance-rules/create-compliance-rule/create-compliance-rule.component';
+import {KvComponent} from './kv/kv.component';
+import {PluginUsageComponent} from './plugin-usage/plugin-usage.component';
+import {
+  ComplianceRuleConfigurationComponent
+} from './compliance-rule-configuration/compliance-rule-configuration.component';
 
 import {
   ConfigureComplianceRuleComponent
 } from './compliance-rule-configuration/configure-compliance-rule/configure-compliance-rule.component';
-import { ExecutionsComponent } from './execution/executions.component';
-import { ReadablePipe } from './utils/pipes/readable.pipe';
+import {ExecutionsComponent} from './execution/executions.component';
+import {ReadablePipe} from './utils/pipes/readable.pipe';
 import {
   PluginUsageConfigurationDialogComponent
 } from './plugin-usage/plugin-usage-configuration-dialog/plugin-usage-configuration-dialog.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -106,11 +121,10 @@ import {
     LayoutModule,
     ApiModule,
     MatDialogModule,
-    MatToolbarModule,
+    MatSnackBarModule,
     HttpClientModule
   ],
-  providers: [
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

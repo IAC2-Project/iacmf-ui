@@ -13,6 +13,7 @@ import { forkJoin, Subject } from 'rxjs';
 import { PluginUsageComponent } from '../../plugin-usage/plugin-usage.component';
 import { IssueFixingComponent } from '../../issue-fixing/issue-fixing.component';
 import { RefinementPluginsComponent } from '../../refinement-plugins/refinement-plugins.component';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-create-compliancejob-dialog',
@@ -41,7 +42,14 @@ export class CreateCompliancejobDialogComponent implements OnInit {
               private pluginUsageService: PluginUsageService,
               private issueFixingConfigurationService: IssueFixingConfigurationService,
               private complianceRuleConfigurationService: ComplianceRuleConfigurationService,
+              private snackBar: MatSnackBar,
               public utils: Utils) {
+  }
+
+  showNotification(message: string) {
+    this.snackBar.open(message, "OK",{
+      duration: 5 * 1000,
+    });
   }
 
   productionSystemSelected($event: any) {
@@ -77,23 +85,22 @@ export class CreateCompliancejobDialogComponent implements OnInit {
   storeComplianceJob() {
 
     if (this.selectedProductionSystem == -1) {
-      // TODO create a generic warning dialog and call it here with a meaningful message
-      console.log("Select a production system")
+      this.showNotification("Select a production system!");
       return;
     }
 
     if (this.selectedComplianceRules.length == 0) {
-      console.log("Select at least one compliance rule to check")
+      this.showNotification("Select at least one compliance rule to check!")
       return;
     }
 
     if (this.checkingPluginConfiguration == undefined) {
-      console.log("Select checking plugin")
+      this.showNotification("Select checking plugin")
       return;
     }
 
     if (this.issueFixingConfigurationsToCreate.length == 0) {
-      console.log("Configure at least one issue fixing configuration")
+      this.showNotification("Configure at least one issue fixing configuration")
     }
 
     // the configuration entries of the fixing and refinement plugins need to updated their values.
