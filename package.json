@@ -23,7 +23,7 @@
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4",
-    "iacmf-client": "1.0.3"
+    "iacmf-client": "1.0.5"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.0.5",

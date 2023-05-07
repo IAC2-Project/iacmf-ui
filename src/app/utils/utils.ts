@@ -3,9 +3,8 @@ import {
   EntityModelKVEntity,
   EntityModelPluginUsageEntity,
   EntityModelProductionSystemEntity,
-  KeyValueService, PluginConfigurationEntity, PluginConfigurationEntryDescriptor, PluginConfigurationService,
-  PluginPojo, PluginService,
-  PluginUsageEntity,
+  KeyValueService, PluginConfigurationService,
+   PluginService,
   PluginUsageService,
   ProductionSystemService, RepresentationModelObject
 } from "iacmf-client";
@@ -39,6 +38,7 @@ export class Utils {
       this.pluginUsage.followPropertyReferencePluginusageentityGet41(pluginUsageId)
         .subscribe(configurations => {
           // prepare delete requests for all configuration entries
+          // @ts-ignore
           let deleteRequests = configurations._embedded?.pluginConfigurationEntities?.map((configuration: EntityModelPluginConfigurationEntity) =>
             this.pluginConfigurationService.deleteItemResourcePluginconfigurationentityDelete(String(this.getId(configuration))));
           // if we do have requests, execute them all, and wait until all are done, then remove the plugin usage

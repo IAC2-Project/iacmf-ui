@@ -2,23 +2,17 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   ComplianceJobService,
   EntityModelComplianceJobEntity,
-  EntityModelKVEntity,
   EntityModelPluginConfigurationEntity,
   EntityModelPluginUsageEntity, EntityModelProductionSystemEntity,
-  KVEntity,
-  PluginConfigurationEntity,
   PluginConfigurationEntryDescriptor,
   PluginConfigurationService,
   PluginPojo,
   PluginService,
-  PluginUsageEntity,
   PluginUsageService,
   ProductionSystemService
 } from "iacmf-client";
 import { Utils } from "../utils/utils";
 import { forkJoin, Observable, of, Subscription } from "rxjs";
-import { PluginConfigurationEntityResponse } from 'iacmf-client/model/pluginConfigurationEntityResponse';
-import { getMatIconNameNotFoundError } from '@angular/material/icon';
 
 @Component({
   selector: 'app-plugin-usage',
@@ -91,14 +85,18 @@ export class PluginUsageComponent implements OnInit {
       this.selectedPluginIdentifier = this.pluginUsage.pluginIdentifier;
       this.pluginUsageService.followPropertyReferencePluginusageentityGet41(String(this.pluginUsageId)).subscribe(resp2 => {
         // we already have configuration entries for all expected configuration entries. Load them!
+
+        // @ts-ignore
         if (resp2._embedded?.pluginConfigurationEntities?.length === pluginPojo?.configurationEntryNames?.length) {
           console.log("All expected configurations already exist. Loading them now...");
           // maintain the order!
           pluginPojo?.configurationEntryNames?.forEach(descriptor => {
+            // @ts-ignore
             resp2._embedded?.pluginConfigurationEntities
-              ?.filter(entry => entry.key === descriptor.name)
-              .forEach(configurationEntry => this.pluginUsageConfigurations.push(configurationEntry));
+              ?.filter( (entry: any) => entry.key === descriptor.name)
+              .forEach((configurationEntry: any) => this.pluginUsageConfigurations.push(configurationEntry));
           });
+          // @ts-ignore
           resp2._embedded?.pluginConfigurationEntities?.forEach(conf => this.pluginUsageConfigurations.push(conf));
         } else {
           console.log("Creating empty configurations...");

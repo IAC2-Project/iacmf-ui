@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ComplianceIssueEntity, ExecutionEntity, ExecutionService} from "iacmf-client";
 import {MatDialog} from "@angular/material/dialog";
 import {Utils} from "../utils/utils";

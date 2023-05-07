@@ -3,15 +3,11 @@ import { MatDialog } from "@angular/material/dialog";
 import { Utils } from "../utils/utils";
 import { ConfigureComplianceRuleComponent } from "./configure-compliance-rule/configure-compliance-rule.component";
 import {
-  CreateComplianceRuleComponent
-} from "../compliance-rules/create-compliance-rule/create-compliance-rule.component";
-import {
   ComplianceRuleParameterAssignmentService,
   ComplianceRulesService,
   EntityModelComplianceRuleEntity,
   ComplianceRuleConfigurationEntity,
   ComplianceRuleConfigurationService,
-  ComplianceRuleParameterEntity,
   EntityModelComplianceRuleConfigurationEntity, EntityModelComplianceRuleParameterAssignmentEntity,
   EntityModelComplianceRuleParameterEntity
 } from "iacmf-client";
@@ -93,10 +89,12 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
     if (complianceRuleConfiguration != undefined) {
       // first we remove associated parameter assignments, then the configuration entity.
       this.complianceRuleConfigurationService.followPropertyReferenceComplianceruleconfigurationentityGet21(String(this.utils.getId(complianceRuleConfiguration))).subscribe(result => {
+        // @ts-ignore
         console.log("%d assignments where detected!", result._embedded?.complianceRuleParameterAssignmentEntities?.length);
+        // @ts-ignore
         let requests = result._embedded?.complianceRuleParameterAssignmentEntities
-          ?.map(assignment => (assignment as EntityModelComplianceRuleParameterAssignmentEntity))
-          .map(assignment => this.complianceRuleParameterAssigmentService.deleteItemResourceComplianceruleparameterassignmententityDelete(String(this.utils.getId(assignment))));
+          ?.map((assignment: any) => (assignment as EntityModelComplianceRuleParameterAssignmentEntity))
+          .map((assignment: EntityModelComplianceRuleParameterAssignmentEntity) => this.complianceRuleParameterAssigmentService.deleteItemResourceComplianceruleparameterassignmententityDelete(String(this.utils.getId(assignment))));
 
         if (requests && requests.length > 0) {
           forkJoin(requests).subscribe(() => {
