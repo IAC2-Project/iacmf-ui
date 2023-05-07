@@ -58,7 +58,6 @@ export class ExecutionsComponent implements OnInit {
       oldExecution[0].endTime = newExecution.endTime;
       oldExecution[0].startTime = newExecution.startTime;
       oldExecution[0].status = newExecution.status;
-      oldExecution[0].complianceJob = newExecution.complianceJob;
       oldExecution[0].currentStep = newExecution.currentStep;
       oldExecution[0].instanceModel = newExecution.instanceModel;
       oldExecution[0].violationsDetected = newExecution.violationsDetected;

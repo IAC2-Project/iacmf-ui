@@ -3,14 +3,12 @@ import {
   ComplianceJobService, ComplianceRuleConfigurationService,
   EntityModelComplianceRuleConfigurationEntity,
   EntityModelPluginUsageEntity, IssueFixingConfigurationEntityRequestBody,
-  IssueFixingConfigurationService, PluginUsageService
+  IssueFixingConfigurationService, PluginUsageService, ProductionSystemService
 } from "iacmf-client";
-import { ProductionSystemService } from "iacmf-client";
 
 import { Utils } from "../../utils/utils";
 import { MatDialogRef } from "@angular/material/dialog";
 import { forkJoin, Subject } from 'rxjs';
-import { PluginUsageComponent } from '../../plugin-usage/plugin-usage.component';
 import { IssueFixingComponent } from '../../issue-fixing/issue-fixing.component';
 import { RefinementPluginsComponent } from '../../refinement-plugins/refinement-plugins.component';
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -26,8 +24,8 @@ export class CreateCompliancejobDialogComponent implements OnInit {
   selectedComplianceRules: EntityModelComplianceRuleConfigurationEntity[] = [];
   checkingPluginConfiguration: EntityModelPluginUsageEntity | undefined;
   refinementPluginUsages = new Array<EntityModelPluginUsageEntity>();
+  reportingPluginConfiguration: EntityModelPluginUsageEntity | undefined;
   shareNewComplianceRuleConfigurationEvents: Subject<EntityModelComplianceRuleConfigurationEntity[]> = new Subject<EntityModelComplianceRuleConfigurationEntity[]>();
-
   issueFixingConfigurationsToCreate: IssueFixingConfigurationEntityRequestBody[] = [];
 
   @ViewChild('fixingComponent', { static: false }) fixingComponent: IssueFixingComponent | undefined;
@@ -74,6 +72,10 @@ export class CreateCompliancejobDialogComponent implements OnInit {
     }
   }
 
+  saveReportingPluginConfiguration($event: EntityModelPluginUsageEntity) {
+    this.reportingPluginConfiguration = $event;
+  }
+
   saveCheckingPluginConfiguration($event: EntityModelPluginUsageEntity) {
     this.checkingPluginConfiguration = $event;
   }
@@ -95,19 +97,25 @@ export class CreateCompliancejobDialogComponent implements OnInit {
     }
 
     if (this.checkingPluginConfiguration == undefined) {
-      this.showNotification("Select checking plugin")
+      this.showNotification("Select checking plugin!")
+      return;
+    }
+
+    if (this.reportingPluginConfiguration == undefined) {
+      this.showNotification("Select reporting plugin!")
       return;
     }
 
     if (this.issueFixingConfigurationsToCreate.length == 0) {
-      this.showNotification("Configure at least one issue fixing configuration")
+      this.showNotification("Warning: no issue fixing is configured!")
     }
 
     // the configuration entries of the fixing and refinement plugins need to updated their values.
     this.fixingComponent?.persistAssignments();
     this.refinementComponent?.persistAssignments();
 
-    let plugin = this.checkingPluginConfiguration;
+    let checkingPlugin = this.checkingPluginConfiguration;
+    let reportingPlugin = this.reportingPluginConfiguration;
 
     this.productionSystemService.getCollectionResourceProductionsystementityGet1().subscribe(resp => {
       resp._embedded?.productionSystemEntities
@@ -117,7 +125,8 @@ export class CreateCompliancejobDialogComponent implements OnInit {
             name: "someName",
             id: -1,
             productionSystem: this.utils.getLink("self", resp),
-            checkingPluginUsage: this.utils.getLink("self", plugin),
+            checkingPluginUsage: this.utils.getLink("self", checkingPlugin),
+            reportingPlugin: this.utils.getLink("self", reportingPlugin),
             complianceRuleConfigurations: this.selectedComplianceRules.map((cr: EntityModelComplianceRuleConfigurationEntity) => this.utils.getLink("self", cr))
           };
           console.debug(requestBody);
@@ -132,7 +141,7 @@ export class CreateCompliancejobDialogComponent implements OnInit {
                 }
               };
 
-              return this.pluginUsageService.createPropertyReferencePluginusageentityPut1(String(this.utils.getId(usage)), body);
+              return this.pluginUsageService.createPropertyReferencePluginusageentityPut(String(this.utils.getId(usage)), body);
             });
 
             requests.push(...this.issueFixingConfigurationsToCreate.map(conf => {

@@ -1,9 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {
-  ComplianceRuleParameterAssignmentService,
-  ComplianceRulesService,
-  EntityModelComplianceRuleEntity
-} from "iacmf-client/index";
 import { MatDialog } from "@angular/material/dialog";
 import { Utils } from "../utils/utils";
 import { ConfigureComplianceRuleComponent } from "./configure-compliance-rule/configure-compliance-rule.component";
@@ -11,6 +6,9 @@ import {
   CreateComplianceRuleComponent
 } from "../compliance-rules/create-compliance-rule/create-compliance-rule.component";
 import {
+  ComplianceRuleParameterAssignmentService,
+  ComplianceRulesService,
+  EntityModelComplianceRuleEntity,
   ComplianceRuleConfigurationEntity,
   ComplianceRuleConfigurationService,
   ComplianceRuleParameterEntity,
@@ -94,7 +92,7 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
   removeComplianceRuleConfiguration(complianceRuleConfiguration: EntityModelComplianceRuleConfigurationEntity) {
     if (complianceRuleConfiguration != undefined) {
       // first we remove associated parameter assignments, then the configuration entity.
-      this.complianceRuleConfigurationService.followPropertyReferenceComplianceruleconfigurationentityGet31(String(this.utils.getId(complianceRuleConfiguration))).subscribe(result => {
+      this.complianceRuleConfigurationService.followPropertyReferenceComplianceruleconfigurationentityGet21(String(this.utils.getId(complianceRuleConfiguration))).subscribe(result => {
         console.log("%d assignments where detected!", result._embedded?.complianceRuleParameterAssignmentEntities?.length);
         let requests = result._embedded?.complianceRuleParameterAssignmentEntities
           ?.map(assignment => (assignment as EntityModelComplianceRuleParameterAssignmentEntity))

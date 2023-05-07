@@ -1,16 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { forkJoin, Observable, Subscription } from "rxjs";
 import {
-  EntityModelComplianceRuleConfigurationEntity, EntityModelIssueFixingConfigurationEntity,
-  EntityModelPluginUsageEntity, IssueFixingConfigurationEntity, IssueFixingConfigurationEntityRequestBody,
-  IssueFixingConfigurationService, PluginPojo, PluginService, PluginUsageService
+  EntityModelComplianceRuleConfigurationEntity,
+  EntityModelPluginUsageEntity, IssueFixingConfigurationEntityRequestBody,
+  PluginService
 } from "iacmf-client";
 import { MatDialog } from "@angular/material/dialog";
 import { Utils } from "../utils/utils";
-import {
-  PluginUsageConfigurationDialogComponent
-} from '../plugin-usage/plugin-usage-configuration-dialog/plugin-usage-configuration-dialog.component';
-import PluginTypeEnum = PluginPojo.PluginTypeEnum;
 import { PluginUsageComponent } from '../plugin-usage/plugin-usage.component';
 
 @Component({
