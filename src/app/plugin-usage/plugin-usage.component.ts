@@ -151,10 +151,12 @@ export class PluginUsageComponent implements OnInit {
   }
 
   pluginIdentifierChanged() {
-    if (this.getCurrentPlugin() != null) {
+    const plugin = this.getCurrentPlugin();
+    if (plugin != null && this.pluginUsage && this.pluginUsage.pluginIdentifier) {
+      console.log("previous plugin was not empty!" + this.getCurrentPlugin()?.identifier);
       this.utils.removePluginUsage(this.pluginUsage.pluginIdentifier).subscribe();
     }
-
+    console.log("creating new plugin usage...");
     this.createNewPluginUsage();
   }
 
@@ -190,6 +192,7 @@ export class PluginUsageComponent implements OnInit {
       return of([]);
     }
   }
+
   updatePluginConfigurationEntity(pluginConfigurationEntity: EntityModelPluginConfigurationEntity) {
     return this.pluginUsageConfigurationService.putItemResourcePluginconfigurationentityPut(String(this.utils.getId(pluginConfigurationEntity)), {
       id: Number(this.utils.getId(pluginConfigurationEntity)),

@@ -61,14 +61,4 @@ export class ValidationPluginsComponent implements OnInit {
     }
   }
 
-  openConfigureValidationPlugin(complianceRuleEntity: PluginPojo, enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(ConfigureValidationPluginComponent, {
-      width: '80%',
-      height: '80%',
-      enterAnimationDuration,
-      exitAnimationDuration,
-      data: complianceRuleEntity,
-    });
-  }
-
 }

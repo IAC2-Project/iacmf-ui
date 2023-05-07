@@ -77,10 +77,8 @@ export class IssueFixingComponent implements OnInit {
     } else {
       let currentPlugins = this.issueTypeToPluginMap.get(issueType);
 
-      // @ts-ignore
-      if (currentPlugins.indexOf(pluginId) < 0) {
-        // @ts-ignore
-        currentPlugins.get(issueType).push(pluginId);
+      if (currentPlugins && currentPlugins.indexOf(pluginId) < 0) {
+        currentPlugins.push(pluginId);
       }
     }
   }
