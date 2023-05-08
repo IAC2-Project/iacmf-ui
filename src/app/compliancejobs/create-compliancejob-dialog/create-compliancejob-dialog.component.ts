@@ -126,7 +126,7 @@ export class CreateCompliancejobDialogComponent implements OnInit {
             id: -1,
             productionSystem: this.utils.getLink("self", resp),
             checkingPluginUsage: this.utils.getLink("self", checkingPlugin),
-            reportingPlugin: this.utils.getLink("self", reportingPlugin),
+            reportingPluginUsage: this.utils.getLink("self", reportingPlugin),
             complianceRuleConfigurations: this.selectedComplianceRules.map((cr: EntityModelComplianceRuleConfigurationEntity) => this.utils.getLink("self", cr))
           };
           console.debug(requestBody);

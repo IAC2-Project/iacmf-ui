@@ -61,7 +61,8 @@
     </mat-step>
     <mat-step label="Reporting">
       <div class="step">
-        <app-reporting-plugins></app-reporting-plugins>
+        <app-plugin-usage [pluginType]="'REPORTING'"
+                          (selectedPluginIdentifierEvent)="saveReportingPluginConfiguration($event)"></app-plugin-usage>
       </div>
       <div class="navigation-buttons">
         <button mat-raised-button matStepperPrevious>Back</button>
