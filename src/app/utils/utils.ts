@@ -35,7 +35,7 @@ export class Utils {
   public removePluginUsage(pluginUsageId: string): Observable<any> {
     return new Observable<any>((observer) => {
       // let's remove the attached plugin configurations first
-      this.pluginUsage.followPropertyReferencePluginusageentityGet41(pluginUsageId)
+      this.pluginUsage.followPropertyReferencePluginusageentityGet51(pluginUsageId)
         .subscribe(configurations => {
           // prepare delete requests for all configuration entries
           // @ts-ignore

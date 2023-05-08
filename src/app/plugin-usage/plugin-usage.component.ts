@@ -83,7 +83,7 @@ export class PluginUsageComponent implements OnInit {
       let pluginPojo = this.getCurrentPlugin();
       this.pluginUsageConfigurationDescriptors = pluginPojo?.configurationEntryNames;
       this.selectedPluginIdentifier = this.pluginUsage.pluginIdentifier;
-      this.pluginUsageService.followPropertyReferencePluginusageentityGet41(String(this.pluginUsageId)).subscribe(resp2 => {
+      this.pluginUsageService.followPropertyReferencePluginusageentityGet51(String(this.pluginUsageId)).subscribe(resp2 => {
         // we already have configuration entries for all expected configuration entries. Load them!
 
         // @ts-ignore
@@ -152,7 +152,7 @@ export class PluginUsageComponent implements OnInit {
     const plugin = this.getCurrentPlugin();
     if (plugin != null && this.pluginUsage && this.pluginUsage.pluginIdentifier) {
       console.log("previous plugin was not empty!" + this.getCurrentPlugin()?.identifier);
-      this.utils.removePluginUsage(this.pluginUsage.pluginIdentifier).subscribe();
+      this.utils.removePluginUsage(String(this.utils.getId(this.pluginUsage))).subscribe();
     }
     console.log("creating new plugin usage...");
     this.createNewPluginUsage();

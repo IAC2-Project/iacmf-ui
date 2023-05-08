@@ -12,6 +12,7 @@ import { forkJoin, Subject } from 'rxjs';
 import { IssueFixingComponent } from '../../issue-fixing/issue-fixing.component';
 import { RefinementPluginsComponent } from '../../refinement-plugins/refinement-plugins.component';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {PluginUsageComponent} from "../../plugin-usage/plugin-usage.component";
 
 @Component({
   selector: 'app-create-compliancejob-dialog',
@@ -30,6 +31,7 @@ export class CreateCompliancejobDialogComponent implements OnInit {
 
   @ViewChild('fixingComponent', { static: false }) fixingComponent: IssueFixingComponent | undefined;
   @ViewChild('refinementComponent', {static: false}) refinementComponent: RefinementPluginsComponent | undefined;
+  @ViewChild('reportingPluginUsage', { static: false }) pluginUsageComponent: PluginUsageComponent | undefined;
 
   ngOnInit(): void {
   }
@@ -111,8 +113,11 @@ export class CreateCompliancejobDialogComponent implements OnInit {
     }
 
     // the configuration entries of the fixing and refinement plugins need to updated their values.
+    // todo this could result in race conditions!
     this.fixingComponent?.persistAssignments();
     this.refinementComponent?.persistAssignments();
+    this.pluginUsageComponent?.updateAllPluginConfigurations()
+      .subscribe(() => {console.log("successfully saved configurations for reporting plugin!")});
 
     let checkingPlugin = this.checkingPluginConfiguration;
     let reportingPlugin = this.reportingPluginConfiguration;
@@ -164,7 +169,7 @@ export class CreateCompliancejobDialogComponent implements OnInit {
             }));
 
             if (requests.length > 0) {
-              console.log("Creating associations between the %d refinement plugin usages and compliance rule configurations, and the compliance job.", requests.length);
+              console.log("Creating associations between the %d plugin usages and compliance rule configurations, and the compliance job.", requests.length);
               forkJoin(requests).subscribe(() => {
                 console.log("Finished creating associations with the compliance job!");
                 this.dialogRef.close({ event: 'Closed', data: complianceJob });

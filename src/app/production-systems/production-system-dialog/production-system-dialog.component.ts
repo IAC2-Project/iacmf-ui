@@ -113,6 +113,8 @@ export class ProductionSystemDialogComponent implements OnInit {
         modelCreationPluginUsage: this.utils.getLink("self", this.selectedPluginUsage)
       }
 
+      console.debug(req);
+
       if (this.creationMode) {
         this.createNewProductionSystem(req);
       } else {
