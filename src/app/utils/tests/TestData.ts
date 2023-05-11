@@ -108,7 +108,7 @@ export class TestData {
         name: "Unexpected Docker Containers Rule",
         description: "There shouldn't be Docker Containers running which are not reflected in the model",
         isDeleted: false,
-        location: "http://localhost:8080/winery/compliancerules/http%253A%252F%252Fwww.example.org%252Ftosca%252Fcompliancerules/no-unexpected-docker-containers_w1-wip1",
+        location: "http://localhost:8080/#/compliancerules/http%253A%252F%252Fwww.example.org%252Ftosca%252Fcompliancerules/no-unexpected-docker-containers_w1-wip1/readme",
         parameters: [{
           id: -1,
           name: "ENGINE_URL",
@@ -168,6 +168,10 @@ export class TestData {
         value: "opentosca/ode:latest"
       }, {
         id: -1,
+        key: "dockerContainerFilter_containerUi",
+        value: "opentosca/ui:latest"
+      },{
+        id: -1,
         key: "dockerContainerFilter_engineJava8",
         value: "opentosca/engine-ia:latest-jdk8"
       }, {
@@ -177,7 +181,7 @@ export class TestData {
       }, {
         id: -1,
         key: "dockerContainerFilter_winery",
-        value: "opentosca/winery:iac-compliance"
+        value: "opentosca/winery"
       }, {
         id: -1,
         key: "dockerContainerFilter_mysql",

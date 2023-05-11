@@ -38,22 +38,25 @@ export class ExecutionsComponent implements OnInit {
   ngOnInit(): void {
     this.refreshExecutions();
     interval(this.POLLING_INTERVAL_MILLIS).subscribe(() => {
-      //this.refreshExecutions();
+      this.refreshExecutions();
     });
   }
 
   refreshExecutions() {
     if (this.complianceJobId) {
+
       this.executionService.getAllExecutionsOfJob(this.complianceJobId).subscribe(resp => {
-        console.debug(resp);
         resp.forEach(ex => {
           // load missing issues information
           let requests = ex.complianceIssueEntities?.map(i => this.getIssueDetails(String(i)));
-          if (requests != null) {
+
+          if (requests != null && requests.length > 0) {
             forkJoin(requests).subscribe((issues) => {
               ex.complianceIssueEntities = issues;
               this.refreshExecution(ex);
             });
+          } else {
+            this.refreshExecution(ex);
           }
 
         });
@@ -73,13 +76,12 @@ export class ExecutionsComponent implements OnInit {
     let propertiesFetchReq = this.issueService.followPropertyReferenceComplianceissueentityGet31(issueId);
     let complianceRuleConfFetchReq = this.issueService.followPropertyReferenceComplianceissueentityGet1(issueId);
     let confAndCrFetchReq = complianceRuleConfFetchReq.pipe(
-      mergeMap(crConf=> this.crConfService.followPropertyReferenceComplianceruleconfigurationentityGet21(String(this.utils.getId(crConf)))),
+      mergeMap(crConf => this.crConfService.followPropertyReferenceComplianceruleconfigurationentityGet21(String(this.utils.getId(crConf)))),
       withLatestFrom(complianceRuleConfFetchReq)
     );
 
     return forkJoin([issueFetchReq, fixingReportsFetchReq, propertiesFetchReq, confAndCrFetchReq]).pipe(
       map(([issueObject, fixingReports, properties, [cr, crConf]]) => {
-        console.debug(cr);
         return {
           id: Number(issueId),
           description: issueObject.description,
@@ -122,8 +124,8 @@ export class ExecutionsComponent implements OnInit {
    * @param newExecution
    */
   refreshExecution(newExecution: ExecutionEntity) {
-    console.debug(newExecution);
     let oldExecution = this.executions.filter(e => e.id === newExecution.id);
+
     if (oldExecution.length === 0) {
       this.executions.push(newExecution);
     } else {
@@ -204,7 +206,6 @@ export class ExecutionsComponent implements OnInit {
 
     this.http.post<any>(wineryUrl, formData).subscribe({
       next: () => {
-        console.log("successfully submitted request!");
         const attributes = new Map<string, string>();
         attributes.set('href', topologyModelUrl);
         attributes.set('target', '_blank');
