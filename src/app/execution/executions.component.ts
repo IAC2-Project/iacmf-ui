@@ -1,9 +1,23 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ComplianceIssueEntity, ExecutionEntity, ExecutionService} from "iacmf-client";
+import {
+  ComplianceIssueEntity,
+  ComplianceIssueService,
+  ComplianceRuleConfigurationService,
+  ComplianceRulesService,
+  EntityModelComplianceIssueEntity,
+  EntityModelKVEntity,
+  ExecutionEntity,
+  ExecutionService,
+  FixingReportService,
+  KeyValueService
+} from "iacmf-client";
 import {MatDialog} from "@angular/material/dialog";
 import {Utils} from "../utils/utils";
-import {interval} from "rxjs";
+import {forkJoin, interval, mergeMap, Observable, switchMap, withLatestFrom} from "rxjs";
 import {HttpClient} from "@angular/common/http";
+import {EntityModelIssueFixingReportEntity} from "iacmf-client/model/entityModelIssueFixingReportEntity";
+import {map} from "rxjs/operators";
+import {mergeMappings} from "@angular/compiler-cli/src/ngtsc/sourcemaps/src/source_file";
 
 @Component({
   selector: 'app-executions',
@@ -17,21 +31,31 @@ export class ExecutionsComponent implements OnInit {
   @Input("complianceJob") complianceJobId: number | undefined;
 
 
-  constructor(public dialog: MatDialog, public executionService: ExecutionService, public utils: Utils, public http: HttpClient) {
+  constructor(public dialog: MatDialog, public executionService: ExecutionService, public utils: Utils, public http: HttpClient,
+              private issueService: ComplianceIssueService, private crConfService: ComplianceRuleConfigurationService) {
   }
 
   ngOnInit(): void {
-    this.refreshExecutions()
+    this.refreshExecutions();
     interval(this.POLLING_INTERVAL_MILLIS).subscribe(() => {
-      this.refreshExecutions();
-    })
+      //this.refreshExecutions();
+    });
   }
 
   refreshExecutions() {
     if (this.complianceJobId) {
       this.executionService.getAllExecutionsOfJob(this.complianceJobId).subscribe(resp => {
+        console.debug(resp);
         resp.forEach(ex => {
-          this.refreshExecution(ex);
+          // load missing issues information
+          let requests = ex.complianceIssueEntities?.map(i => this.getIssueDetails(String(i)));
+          if (requests != null) {
+            forkJoin(requests).subscribe((issues) => {
+              ex.complianceIssueEntities = issues;
+              this.refreshExecution(ex);
+            });
+          }
+
         });
         // let's find the executions that were deleted in the backend (not really expected, but just in case!)
         let deletedExecutions = this.executions.filter(ex => resp.filter(exx => exx.id === ex.id).length === 0);
@@ -43,6 +67,54 @@ export class ExecutionsComponent implements OnInit {
     }
   }
 
+  getIssueDetails(issueId: string): Observable<ComplianceIssueEntity> {
+    let issueFetchReq = this.issueService.getItemResourceComplianceissueentityGet(issueId);
+    let fixingReportsFetchReq = this.issueService.followPropertyReferenceComplianceissueentityGet21(issueId);
+    let propertiesFetchReq = this.issueService.followPropertyReferenceComplianceissueentityGet31(issueId);
+    let complianceRuleConfFetchReq = this.issueService.followPropertyReferenceComplianceissueentityGet1(issueId);
+    let confAndCrFetchReq = complianceRuleConfFetchReq.pipe(
+      mergeMap(crConf=> this.crConfService.followPropertyReferenceComplianceruleconfigurationentityGet21(String(this.utils.getId(crConf)))),
+      withLatestFrom(complianceRuleConfFetchReq)
+    );
+
+    return forkJoin([issueFetchReq, fixingReportsFetchReq, propertiesFetchReq, confAndCrFetchReq]).pipe(
+      map(([issueObject, fixingReports, properties, [cr, crConf]]) => {
+        console.debug(cr);
+        return {
+          id: Number(issueId),
+          description: issueObject.description,
+          type: issueObject.type,
+          fixingReports: fixingReports._embedded?.issueFixingReportEntities?.map((r: EntityModelIssueFixingReportEntity) => {
+            return {
+              id: Number(this.utils.getId(r)),
+              description: r.description,
+              isSuccessful: r.isSuccessful
+            };
+          }),
+          properties: properties._embedded?.kVEntities?.map((p: EntityModelKVEntity) => {
+            return {
+              id: Number(this.utils.getId(p)),
+              key: p.key,
+              value: p.value
+            };
+          }),
+          complianceRuleConfiguration: {
+            id: Number(this.utils.getId(crConf)),
+            issueType: crConf.issueType,
+            complianceRule: {
+              id: Number(this.utils.getId(cr)),
+              type: cr.type,
+              description: cr.description,
+              name: cr.name,
+              location: cr.location,
+              isDeleted: cr.isDeleted
+            }
+          }
+        };
+      })
+    );
+  }
+
   /**
    * Refresh the list of executions.
    * We use assignments of the properties of an old execution instead of simply replacing it, because this maintains
@@ -50,6 +122,7 @@ export class ExecutionsComponent implements OnInit {
    * @param newExecution
    */
   refreshExecution(newExecution: ExecutionEntity) {
+    console.debug(newExecution);
     let oldExecution = this.executions.filter(e => e.id === newExecution.id);
     if (oldExecution.length === 0) {
       this.executions.push(newExecution);
@@ -68,9 +141,9 @@ export class ExecutionsComponent implements OnInit {
         if (!oldExecution[0].complianceIssueEntities) {
           oldExecution[0].complianceIssueEntities = [];
         }
-
         newExecution.complianceIssueEntities.forEach(issue => {
-          let oldIssue = oldExecution[0].complianceIssueEntities?.filter(i => i.id == issue.id);
+          let oldIssue = oldExecution[0].complianceIssueEntities
+            ?.filter(i => i.id == issue.id);
           if (oldIssue && oldIssue.length > 0) {
             oldIssue[0].description = issue.description;
             oldIssue[0].type = issue.type;
@@ -80,6 +153,7 @@ export class ExecutionsComponent implements OnInit {
             oldExecution[0].complianceIssueEntities?.push(issue);
           }
         });
+
       } else {
         oldExecution[0].complianceIssueEntities = [];
       }
