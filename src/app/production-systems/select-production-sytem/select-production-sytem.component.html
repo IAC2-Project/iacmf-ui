@@ -4,7 +4,7 @@
     <mat-select [(value)]="this.selected">
       <mat-option *ngFor="let productionSystem of productionSystemEntities"
                   value="{{this.utils.getId(productionSystem)}}" (click)="emitProductionSystem()">
-        {{this.utils.getId(productionSystem)}}
+        {{this.productionSystem.name + ' (id: ' + this.utils.getId(productionSystem) +')'}}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -12,14 +12,25 @@
     <div *ngFor="let productionSystem of this._filter(this.selected)">
       <mat-card>
         <mat-card-header>
-          <mat-card-title>ProductionSystemId: {{this.utils.getId(productionSystem)}}</mat-card-title>
+          <mat-card-title>{{this.productionSystem.name}} (id: {{this.utils.getId(productionSystem)}})</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <h4>Description:</h4>
-          <p>{{productionSystem.description}}</p>
-          <h4>IaC Technology:</h4>
-          <p>{{productionSystem.iacTechnologyName}}</p>
-        </mat-card-content>
+          <div class="property">
+            <div class="property-label">ID:</div>
+            <span class="property-value">{{this.utils.getId(productionSystem)}}</span>
+          </div>
+          <div class="property">
+            <div class="property-label">Name:</div>
+            <span class="property-value">{{productionSystem.name}}</span>
+          </div>
+          <div class="property">
+            <div class="property-label">IaC Technology:</div>
+            <span class="property-value">{{productionSystem.iacTechnologyName}}</span>
+          </div>
+          <div class="property">
+            <div class="property-label">Description:</div>
+            <span class="property-value">{{productionSystem.description}}</span>
+          </div>        </mat-card-content>
       </mat-card>
       <br>
     </div>
