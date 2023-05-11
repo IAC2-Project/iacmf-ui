@@ -146,13 +146,12 @@ export class CreateCompliancejobDialogComponent implements OnInit {
                 }
               };
 
-              return this.pluginUsageService.createPropertyReferencePluginusageentityPut(String(this.utils.getId(usage)), body);
+              return this.pluginUsageService.createPropertyReferencePluginusageentityPut1(String(this.utils.getId(usage)), body);
             });
 
             requests.push(...this.issueFixingConfigurationsToCreate.map(conf => {
               conf.complianceJob = complianceJobUrl;
               console.log("issue fixing configuration request");
-              console.debug(conf);
               return this.issueFixingConfigurationService.postCollectionResourceIssuefixingconfigurationentityPost(conf);
             }));
 

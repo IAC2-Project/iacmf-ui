@@ -13,6 +13,7 @@ import {
 } from "iacmf-client";
 import { Utils } from "../utils/utils";
 import { forkJoin, Observable, of, Subscription } from "rxjs";
+import {TestData} from "../utils/tests/TestData";
 
 @Component({
   selector: 'app-plugin-usage',
@@ -37,8 +38,8 @@ export class PluginUsageComponent implements OnInit {
   pluginUsage: EntityModelPluginUsageEntity = { pluginIdentifier: "" }
   pluginUsageConfigurations: Array<EntityModelPluginConfigurationEntity> = new Array<EntityModelPluginConfigurationEntity>();
   pluginUsageConfigurationDescriptors: Array<PluginConfigurationEntryDescriptor> | undefined = Array<PluginConfigurationEntryDescriptor>();
-
   entryType: typeof PluginConfigurationEntryDescriptor.TypeEnum = PluginConfigurationEntryDescriptor.TypeEnum;
+  hasTestData: boolean = false;
 
   @Input("pluginUsageIdentifierSub") pluginUsageIdentifierSub: Observable<EntityModelPluginUsageEntity> | undefined;
   private pluginUsageIdentifierCreateEventsSubscription: Subscription | undefined;
@@ -47,6 +48,7 @@ export class PluginUsageComponent implements OnInit {
               private pluginUsageService: PluginUsageService,
               private utils: Utils, public pluginUsageConfigurationService: PluginConfigurationService,
               private productionSystemService: ProductionSystemService,
+              private testData: TestData,
               private complianceJobService: ComplianceJobService) {
   }
 
@@ -172,6 +174,8 @@ export class PluginUsageComponent implements OnInit {
         this.selectedPluginDescription = currentPlugin.description;
         this.createEmptyPluginConfigurationEntities();
       }
+
+      this.hasTestData = this.testData.getTestDataForPlugin(this.selectedPluginIdentifier) !== null;
       this.emitPluginUsage();
     });
   }
@@ -207,6 +211,18 @@ export class PluginUsageComponent implements OnInit {
     }
 
     return null;
+  }
+
+  fillTestDataForPlugin() {
+    const map = this.testData.getTestDataForPlugin(this.pluginUsage.pluginIdentifier);
+
+    if (map != null) {
+      for (let [key, value] of map) {
+        let current = this.pluginUsageConfigurations.filter(c => c.key === key)[0];
+        current.key = value.key;
+        current.value = value.value;
+      }
+    }
   }
 
 }

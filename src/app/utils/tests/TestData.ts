@@ -6,7 +6,7 @@ import {
   EntityModelPluginUsageEntity,
   EntityModelProductionSystemEntity,
   KeyValueService,
-  KVEntity,
+  KVEntity, PluginConfigurationEntity,
   PluginUsageEntity, PluginUsageService,
   ProductionSystemEntity,
   ProductionSystemService, RepresentationModelObject
@@ -25,10 +25,85 @@ export class TestData {
 
   }
 
+  getTestDataForPlugin(pluginId: string | undefined): Map<string, PluginConfigurationEntity> | null {
+    if (pluginId) {
+      if (pluginId === "bash-refinement-plugin") {
+        return this.createVmUseCaseRefinementPlugin();
+      } else if (pluginId === "bash-fixing-plugin") {
+        return this.createVmUseCaseFixingPlugin();
+      } else if (pluginId === "smtp-email-sending-plugin") {
+        return this.createEmailPlugin();
+      }
+    }
 
-  createUseCaseComplianceRules() : Array<ComplianceRuleConfigurationEntity> {
+    return null;
+  }
+
+  createVmUseCaseFixingPlugin(): Map<string, PluginConfigurationEntity> {
+    const map: Map<string, PluginConfigurationEntity> = new Map();
+    map.set("script", {
+      id: -1,
+      key: "script",
+      value: "sudo sed -i -e 's/\\s*nullok\\s*/ /g' /etc/pam.d/common-password"
+    }).set("username", {
+      id: -1,
+      key: "username",
+      value: "ubuntu"
+    });
+
+    return map;
+  }
+
+  createEmailPlugin(): Map<string, PluginConfigurationEntity> {
+    const map: Map<string, PluginConfigurationEntity> = new Map();
+    map.set("to", {
+      id: -1,
+      key: "to",
+      value: "ghareeb.falazi@hotmail.com"
+    }).set("smtp-host", {
+      id: -1,
+      key: "smtp-host",
+      value: "smtp.gmail.com"
+    }).set("smtp-tsl-starttsl-port", {
+      id: -1,
+      key: "smtp-tsl-starttsl-port",
+      value: "587"
+    });
+
+    return map;
+  }
+
+  createVmUseCaseRefinementPlugin(): Map<string, PluginConfigurationEntity> {
+    const map: Map<string, PluginConfigurationEntity> = new Map();
+    map.set("script", {
+      id: -1,
+      key: "script",
+      value: "[[ ! -z $(sudo grep nullok /etc/pam.d/common-password) ]] && echo 'true' || echo 'false'"
+    }).set("username", {
+      id: -1,
+      key: "username",
+      value: "ubuntu"
+    }).set("output_property_name", {
+      id: -1,
+      key: "output_property_name",
+      value: "nullok"
+    }).set("output_property_type", {
+      id: -1,
+      key: "output_property_type",
+      value: "BOOLEAN"
+    }).set("ignore-missing-properties", {
+      id: -1,
+      key: "ignore-missing-properties",
+      value: "false"
+    });
+
+    return map;
+  }
+
+
+  createUseCaseComplianceRules(): Array<ComplianceRuleConfigurationEntity> {
     return [{
-      complianceRule:  {
+      complianceRule: {
         id: -1,
         name: "Unexpected Docker Containers Rule",
         description: "There shouldn't be Docker Containers running which are not reflected in the model",
@@ -52,7 +127,7 @@ export class TestData {
     }];
   }
 
-  createUseCaseProductionSystem() : ProductionSystemEntity {
+  createUseCaseProductionSystem(): ProductionSystemEntity {
     return {
       iacTechnologyName: "opentoscacontainer",
       isDeleted: false,
@@ -67,43 +142,43 @@ export class TestData {
         id: -1,
         key: "opentoscacontainer_hostname",
         value: "localhost"
-      },{
+      }, {
         id: -1,
         key: "opentoscacontainer_port",
         value: "1337"
-      },{
+      }, {
         id: -1,
         key: "opentoscacontainer_appId",
         value: "RealWorld-Application_Angular-Spring-MySQL-w1.csar"
-      },{
+      }, {
         id: -1,
         key: "opentoscacontainer_instanceId",
         value: "instanceId"
-      },{
+      }, {
         id: -1,
         key: "dockerContainerFilter_opentoscaContainer",
         value: "opentosca/container:latest"
-      },{
+      }, {
         id: -1,
         key: "dockerContainerFilter_engineBpmn",
         value: "opentosca/camunda-bpmn:latest"
-      },{
+      }, {
         id: -1,
         key: "dockerContainerFilter_engineBpel",
         value: "opentosca/ode:latest"
-      },{
+      }, {
         id: -1,
         key: "dockerContainerFilter_engineJava8",
         value: "opentosca/engine-ia:latest-jdk8"
-      },{
+      }, {
         id: -1,
         key: "dockerContainerFilter_engineJava17",
         value: "opentosca/engine-ia:latest-jdk17"
-      },{
+      }, {
         id: -1,
         key: "dockerContainerFilter_winery",
         value: "opentosca/winery:iac-compliance"
-      },{
+      }, {
         id: -1,
         key: "dockerContainerFilter_mysql",
         value: "mysql"

@@ -1,3 +1,4 @@
+<button *ngIf="hasTestData" (click)="fillTestDataForPlugin()"> </button>
 <h4 *ngIf="showHeader">Configure {{pluginType | readable}} Plugin</h4>
 <div>
   <mat-form-field *ngIf="canChangeIdentifier">

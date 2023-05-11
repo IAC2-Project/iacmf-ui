@@ -1,20 +1,21 @@
-import { Component, EventEmitter, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, QueryList, ViewChildren} from '@angular/core';
 
-import { async, forkJoin } from "rxjs";
+import {async, bindCallback, forkJoin} from "rxjs";
 
-import { MatDialog } from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 
 import {
   PluginConfigurationService,
   PluginPojo, PluginService, PluginUsageService
 } from "iacmf-client";
-import { EntityModelPluginUsageEntity } from 'iacmf-client/model/entityModelPluginUsageEntity';
-import { Utils } from '../utils/utils';
+import {EntityModelPluginUsageEntity} from 'iacmf-client/model/entityModelPluginUsageEntity';
+import {Utils} from '../utils/utils';
 import {
   PluginUsageConfigurationDialogComponent
 } from '../plugin-usage/plugin-usage-configuration-dialog/plugin-usage-configuration-dialog.component';
 import PluginTypeEnum = PluginPojo.PluginTypeEnum;
-import { PluginUsageComponent } from '../plugin-usage/plugin-usage.component';
+import {PluginUsageComponent} from '../plugin-usage/plugin-usage.component';
+import {PluginUsageEntityRequestBody} from "iacmf-client/model/pluginUsageEntityRequestBody";
 
 @Component({
   selector: 'app-refinement-plugins',
@@ -58,15 +59,21 @@ export class RefinementPluginsComponent implements OnInit {
   addRefinementPlugin(refinementPluginId: string | undefined) {
     if (refinementPluginId != undefined) {
       this.addedRefinementPlugins.push(this._filter(refinementPluginId)[0]);
-      this.addedPluginUsages.push({
-        pluginIdentifier: refinementPluginId
-      });
     }
   }
 
   pluginConfigurationCreated(resp: EntityModelPluginUsageEntity, index: number) {
     this.addedPluginUsages[index] = resp;
-    this.pluginAddedEventEmitter.emit(resp);
+    resp.refinementPluginIndexInComplianceJob = index;
+    let body: PluginUsageEntityRequestBody = {
+      id: Number(this.utils.getId(resp)),
+      pluginIdentifier: resp.pluginIdentifier,
+      refinementPluginIndexInComplianceJob: index
+    };
+    this.pluginUsageService.patchItemResourcePluginusageentityPatch(String(this.utils.getId(resp)), body).subscribe(() => {
+      this.pluginAddedEventEmitter.emit(resp);
+    });
+
   }
 
   removeRefinementPlugin(refinementPluginPojo: PluginPojo, index: number) {
@@ -101,11 +108,11 @@ export class RefinementPluginsComponent implements OnInit {
   }
 
   persistAssignments() {
-    let requests = this.components?.toArray().map(component=> {
+    let requests = this.components?.toArray().map(component => {
       return component.updateAllPluginConfigurations();
     });
 
-    if(requests && requests.length > 0) {
+    if (requests && requests.length > 0) {
       forkJoin(requests).subscribe();
     }
   }
