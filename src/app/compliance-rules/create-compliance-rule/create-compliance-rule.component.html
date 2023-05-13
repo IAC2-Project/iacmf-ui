@@ -83,7 +83,8 @@
           <ul>
             <li *ngFor="let complianceRuleParameter of this.complianceRuleParameters">
               <span>{{complianceRuleParameter.name + ': '}}{{complianceRuleParameter.type}}
-                <mat-icon style="vertical-align: middle;color: red; cursor: pointer;" (click)="deleteParameter(complianceRuleParameter)">delete</mat-icon>
+                <mat-icon style="vertical-align: middle;color: red; cursor: pointer;"
+                          (click)="deleteParameter(complianceRuleParameter)">delete</mat-icon>
               </span>
 
             </li>

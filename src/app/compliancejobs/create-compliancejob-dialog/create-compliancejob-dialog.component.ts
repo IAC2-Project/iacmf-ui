@@ -28,6 +28,9 @@ export class CreateCompliancejobDialogComponent implements OnInit {
   reportingPluginConfiguration: EntityModelPluginUsageEntity | undefined;
   shareNewComplianceRuleConfigurationEvents: Subject<EntityModelComplianceRuleConfigurationEntity[]> = new Subject<EntityModelComplianceRuleConfigurationEntity[]>();
   issueFixingConfigurationsToCreate: IssueFixingConfigurationEntityRequestBody[] = [];
+  jobName: string = '';
+  description: string = '';
+
 
   @ViewChild('fixingComponent', { static: false }) fixingComponent: IssueFixingComponent | undefined;
   @ViewChild('refinementComponent', {static: false}) refinementComponent: RefinementPluginsComponent | undefined;
@@ -127,7 +130,8 @@ export class CreateCompliancejobDialogComponent implements OnInit {
         ?.filter(val => Number(this.utils.getId(val)) == this.selectedProductionSystem)
         .forEach(resp => {
           let requestBody = {
-            name: "someName",
+            name: this.jobName,
+            description: this.description,
             id: -1,
             productionSystem: this.utils.getLink("self", resp),
             checkingPluginUsage: this.utils.getLink("self", checkingPlugin),

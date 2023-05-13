@@ -6,7 +6,7 @@
     <mat-accordion>
       <mat-expansion-panel *ngFor="let complianceJob of dataSource; let i = index; first as isFirst" [expanded]="isFirst">
         <mat-expansion-panel-header>
-          <mat-panel-title>ComplianceJob Id: {{this.getId(complianceJob)}}</mat-panel-title>
+          <mat-panel-title>{{complianceJob.name}} (id: {{this.getId(complianceJob)}})</mat-panel-title>
         </mat-expansion-panel-header>
 
         <div class="property">

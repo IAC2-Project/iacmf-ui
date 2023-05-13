@@ -4,12 +4,37 @@
 <h1 mat-dialog-title>Create Compliance Job</h1>
 <mat-dialog-content>
   <mat-stepper  linear="true" labelPosition="bottom" #stepper>
+    <mat-step label="Basic Information">
+      <div class="step">
+        <div class="form-field-container">
+          <mat-form-field appearance="fill">
+            <mat-label>
+              Name:
+            </mat-label>
+            <input matInput type="text" [(ngModel)]="jobName" [ngModelOptions]="{standalone: true}" required>
+          </mat-form-field>
+        </div>
+        <div class="form-field-container">
+          <mat-form-field appearance="fill">
+            <mat-label>
+              Description:
+            </mat-label>
+            <textarea matInput type="text" [(ngModel)]="description" [ngModelOptions]="{standalone: true}">
+          </textarea>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="navigation-buttons">
+        <button mat-raised-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
     <mat-step label="Production System">
       <div class="step">
         <app-select-production-sytem
           (selectedProductionSystem)="productionSystemSelected($event)"></app-select-production-sytem>
       </div>
       <div class="navigation-buttons">
+        <button mat-raised-button matStepperPrevious>Back</button>
         <button mat-raised-button matStepperNext>Next</button>
       </div>
     </mat-step>

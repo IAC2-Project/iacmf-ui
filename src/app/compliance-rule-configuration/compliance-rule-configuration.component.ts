@@ -88,10 +88,9 @@ export class ComplianceRuleConfigurationComponent implements OnInit {
   removeComplianceRuleConfiguration(complianceRuleConfiguration: EntityModelComplianceRuleConfigurationEntity) {
     if (complianceRuleConfiguration != undefined) {
       // first we remove associated parameter assignments, then the configuration entity.
-      this.complianceRuleConfigurationService.followPropertyReferenceComplianceruleconfigurationentityGet21(String(this.utils.getId(complianceRuleConfiguration))).subscribe(result => {
-        // @ts-ignore
+      this.complianceRuleConfigurationService.followPropertyReferenceComplianceruleconfigurationentityGet31(String(this.utils.getId(complianceRuleConfiguration))).subscribe(result => {
         console.log("%d assignments where detected!", result._embedded?.complianceRuleParameterAssignmentEntities?.length);
-        // @ts-ignore
+
         let requests = result._embedded?.complianceRuleParameterAssignmentEntities
           ?.map((assignment: any) => (assignment as EntityModelComplianceRuleParameterAssignmentEntity))
           .map((assignment: EntityModelComplianceRuleParameterAssignmentEntity) => this.complianceRuleParameterAssigmentService.deleteItemResourceComplianceruleparameterassignmententityDelete(String(this.utils.getId(assignment))));

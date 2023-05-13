@@ -69,7 +69,6 @@ export class CreateComplianceRuleComponent implements OnInit {
     });
 
     this.newComplianceRuleParameterName = "";
-    this.type = "STRING";
   }
 
   deleteParameter(parameter: EntityModelComplianceRuleParameterEntity) {
