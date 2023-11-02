@@ -12,6 +12,7 @@ import {
   ProductionSystemService, RepresentationModelObject
 } from "iacmf-client";
 import {Injectable} from "@angular/core";
+import {environment} from "../../../environments/environment";
 
 
 @Injectable({
@@ -108,7 +109,7 @@ export class TestData {
         name: "Unexpected Docker Containers Rule",
         description: "There shouldn't be Docker Containers running which are not reflected in the model",
         isDeleted: false,
-        location: "http://localhost:8080/#/compliancerules/http%253A%252F%252Fwww.example.org%252Ftosca%252Fcompliancerules/no-unexpected-docker-containers_w1-wip1/readme",
+        location: `http://${environment.basehostname}:8080/#/compliancerules/http%253A%252F%252Fwww.example.org%252Ftosca%252Fcompliancerules/no-unexpected-docker-containers_w1-wip1/readme`,
         parameters: [{
           id: -1,
           name: "ENGINE_URL",
@@ -141,7 +142,7 @@ export class TestData {
       properties: [{
         id: -1,
         key: "opentoscacontainer_hostname",
-        value: "localhost"
+        value: `${environment.basehostname}`
       }, {
         id: -1,
         key: "opentoscacontainer_port",

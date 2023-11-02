@@ -3,13 +3,9 @@ import {
   ComplianceIssueEntity,
   ComplianceIssueService,
   ComplianceRuleConfigurationService,
-  ComplianceRulesService,
-  EntityModelComplianceIssueEntity,
   EntityModelKVEntity,
   ExecutionEntity,
-  ExecutionService,
-  FixingReportService,
-  KeyValueService
+  ExecutionService
 } from "iacmf-client";
 import {MatDialog} from "@angular/material/dialog";
 import {Utils} from "../utils/utils";
@@ -17,7 +13,7 @@ import {forkJoin, interval, mergeMap, Observable, switchMap, withLatestFrom} fro
 import {HttpClient} from "@angular/common/http";
 import {EntityModelIssueFixingReportEntity} from "iacmf-client/model/entityModelIssueFixingReportEntity";
 import {map} from "rxjs/operators";
-import {mergeMappings} from "@angular/compiler-cli/src/ngtsc/sourcemaps/src/source_file";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-executions',
@@ -193,9 +189,9 @@ export class ExecutionsComponent implements OnInit {
   }
 
   sendInstanceModelToWinery(instanceModel: string, resourceName: string): void {
-    const wineryUrl: string = "http://localhost:8080/winery";
+    const wineryUrl: string = `http://${environment.basehostname}:8080/winery`;
     const filename = resourceName + '.yaml';
-    const topologyModelUrl: string = `http://localhost:8080/winery-topologymodeler/?repositoryURL=http:%2F%2Flocalhost:8080%2Fwinery&uiURL=http:%2F%2Flocalhost:8080%2F%23%2F&ns=https:%2F%2Fopentosca.org%2Fedmm%2Fimported%2FserviceTemplates&id=${resourceName}&topologyProDecURL=http:%2F%2Flocalhost:9090`;
+    const topologyModelUrl: string = `http://${environment.basehostname}:8080/winery-topologymodeler/?repositoryURL=http:%2F%2F${environment.basehostname}:8080%2Fwinery&uiURL=http:%2F%2F${environment.basehostname}:8080%2F%23%2F&ns=https:%2F%2Fopentosca.org%2Fedmm%2Fimported%2FserviceTemplates&id=${resourceName}&topologyProDecURL=http:%2F%2F${environment.basehostname}:9090`;
     const blob = new Blob([atob(instanceModel)]);
     const file: File = new File([blob], filename, {type: 'application/yaml'});
     const formData = new FormData();

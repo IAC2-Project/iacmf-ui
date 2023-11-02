@@ -1,7 +1,8 @@
 
 export const environment = {
   production: false,
-  basepath: "http://localhost:9091/api"
+  basepath: "http://localhost:9091/api",
+  basehostname: "localhost"
 };
 
 /*
