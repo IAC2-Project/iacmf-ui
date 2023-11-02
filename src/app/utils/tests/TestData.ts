@@ -149,7 +149,8 @@ export class TestData {
       }, {
         id: -1,
         key: "opentoscacontainer_appId",
-        value: "RealWorld-Application_Angular-Spring-MySQL-w2-wip1.csar"
+        value: "RealWorld-Application_Angular-Spring-MySQL-w2-wip1.csar" +
+          ""
       }, {
         id: -1,
         key: "opentoscacontainer_instanceId",

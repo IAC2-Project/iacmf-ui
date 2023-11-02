@@ -39,7 +39,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .form-field-container {
-  widht: 100%;
+  width: 100%;
 }
 
 .form-field-container mat-form-field {
