@@ -1,3 +1,5 @@
+
 export const environment = {
-  production: true
+  production: true,
+  basepath: `http://${$ENV.BACKEND_URL}:9091`
 };
