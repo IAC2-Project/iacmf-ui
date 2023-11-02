@@ -13,7 +13,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {LayoutModule} from '@angular/cdk/layout';
 import {HttpClientModule} from '@angular/common/http';
-import {ApiModule, Configuration} from 'iacmf-client';
+import {ApiModule, BASE_PATH, Configuration} from 'iacmf-client';
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTableModule} from "@angular/material/table";
@@ -68,6 +68,8 @@ import {
   PluginUsageConfigurationDialogComponent
 } from './plugin-usage/plugin-usage-configuration-dialog/plugin-usage-configuration-dialog.component';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -124,7 +126,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     MatSnackBarModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [ {provide: BASE_PATH, useValue: environment.basepath}],
   bootstrap: [AppComponent]
 })
 export class AppModule {
