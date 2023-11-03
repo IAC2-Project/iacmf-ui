@@ -188,6 +188,14 @@ export class TestData {
         id: -1,
         key: "dockerContainerFilter_mysql",
         value: "mysql"
+      }, {
+        id: -1,
+        key: "dockerContainerFilter_iacmfBackend",
+        value: "case-study-iacmf-backend"
+      },{
+        id: -1,
+        key: "dockerContainerFilter_iacmfFrontend",
+        value: "case-study-iacmf-frontend"
       }]
     }
   }
