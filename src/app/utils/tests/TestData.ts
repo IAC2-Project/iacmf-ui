@@ -191,11 +191,15 @@ export class TestData {
       }, {
         id: -1,
         key: "dockerContainerFilter_iacmfBackend",
-        value: "case-study-iacmf-backend"
+        value: "iac2-iacmf-backend"
       },{
         id: -1,
         key: "dockerContainerFilter_iacmfFrontend",
-        value: "case-study-iacmf-frontend"
+        value: "iac2-iacmf-frontend"
+      },{
+        id: -1,
+        key: "dockerContainerFilter_dind",
+        value: "docker:24"
       }]
     }
   }
